@@ -224,9 +224,114 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "Smart_ward_management_system.DTOs.UserDTO",
-        "IsRequired": true
+        "Name": "FullNameNepali",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "FullNameEnglish",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Gender",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "DateOfBirth",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "CitizenshipNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CitizenshipIssuedDistrict",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CitizenshipIssuedDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "NationalIdNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PhoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Username",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PasswordHash",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PermanentAddress",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TemporaryAddress",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "WardNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Municipality",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "District",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Province",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Role",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CitizenshipFront",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "CitizenshipBack",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "LivePhoto",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

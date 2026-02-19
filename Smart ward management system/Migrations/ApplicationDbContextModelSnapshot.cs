@@ -28,6 +28,9 @@ namespace Smart_ward_management_system.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("DigitalSignature")
                         .HasColumnType("nvarchar(max)");
 
@@ -273,12 +276,15 @@ namespace Smart_ward_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VerificationStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("datetime2");

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Smart_ward_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class @new : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -120,7 +120,8 @@ namespace Smart_ward_management_system.Migrations
                     DigitalSignature = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     VerifiedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -306,10 +307,11 @@ namespace Smart_ward_management_system.Migrations
                     Department = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    VerificationStatus = table.Column<int>(type: "int", nullable: false),
                     VerifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

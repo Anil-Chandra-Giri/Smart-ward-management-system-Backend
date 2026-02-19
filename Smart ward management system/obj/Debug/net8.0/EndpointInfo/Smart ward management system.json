@@ -336,19 +336,150 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UserDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserDTO"
+                "type": "object",
+                "properties": {
+                  "FullNameNepali": {
+                    "type": "string"
+                  },
+                  "FullNameEnglish": {
+                    "type": "string"
+                  },
+                  "Gender": {
+                    "type": "string"
+                  },
+                  "DateOfBirth": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "CitizenshipNumber": {
+                    "type": "string"
+                  },
+                  "CitizenshipIssuedDistrict": {
+                    "type": "string"
+                  },
+                  "CitizenshipIssuedDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "NationalIdNumber": {
+                    "type": "string"
+                  },
+                  "PhoneNumber": {
+                    "type": "string"
+                  },
+                  "Email": {
+                    "type": "string"
+                  },
+                  "Username": {
+                    "type": "string"
+                  },
+                  "PasswordHash": {
+                    "type": "string"
+                  },
+                  "PermanentAddress": {
+                    "type": "string"
+                  },
+                  "TemporaryAddress": {
+                    "type": "string"
+                  },
+                  "WardNumber": {
+                    "type": "string"
+                  },
+                  "Municipality": {
+                    "type": "string"
+                  },
+                  "District": {
+                    "type": "string"
+                  },
+                  "Province": {
+                    "type": "string"
+                  },
+                  "Role": {
+                    "type": "string"
+                  },
+                  "CitizenshipFront": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "CitizenshipBack": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "LivePhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "FullNameNepali": {
+                  "style": "form"
+                },
+                "FullNameEnglish": {
+                  "style": "form"
+                },
+                "Gender": {
+                  "style": "form"
+                },
+                "DateOfBirth": {
+                  "style": "form"
+                },
+                "CitizenshipNumber": {
+                  "style": "form"
+                },
+                "CitizenshipIssuedDistrict": {
+                  "style": "form"
+                },
+                "CitizenshipIssuedDate": {
+                  "style": "form"
+                },
+                "NationalIdNumber": {
+                  "style": "form"
+                },
+                "PhoneNumber": {
+                  "style": "form"
+                },
+                "Email": {
+                  "style": "form"
+                },
+                "Username": {
+                  "style": "form"
+                },
+                "PasswordHash": {
+                  "style": "form"
+                },
+                "PermanentAddress": {
+                  "style": "form"
+                },
+                "TemporaryAddress": {
+                  "style": "form"
+                },
+                "WardNumber": {
+                  "style": "form"
+                },
+                "Municipality": {
+                  "style": "form"
+                },
+                "District": {
+                  "style": "form"
+                },
+                "Province": {
+                  "style": "form"
+                },
+                "Role": {
+                  "style": "form"
+                },
+                "CitizenshipFront": {
+                  "style": "form"
+                },
+                "CitizenshipBack": {
+                  "style": "form"
+                },
+                "LivePhoto": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -416,88 +547,6 @@
             "format": "uuid"
           },
           "otpCode": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserDTO": {
-        "type": "object",
-        "properties": {
-          "fullNameNepali": {
-            "type": "string",
-            "nullable": true
-          },
-          "fullNameEnglish": {
-            "type": "string",
-            "nullable": true
-          },
-          "gender": {
-            "type": "string",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "citizenshipNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "citizenshipIssuedDistrict": {
-            "type": "string",
-            "nullable": true
-          },
-          "citizenshipIssuedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "nationalIdNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "username": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "permanentAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "temporaryAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "wardNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "municipality": {
-            "type": "string",
-            "nullable": true
-          },
-          "district": {
-            "type": "string",
-            "nullable": true
-          },
-          "province": {
-            "type": "string",
-            "nullable": true
-          },
-          "role": {
             "type": "string",
             "nullable": true
           }

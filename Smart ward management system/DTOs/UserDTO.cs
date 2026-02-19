@@ -13,7 +13,7 @@
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
         public string PermanentAddress { get; set; }
         public string TemporaryAddress { get; set; }
         public string WardNumber { get; set; }
@@ -21,5 +21,8 @@
         public string District { get; set; }
         public string Province { get; set; }
         public string Role { get; set; }
+        public IFormFile CitizenshipFront { get; set; }
+        public IFormFile CitizenshipBack { get; set; }
+        public IFormFile LivePhoto { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using Smart_ward_management_system.Data;
 namespace Smart_ward_management_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260218021214_new")]
-    partial class @new
+    [Migration("20260218164346_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,9 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<Guid>("DocumentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DigitalSignature")
                         .HasColumnType("nvarchar(max)");
@@ -276,12 +279,15 @@ namespace Smart_ward_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VerificationStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("datetime2");
