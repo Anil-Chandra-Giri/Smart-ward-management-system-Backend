@@ -134,23 +134,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
-              "RelativeDocumentMoniker": "Smart ward management system\\Model\\Identity\\User.cs",
-              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
-              "RelativeToolTip": "Smart ward management system\\Model\\Identity\\User.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAIwCwAAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-17T07:27:11.385Z"
             },
             {
               "$type": "Document",
@@ -224,6 +212,18 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-17T08:23:03.102Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Model\\Identity\\User.cs",
+              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
+              "RelativeToolTip": "Smart ward management system\\Model\\Identity\\User.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAIwCwAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T07:27:11.385Z"
             },
             {
               "$type": "Document",
