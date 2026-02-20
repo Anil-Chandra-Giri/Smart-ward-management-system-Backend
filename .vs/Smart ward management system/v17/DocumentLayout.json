@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\controllers\\signupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\controllers\\signupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\model\\identity\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\model\\identity\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\model\\services\\servicerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\model\\services\\servicerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,14 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\smart ward management system.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\smart ward management system.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\model\\identity\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\model\\identity\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\model\\services\\serviceapprovalflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -45,10 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\model\\services\\complaints\\complaintescalation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\model\\services\\complaints\\complaintescalation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\controllers\\signupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\controllers\\signupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\dtos\\otpverificationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -125,10 +125,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\model\\common\\new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\model\\common\\new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|c:\\users\\anilg\\source\\repos\\smart ward management system\\smart ward management system\\migrations\\20260218021214_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\migrations\\20260218021214_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -138,7 +134,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -146,56 +142,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "StatusMaster.cs",
-              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
-              "RelativeDocumentMoniker": "Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
-              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
-              "RelativeToolTip": "Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-17T07:31:03.98Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
-              "RelativeDocumentMoniker": "Smart ward management system\\Model\\Identity\\User.cs",
-              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
-              "RelativeToolTip": "Smart ward management system\\Model\\Identity\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-17T07:27:11.385Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "LoginController.cs",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Controllers\\LoginController.cs",
               "RelativeDocumentMoniker": "Smart ward management system\\Controllers\\LoginController.cs",
               "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Controllers\\LoginController.cs",
               "RelativeToolTip": "Smart ward management system\\Controllers\\LoginController.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAkwEcAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwCkAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-17T08:14:56.952Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\appsettings.json",
               "RelativeDocumentMoniker": "Smart ward management system\\appsettings.json",
               "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\appsettings.json",
               "RelativeToolTip": "Smart ward management system\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAkwA0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-17T08:01:09.702Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-17T08:01:09.702Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Program.cs",
               "RelativeDocumentMoniker": "Smart ward management system\\Program.cs",
@@ -207,7 +178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "Smart ward management system.csproj",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Smart ward management system.csproj",
               "RelativeDocumentMoniker": "Smart ward management system\\Smart ward management system.csproj",
@@ -219,19 +190,56 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "ServiceRequest.cs",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\ServiceRequest.cs",
               "RelativeDocumentMoniker": "Smart ward management system\\Model\\Services\\ServiceRequest.cs",
               "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\ServiceRequest.cs",
               "RelativeToolTip": "Smart ward management system\\Model\\Services\\ServiceRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwA0AAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-17T07:33:14.052Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
+              "Title": "SignUpController.cs",
+              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Controllers\\SignUpController.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Controllers\\SignUpController.cs",
+              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Controllers\\SignUpController.cs",
+              "RelativeToolTip": "Smart ward management system\\Controllers\\SignUpController.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAHMAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T08:23:03.102Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Model\\Identity\\User.cs",
+              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Identity\\User.cs",
+              "RelativeToolTip": "Smart ward management system\\Model\\Identity\\User.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAIwCwAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T07:27:11.385Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "StatusMaster.cs",
+              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
+              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
+              "RelativeToolTip": "Smart ward management system\\Model\\Services\\Complaints\\StatusMaster.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T07:31:03.98Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "CitizenVerificationRequest.cs",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\CitizenVerificationRequest.cs",
               "RelativeDocumentMoniker": "Smart ward management system\\Model\\Services\\CitizenVerificationRequest.cs",
@@ -243,19 +251,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "20260218021214_new.cs",
-              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Migrations\\20260218021214_new.cs",
-              "RelativeDocumentMoniker": "Smart ward management system\\Migrations\\20260218021214_new.cs",
-              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Migrations\\20260218021214_new.cs",
-              "RelativeToolTip": "Smart ward management system\\Migrations\\20260218021214_new.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-18T02:12:14.883Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "StatusHistory.cs",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\Complaints\\StatusHistory.cs",
               "RelativeDocumentMoniker": "Smart ward management system\\Model\\Services\\Complaints\\StatusHistory.cs",
@@ -267,7 +263,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ComplaintEscalation.cs",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\Complaints\\ComplaintEscalation.cs",
               "RelativeDocumentMoniker": "Smart ward management system\\Model\\Services\\Complaints\\ComplaintEscalation.cs",
@@ -279,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ServiceApprovalFlow.cs",
               "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Model\\Services\\ServiceApprovalFlow.cs",
               "RelativeDocumentMoniker": "Smart ward management system\\Model\\Services\\ServiceApprovalFlow.cs",
@@ -288,18 +284,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-17T07:32:53.877Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "SignUpController.cs",
-              "DocumentMoniker": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Controllers\\SignUpController.cs",
-              "RelativeDocumentMoniker": "Smart ward management system\\Controllers\\SignUpController.cs",
-              "ToolTip": "C:\\Users\\anilg\\source\\repos\\Smart ward management system\\Smart ward management system\\Controllers\\SignUpController.cs",
-              "RelativeToolTip": "Smart ward management system\\Controllers\\SignUpController.cs",
-              "ViewState": "AgIAAGcAAAAAAAAAAAAkwCkAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-17T08:23:03.102Z"
             },
             {
               "$type": "Document",
