@@ -1,5 +1,6 @@
 ﻿using Domain.Enumerators;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs;
 using Smart_ward_management_system.Model.Enumerators;
@@ -20,10 +21,16 @@ namespace Smart_ward_management_system.Controllers
             _context = context;
         }
         // GET: api/<ServiceRequestController>
+        [Route("GetAllServices")]
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> GetAllServices([FromQuery] Guid userId)
         {
-            return new string[] { "value1", "value2" };
+            if(userId==null)
+            {
+                return NotFound("UserId is required");
+            }
+            var services = await _context.ServiceRequests.Where(s => s.UserId == userId).ToListAsync();
+            return Ok(services);
         }
 
         // GET api/<ServiceRequestController>/5
