@@ -4,6 +4,7 @@ using Smart_ward_management_system.Model.Identity;
 using Smart_ward_management_system.Model.Logging;
 using Smart_ward_management_system.Model.Services;
 using Smart_ward_management_system.Model.Services.Complaints;
+using Smart_ward_management_system.Model.Services.ProbableServices;
 
 namespace Smart_ward_management_system.Data
 
@@ -33,6 +34,13 @@ namespace Smart_ward_management_system.Data
 
         public DbSet<SystemLog> SystemLogs { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<AddressVerificationRequest> AddressVerificationRequests { get; set; }
+        public DbSet<BirthCertificateRequest> BirthCertificateRequests { get; set; }
+        public DbSet<DeathCertificateRequest> DeathCertificateRequests { get; set; }
+        public DbSet<MarriageRegistrationRequest> MarriageRegistrationRequests { get; set; }
+        public DbSet<MigrationCertificateRequest> MigrationCertificateRequests { get; set; }
+        public DbSet<PropertyDocumentRequest> PropertyDocumentRequests { get; set; }
+        public DbSet<RecommendationLetterRequest> RecommendationLetterRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
