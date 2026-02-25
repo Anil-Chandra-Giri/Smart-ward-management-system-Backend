@@ -12,8 +12,8 @@ using Smart_ward_management_system.Data;
 namespace Smart_ward_management_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260218021214_new")]
-    partial class @new
+    [Migration("20260220160624_intital")]
+    partial class intital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,9 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<Guid>("DocumentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DigitalSignature")
                         .HasColumnType("nvarchar(max)");
@@ -276,12 +279,15 @@ namespace Smart_ward_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VerificationStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("datetime2");
@@ -617,9 +623,17 @@ namespace Smart_ward_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .HasColumnType("nvarchar(34)");
+
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PriorityLevel")
+                        .HasColumnType("int");
 
                     b.Property<string>("Purpose")
                         .IsRequired()
@@ -636,9 +650,11 @@ namespace Smart_ward_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ServiceType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ServiceType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("SubmissionMode")
                         .IsRequired()
@@ -653,6 +669,215 @@ namespace Smart_ward_management_system.Migrations
                     b.HasKey("ServiceRequestId");
 
                     b.ToTable("ServiceRequests");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ServiceRequest");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.AddressVerificationRequest", b =>
+                {
+                    b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MapCoordinate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("YearsOfStay")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("AddressVerificationRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.BirthCertificateRequest", b =>
+                {
+                    b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
+
+                    b.Property<string>("ChildFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FatherFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GrandfatherFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MotherFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermanentAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlaceOfBirth")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("BirthCertificateRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.DeathCertificateRequest", b =>
+                {
+                    b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
+
+                    b.Property<string>("CauseOfDeath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenshipNoOfDeceased")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfDeath")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeceasedFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlaceOfDeath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RelationshipToApplicant")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("DeathCertificateRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.MarriageRegistrationRequest", b =>
+                {
+                    b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
+
+                    b.Property<string>("BrideCitizenshipNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BrideFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroomCitizenshipNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroomFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("MarriageDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MarriageVenue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WitnessName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("MarriageRegistrationRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.MigrationCertificateRequest", b =>
+                {
+                    b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
+
+                    b.Property<string>("DestinationAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MigrationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReasonForMigration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalFamilyMembersMoving")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("MigrationCertificateRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.PropertyDocumentRequest", b =>
+                {
+                    b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
+
+                    b.Property<string>("CurrentOwnerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LandRevenueReceiptNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlotNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PropertyType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SheetNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalArea")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue("PropertyDocumentRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.RecommendationLetterRequest", b =>
+                {
+                    b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
+
+                    b.Property<bool>("IsUrgent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LetterCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecipientOrganization")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SupportingDocumentsList")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("RecommendationLetterRequest");
                 });
 #pragma warning restore 612, 618
         }

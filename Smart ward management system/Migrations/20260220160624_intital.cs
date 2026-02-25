@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Smart_ward_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class @new : Migration
+    public partial class intital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -120,7 +120,8 @@ namespace Smart_ward_management_system.Migrations
                     DigitalSignature = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     VerifiedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,12 +208,14 @@ namespace Smart_ward_management_system.Migrations
                 {
                     ServiceRequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ServiceType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServiceType = table.Column<int>(type: "int", nullable: false),
                     ApplicationNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Purpose = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestedWard = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestedMunicipality = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PriorityLevel = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     AssignedOfficerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SubmissionMode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -220,7 +223,49 @@ namespace Smart_ward_management_system.Migrations
                     ApprovedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ApprovedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
+                    HouseNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WardNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    YearsOfStay = table.Column<int>(type: "int", nullable: true),
+                    MapCoordinate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChildFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FatherFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MotherFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GrandfatherFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PermanentAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeceasedFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfDeath = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PlaceOfDeath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CauseOfDeath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RelationshipToApplicant = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CitizenshipNoOfDeceased = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GroomFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BrideFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MarriageDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MarriageVenue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GroomCitizenshipNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BrideCitizenshipNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WitnessName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MigrationType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OriginAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DestinationAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalFamilyMembersMoving = table.Column<int>(type: "int", nullable: true),
+                    ReasonForMigration = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlotNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SheetNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalArea = table.Column<double>(type: "float", nullable: true),
+                    PropertyType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentOwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LandRevenueReceiptNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LetterCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RecipientOrganization = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SupportingDocumentsList = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUrgent = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,10 +351,11 @@ namespace Smart_ward_management_system.Migrations
                     Department = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    VerificationStatus = table.Column<int>(type: "int", nullable: false),
                     VerifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

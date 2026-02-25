@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enumerators;
+using System.ComponentModel.DataAnnotations;
 
 namespace Smart_ward_management_system.Model.Services.Complaints
 {
@@ -6,7 +7,7 @@ namespace Smart_ward_management_system.Model.Services.Complaints
     {
         [Key] public Guid HistoryId { get; set; }
         public Guid ReferenceId { get; set; }
-        //public ReferenceTypeEnum ReferenceType { get; set; }
+        public ReferenceTypeEnum ReferenceType { get; set; }
         public Guid OldStatusId { get; set; }
         public Guid NewStatusId { get; set; }
         public Guid ChangedBy { get; set; }

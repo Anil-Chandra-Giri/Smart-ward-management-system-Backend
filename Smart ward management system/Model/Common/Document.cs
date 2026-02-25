@@ -17,6 +17,7 @@
         public bool IsVerified { get; set; }
         public Guid? VerifiedByUserId { get; set; }
         public DateTime? VerifiedAt { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 
 }

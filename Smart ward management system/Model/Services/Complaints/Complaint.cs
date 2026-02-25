@@ -1,22 +1,47 @@
-﻿namespace Smart_ward_management_system.Model.Services.Complaints
+﻿using Domain.Enumerators;
+using Smart_ward_management_system.Model.Enumerators;
+using System.ComponentModel.DataAnnotations;
+
+namespace Smart_ward_management_system.Model.Services.Complaints
 {
     public class Complaint
     {
+        [Key]
         public Guid ComplaintId { get; set; }
-        public Guid UserId { get; set; }
-        public string ComplaintNumber { get; set; }
-        public string Category { get; set; }
-        public string Description { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
-        //public PriorityLevelEnum PriorityLevel { get; set; } 
-        //public StatusMaster StatusMaster { get; set; }
-        public Guid CurrentStatusId { get; set; }
-        public string AssignedDepartment { get; set; }
-        public string AssignedOfficer { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime ResolvedAt { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string CitizenName { get; set; }
+
+        [Required]
+        [RegularExpression(@"^[0-9]{10,15}$", ErrorMessage = "Invalid contact number format.")]
+        public string ContactNumber { get; set; }
+
+        [Required]
+        public string Category { get; set; } = "Waste Management";
+
+        [Required]
+        [MinLength(10)]
+        public string ComplaintDetails { get; set; }
+
+        [Required]
+        public string Priority { get; set; } = "Normal";
+
+        [Required]
+        public string WardNumber { get; set; }
+
+        [Required]
+        public string Municipality { get; set; }
+
+        [Required]
+        public double Latitude { get; set; }
+
+        [Required]
+        public double Longitude { get; set; }
+
+        public string? ImageUrl { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string Status { get; set; } = "Pending";
 
     }
 }

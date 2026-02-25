@@ -1,5 +1,6 @@
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.json
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.runtime.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.endpoints.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.exe
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.deps.json
