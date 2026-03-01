@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Smart_ward_management_system.Common;
+using Smart_ward_management_system.Controllers;
 using Smart_ward_management_system.Data;
 using System.Security.Claims;
 using System.Text;
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbString"));
 });
 builder.Services.AddScoped<DocumentService>();
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
@@ -81,6 +83,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("MyPolicy");
+app.MapHub<QueueHub>("/queueHub");
 
 app.UseAuthorization();
 

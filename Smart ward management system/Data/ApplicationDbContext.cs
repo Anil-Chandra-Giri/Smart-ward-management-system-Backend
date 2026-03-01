@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Smart_ward_management_system.Model.Appointment;
 using Smart_ward_management_system.Model.Common;
 using Smart_ward_management_system.Model.Identity;
 using Smart_ward_management_system.Model.Logging;
@@ -34,6 +35,7 @@ namespace Smart_ward_management_system.Data
 
         public DbSet<SystemLog> SystemLogs { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Token>Tokens { get; set; }
         public DbSet<AddressVerificationRequest> AddressVerificationRequests { get; set; }
         public DbSet<BirthCertificateRequest> BirthCertificateRequests { get; set; }
         public DbSet<DeathCertificateRequest> DeathCertificateRequests { get; set; }
