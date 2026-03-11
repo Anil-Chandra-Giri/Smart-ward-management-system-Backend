@@ -3,6 +3,8 @@ using Smart_ward_management_system.Model.Appointment;
 using Smart_ward_management_system.Model.Common;
 using Smart_ward_management_system.Model.Identity;
 using Smart_ward_management_system.Model.Logging;
+using Smart_ward_management_system.Model.Notice;
+using Smart_ward_management_system.Model.Polls;
 using Smart_ward_management_system.Model.Services;
 using Smart_ward_management_system.Model.Services.Complaints;
 using Smart_ward_management_system.Model.Services.ProbableServices;
@@ -24,7 +26,6 @@ namespace Smart_ward_management_system.Data
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<ComplaintEscalation> ComplaintEscalations { get; set; }
         public DbSet<Document> Documents { get; set; }
-        public DbSet<Notice> Notices { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -32,10 +33,15 @@ namespace Smart_ward_management_system.Data
         public DbSet<ServiceRequest>ServiceRequests { get; set; }
         public DbSet<StatusHistory> StatusHistories { get; set; }
         public DbSet<StatusMaster> StatusMasters { get; set; }
-
+        public DbSet<Notice> Notices { get; set; }
+        public DbSet<NoticeCategory> NoticeCategories { get; set; }
         public DbSet<SystemLog> SystemLogs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Token>Tokens { get; set; }
+        public DbSet<Poll> Polls { get; set; }
+        public DbSet<PollOption> PollOptions { get; set; }
+        public DbSet<PollVote> PollVotes { get; set; }
+        public DbSet<PollCategory> PollCategories { get; set; }
         public DbSet<AddressVerificationRequest> AddressVerificationRequests { get; set; }
         public DbSet<BirthCertificateRequest> BirthCertificateRequests { get; set; }
         public DbSet<DeathCertificateRequest> DeathCertificateRequests { get; set; }
@@ -49,6 +55,18 @@ namespace Smart_ward_management_system.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+                    modelBuilder.Entity<PollVote>()
+                .HasOne<Poll>()
+                .WithMany()
+                .HasForeignKey(v => v.PollId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                    modelBuilder.Entity<PollVote>()
+                        .HasOne<PollOption>()
+                        .WithMany(o => o.Votes)
+                        .HasForeignKey(v => v.OptionId)
+                        .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

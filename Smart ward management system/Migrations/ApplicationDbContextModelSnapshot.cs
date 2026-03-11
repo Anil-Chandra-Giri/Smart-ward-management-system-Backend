@@ -22,6 +22,28 @@ namespace Smart_ward_management_system.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Smart_ward_management_system.Model.Appointment.Token", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tokens");
+                });
+
             modelBuilder.Entity("Smart_ward_management_system.Model.Common.Document", b =>
                 {
                     b.Property<Guid>("DocumentId")
@@ -81,38 +103,6 @@ namespace Smart_ward_management_system.Migrations
                     b.HasKey("DocumentId");
 
                     b.ToTable("Documents");
-                });
-
-            modelBuilder.Entity("Smart_ward_management_system.Model.Common.Notice", b =>
-                {
-                    b.Property<Guid>("NoticeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsUrgent")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("IssuedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("IssuedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("NoticeId");
-
-                    b.ToTable("Notices");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Common.Notification", b =>
@@ -399,6 +389,197 @@ namespace Smart_ward_management_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SystemLogs");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.Notice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUrgent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Notices");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.NoticeCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NoticeCategories");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.Poll", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AllowMultipleVotes")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Polls");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PollCategories");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OptionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PollId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PollId");
+
+                    b.ToTable("PollOptions");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollVote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CitizenId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OptionId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PollId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PollId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("VotedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OptionId");
+
+                    b.HasIndex("OptionId1");
+
+                    b.HasIndex("PollId");
+
+                    b.HasIndex("PollId1");
+
+                    b.ToTable("PollVotes");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Services.CitizenVerificationRequest", b =>
@@ -875,6 +1056,86 @@ namespace Smart_ward_management_system.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("RecommendationLetterRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.Notice", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Notice.NoticeCategory", "Category")
+                        .WithMany("Notices")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.Poll", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Polls.PollCategory", "Category")
+                        .WithMany("Polls")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollOption", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Polls.Poll", "Poll")
+                        .WithMany("Options")
+                        .HasForeignKey("PollId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Poll");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollVote", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Polls.PollOption", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Smart_ward_management_system.Model.Polls.PollOption", "Option")
+                        .WithMany()
+                        .HasForeignKey("OptionId1");
+
+                    b.HasOne("Smart_ward_management_system.Model.Polls.Poll", null)
+                        .WithMany()
+                        .HasForeignKey("PollId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Smart_ward_management_system.Model.Polls.Poll", "Poll")
+                        .WithMany()
+                        .HasForeignKey("PollId1");
+
+                    b.Navigation("Option");
+
+                    b.Navigation("Poll");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.NoticeCategory", b =>
+                {
+                    b.Navigation("Notices");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.Poll", b =>
+                {
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollCategory", b =>
+                {
+                    b.Navigation("Polls");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollOption", b =>
+                {
+                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }
