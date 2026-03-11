@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Enumerators;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Smart_ward_management_system.Model.Appointment;
 using Smart_ward_management_system.Model.Common;
 using Smart_ward_management_system.Model.Identity;
 using Smart_ward_management_system.Model.Logging;
@@ -31,9 +34,11 @@ namespace Smart_ward_management_system.Data
         public DbSet<ServiceRequest>ServiceRequests { get; set; }
         public DbSet<StatusHistory> StatusHistories { get; set; }
         public DbSet<StatusMaster> StatusMasters { get; set; }
-
         public DbSet<SystemLog> SystemLogs { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Queue>Queues { get; set; }
+        public DbSet<Token> Tokens { get; set; }
         public DbSet<AddressVerificationRequest> AddressVerificationRequests { get; set; }
         public DbSet<BirthCertificateRequest> BirthCertificateRequests { get; set; }
         public DbSet<DeathCertificateRequest> DeathCertificateRequests { get; set; }
@@ -45,8 +50,47 @@ namespace Smart_ward_management_system.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().HasKey(u => u.UserId);
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                UserId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                Username = "admin",
+                Role = "Staff",
+                PasswordHash = "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", // ideally hashed
+                AccountStatus = "Active",
+                IsEmailConfirmed = true,
 
+                FullNameNepali = "प्रशासक",
+                FullNameEnglish = "System Admin",
+                Gender = "Male",
+                DateOfBirth = new DateTime(1990, 1, 1),
+                PhoneNumber = "9800000000",
+                Email = "admin@ward.gov.np",
+
+                CitizenshipNumber = "123456789",
+                CitizenshipIssuedDistrict = "Kathmandu",
+                CitizenshipIssuedDate = new DateTime(2010, 5, 5),
+
+                PermanentAddress = "Kathmandu",
+                TemporaryAddress = "Kathmandu",
+                WardNumber = "1",
+                Municipality = "Kathmandu Metropolitan",
+                District = "Kathmandu",
+                Province = "Bagmati",
+
+                IsVerified = true,
+                VerificationStatus = VerificationStatusEnum.Approved,
+                VerifiedBy = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                VerifiedAt = new DateTime(2024, 1, 1),
+
+                CreatedAt = new DateTime(2024, 1, 1)
+            }
+            );
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            modelBuilder.Entity<Token>()
+             .Property(t => t.TokenSequence)
+             .ValueGeneratedOnAdd();
         }
 
     }

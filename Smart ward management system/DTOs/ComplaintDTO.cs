@@ -5,11 +5,7 @@ namespace Smart_ward_management_system.DTOs
     public class ComplaintDTO
     {
         [Required]
-        public string CitizenName { get; set; }
-
-        [Required]
-        [RegularExpression(@"^[0-9]{10,15}$")]
-        public string ContactNumber { get; set; }
+        public Guid CitizenUserId { get; set; }
 
         [Required]
         public string Category { get; set; }
@@ -34,6 +30,6 @@ namespace Smart_ward_management_system.DTOs
         public double Longitude { get; set; }
 
         [Required]
-        public IFormFile Image { get; set; }
+        public IFormFile ComplaintImage { get; set; }
     }
 }

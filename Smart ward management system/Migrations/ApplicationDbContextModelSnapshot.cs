@@ -22,6 +22,114 @@ namespace Smart_ward_management_system.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Smart_ward_management_system.Model.Appointment.Appointment", b =>
+                {
+                    b.Property<Guid>("AppointmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AppointmentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CitizenName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ServiceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WardNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppointmentId");
+
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Appointment.Queue", b =>
+                {
+                    b.Property<Guid>("QueueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CitizenName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ServiceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WardNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("QueueId");
+
+                    b.ToTable("Queues");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Appointment.Token", b =>
+                {
+                    b.Property<Guid>("TokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AppointmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TokenSequence")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TokenSequence"));
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("TokenId");
+
+                    b.ToTable("Tokens");
+                });
+
             modelBuilder.Entity("Smart_ward_management_system.Model.Common.Document", b =>
                 {
                     b.Property<Guid>("DocumentId")
@@ -299,6 +407,38 @@ namespace Smart_ward_management_system.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            AccountStatus = "Active",
+                            CitizenshipIssuedDate = new DateTime(2010, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CitizenshipIssuedDistrict = "Kathmandu",
+                            CitizenshipNumber = "123456789",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            District = "Kathmandu",
+                            Email = "admin@ward.gov.np",
+                            FullNameEnglish = "System Admin",
+                            FullNameNepali = "प्रशासक",
+                            Gender = "Male",
+                            IsEmailConfirmed = true,
+                            IsVerified = true,
+                            Municipality = "Kathmandu Metropolitan",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==",
+                            PermanentAddress = "Kathmandu",
+                            PhoneNumber = "9800000000",
+                            Province = "Bagmati",
+                            Role = "Staff",
+                            TemporaryAddress = "Kathmandu",
+                            UpdatedAt = new DateTime(2026, 3, 5, 15, 11, 15, 471, DateTimeKind.Utc).AddTicks(8600),
+                            Username = "admin",
+                            VerificationStatus = 2,
+                            VerifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VerifiedBy = new Guid("11111111-1111-1111-1111-111111111111"),
+                            WardNumber = "1"
+                        });
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Logging.ActivityLog", b =>
@@ -439,48 +579,44 @@ namespace Smart_ward_management_system.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AssignedDepartment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AssignedOfficer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ComplaintNumber")
+                    b.Property<Guid>("CitizenUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ComplaintDetails")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CurrentStatusId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Municipality")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Latitude")
+                    b.Property<string>("Priority")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Longitude")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ResolvedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("WardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ComplaintId");
 
@@ -551,6 +687,9 @@ namespace Smart_ward_management_system.Migrations
 
                     b.Property<Guid>("ReferenceId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ReferenceType")
+                        .HasColumnType("int");
 
                     b.HasKey("HistoryId");
 

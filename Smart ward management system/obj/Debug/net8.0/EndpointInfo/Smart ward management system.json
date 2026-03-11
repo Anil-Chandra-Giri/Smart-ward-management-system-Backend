@@ -5,6 +5,174 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Appointment/queue/{wardNumber}": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "wardNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Appointment/GetAllAppointments": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Appointment/{id}": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Appointment/book": {
+      "post": {
+        "tags": [
+          "Appointment"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Appointment/queue/update/{tokenNumber}": {
+      "put": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "tokenNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Complaint/RegisterComplaint": {
       "post": {
         "tags": [
@@ -16,10 +184,9 @@
               "schema": {
                 "required": [
                   "Category",
-                  "CitizenName",
+                  "CitizenUserId",
                   "ComplaintDetails",
-                  "ContactNumber",
-                  "Image",
+                  "ComplaintImage",
                   "Latitude",
                   "Longitude",
                   "Municipality",
@@ -28,12 +195,9 @@
                 ],
                 "type": "object",
                 "properties": {
-                  "CitizenName": {
-                    "type": "string"
-                  },
-                  "ContactNumber": {
-                    "pattern": "^[0-9]{10,15}$",
-                    "type": "string"
+                  "CitizenUserId": {
+                    "type": "string",
+                    "format": "uuid"
                   },
                   "Category": {
                     "type": "string"
@@ -59,20 +223,14 @@
                     "type": "number",
                     "format": "double"
                   },
-                  "AdditionalDetails": {
-                    "type": "string"
-                  },
-                  "Image": {
+                  "ComplaintImage": {
                     "type": "string",
                     "format": "binary"
                   }
                 }
               },
               "encoding": {
-                "CitizenName": {
-                  "style": "form"
-                },
-                "ContactNumber": {
+                "CitizenUserId": {
                   "style": "form"
                 },
                 "Category": {
@@ -96,10 +254,7 @@
                 "Longitude": {
                   "style": "form"
                 },
-                "AdditionalDetails": {
-                  "style": "form"
-                },
-                "Image": {
+                "ComplaintImage": {
                   "style": "form"
                 }
               }
@@ -117,6 +272,16 @@
       "get": {
         "tags": [
           "Complaint"
+        ],
+        "parameters": [
+          {
+            "name": "citizernUserId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -147,6 +312,18 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Complaint/GetAllComplaints": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -376,10 +553,44 @@
         }
       }
     },
-    "/api/ServiceRequest": {
+    "/api/Queue/ward/{wardNumber}": {
       "get": {
         "tags": [
-          "ServiceRequest"
+          "Queue"
+        ],
+        "parameters": [
+          {
+            "name": "wardNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Queue/{id}": {
+      "get": {
+        "tags": [
+          "Queue"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -387,55 +598,143 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                  "type": "string"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                  "type": "string"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                  "type": "string"
                 }
               }
             }
           }
         }
       },
-      "post": {
+      "put": {
         "tags": [
-          "ServiceRequest"
+          "Queue"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ServiceRequestDTO"
+                "type": "string"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ServiceRequestDTO"
+                "type": "string"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ServiceRequestDTO"
+                "type": "string"
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Queue"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Queue/add": {
+      "post": {
+        "tags": [
+          "Queue"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ServiceRequest/GetAllRequestedServicesOfUser": {
+      "get": {
+        "tags": [
+          "ServiceRequest"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ServiceRequest/GetAllRequestedServices": {
+      "get": {
+        "tags": [
+          "ServiceRequest"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -537,6 +836,37 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ServiceRequest": {
+      "post": {
+        "tags": [
+          "ServiceRequest"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceRequestDTO"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -879,12 +1209,79 @@
   },
   "components": {
     "schemas": {
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "appointmentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "citizenName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "wardNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "appointmentTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "tokenNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AppointmentDto": {
+        "type": "object",
+        "properties": {
+          "citizenName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "wardNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "appointmentTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
       "Complaint": {
         "required": [
           "category",
-          "citizenName",
+          "citizenUserId",
           "complaintDetails",
-          "contactNumber",
           "latitude",
           "longitude",
           "municipality",
@@ -897,15 +1294,9 @@
             "type": "string",
             "format": "uuid"
           },
-          "citizenName": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
-          },
-          "contactNumber": {
-            "minLength": 1,
-            "pattern": "^[0-9]{10,15}$",
-            "type": "string"
+          "citizenUserId": {
+            "type": "string",
+            "format": "uuid"
           },
           "category": {
             "minLength": 1,
@@ -934,10 +1325,6 @@
           "longitude": {
             "type": "number",
             "format": "double"
-          },
-          "additionalDetails": {
-            "type": "string",
-            "nullable": true
           },
           "imageUrl": {
             "type": "string",
@@ -1182,10 +1569,16 @@
   },
   "tags": [
     {
+      "name": "Appointment"
+    },
+    {
       "name": "Complaint"
     },
     {
       "name": "Login"
+    },
+    {
+      "name": "Queue"
     },
     {
       "name": "ServiceRequest"

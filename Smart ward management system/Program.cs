@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddScoped<DocumentService>();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
     builder.AllowAnyOrigin()
@@ -79,11 +80,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseCors("MyPolicy");
 
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHub<RealTimeHub>("/realtimeHub");
 app.Run();

@@ -114,6 +114,7 @@ namespace Smart_ward_management_system.Controllers
                 user.Province = request.Province;
                 user.Role = request.Role;
                 user.IsVerified = false;
+                user.IsEmailConfirmed = true;
                 user.VerificationStatus = VerificationStatusEnum.Pending;
                 user.VerifiedBy = Guid.Empty;
                 user.VerifiedAt = null;

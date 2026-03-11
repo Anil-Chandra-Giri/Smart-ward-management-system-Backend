@@ -26,7 +26,7 @@ namespace Smart_ward_management_system.Controllers
         [HttpPost("RegisterComplaint")]
         public async Task<ActionResult> RegisterComplaint([FromForm] ComplaintDTO dto)
         {
-            if (string.IsNullOrEmpty(dto.CitizenName) || string.IsNullOrEmpty(dto.ContactNumber) || string.IsNullOrEmpty(dto.ComplaintDetails))
+            if (string.IsNullOrEmpty(dto.ComplaintDetails))
             {
                 return BadRequest(new { message = "Required fields are missing." });
             }
@@ -37,9 +37,8 @@ namespace Smart_ward_management_system.Controllers
             {
                 var complaint = new Complaint
                 {
-                    ComplaintId = Guid.NewGuid(), 
-                    CitizenName = dto.CitizenName,
-                    ContactNumber = dto.ContactNumber,
+                    ComplaintId = Guid.NewGuid(),
+                    CitizenUserId = dto.CitizenUserId,
                     Category = dto.Category,
                     ComplaintDetails = dto.ComplaintDetails,
                     Priority = dto.Priority,
@@ -54,12 +53,12 @@ namespace Smart_ward_management_system.Controllers
                 db.Complaints.Add(complaint);
                 await db.SaveChangesAsync(); 
 
-                if (dto.Image != null)
+                if (dto.ComplaintImage != null)
                 {
-                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.Image.FileName);
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.ComplaintImage.FileName);
 
                     
-                    var path = await FileHelper.SaveFileAsync(dto.Image, "ComplaintImages");
+                    var path = await FileHelper.SaveFileAsync(dto.ComplaintImage, "ComplaintImages");
                     string docNumber = await _docService.GenerateDocumentNumber(dto.WardNumber, "CMP");
 
                     var document = new Document
@@ -77,6 +76,7 @@ namespace Smart_ward_management_system.Controllers
                     };
 
                     db.Documents.Add(document);
+                complaint.ImageUrl = document.FilePath;
                 }
 
                 await db.SaveChangesAsync();
@@ -93,12 +93,19 @@ namespace Smart_ward_management_system.Controllers
 
        
         [HttpGet("Complaints")]
-        public ActionResult<IEnumerable<Complaint>> GetComplaints()
+        public ActionResult<IEnumerable<Complaint>> GetComplaints(Guid citizernUserId)
         {
-            var complaints = db.Complaints.ToList();
+            var complaints = db.Complaints.Where(s => s.CitizenUserId == citizernUserId).ToList();
             return Ok(complaints);
         }
 
+        [Route("GetAllComplaints")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllComplaints()
+        {
+            var complaints = await db.Complaints.ToListAsync();
+            return Ok(complaints);
+        }
         [HttpGet("{id}")]
         public ActionResult<Complaint> GetComplaintById(Guid id)
         {

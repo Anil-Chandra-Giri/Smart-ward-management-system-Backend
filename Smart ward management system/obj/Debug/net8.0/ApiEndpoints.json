@@ -1,5 +1,116 @@
 [
   {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "Get",
+    "RelativePath": "api/Appointment/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "Delete",
+    "RelativePath": "api/Appointment/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "BookAppointment",
+    "RelativePath": "api/Appointment/book",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "appointment",
+        "Type": "Smart_ward_management_system.DTOs.AppointmentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "GetAllAppointments",
+    "RelativePath": "api/Appointment/GetAllAppointments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "GetQueueByWard",
+    "RelativePath": "api/Appointment/queue/{wardNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "wardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "UpdateQueueStatus",
+    "RelativePath": "api/Appointment/queue/update/{tokenNumber}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tokenNumber",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
     "Method": "GetComplaintById",
     "RelativePath": "api/Complaint/{id}",
@@ -32,7 +143,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "citizernUserId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[Smart_ward_management_system.Model.Services.Complaints.Complaint, Smart ward management system, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -47,6 +164,16 @@
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
+    "Method": "GetAllComplaints",
+    "RelativePath": "api/Complaint/GetAllComplaints",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
     "Method": "RegisterComplaint",
     "RelativePath": "api/Complaint/RegisterComplaint",
     "HttpMethod": "POST",
@@ -54,13 +181,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "CitizenName",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "ContactNumber",
-        "Type": "System.String",
+        "Name": "CitizenUserId",
+        "Type": "System.Guid",
         "IsRequired": false
       },
       {
@@ -99,12 +221,7 @@
         "IsRequired": false
       },
       {
-        "Name": "AdditionalDetails",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Image",
+        "Name": "ComplaintImage",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
@@ -233,16 +350,22 @@
     ]
   },
   {
-    "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
+    "ContainingType": "Smart_ward_management_system.Controllers.QueueController",
     "Method": "Get",
-    "RelativePath": "api/ServiceRequest",
+    "RelativePath": "api/Queue/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "System.String",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -251,6 +374,87 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.QueueController",
+    "Method": "Put",
+    "RelativePath": "api/Queue/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "value",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.QueueController",
+    "Method": "Delete",
+    "RelativePath": "api/Queue/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.QueueController",
+    "Method": "AddToQueue",
+    "RelativePath": "api/Queue/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "appointment",
+        "Type": "Smart_ward_management_system.Model.Appointment.Appointment",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.QueueController",
+    "Method": "GetQueueByWard",
+    "RelativePath": "api/Queue/ward/{wardNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "wardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
@@ -342,6 +546,32 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
+    "Method": "GetAllRequestedServices",
+    "RelativePath": "api/ServiceRequest/GetAllRequestedServices",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
+    "Method": "GetAllServices",
+    "RelativePath": "api/ServiceRequest/GetAllRequestedServicesOfUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
