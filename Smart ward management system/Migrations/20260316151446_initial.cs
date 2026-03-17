@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Smart_ward_management_system.Migrations
 {
     /// <inheritdoc />
@@ -147,20 +149,35 @@ namespace Smart_ward_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notices",
+                name: "Drivers",
                 columns: table => new
                 {
-                    NoticeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IssuedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IssuedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsUrgent = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    LicenseNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    AssignedRouteDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notices", x => x.NoticeId);
+                    table.PrimaryKey("PK_Drivers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NoticeCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NoticeCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -195,6 +212,19 @@ namespace Smart_ward_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Payments", x => x.PaymentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PollCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PollCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,6 +396,7 @@ namespace Smart_ward_management_system.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TokenNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IssuedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -417,10 +448,326 @@ namespace Smart_ward_management_system.Migrations
                     table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WasteVehicles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VehicleNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    VehicleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Capacity = table.Column<double>(type: "float", nullable: false),
+                    VehicleType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastMaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NextMaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CurrentFuelLevel = table.Column<double>(type: "float", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    LastUpdatedLocation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WasteVehicles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notices",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsUrgent = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notices_NoticeCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "NoticeCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Polls",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AllowMultipleVotes = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Polls", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Polls_PollCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "PollCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WasteCollectionRoutes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RouteName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    WasteType = table.Column<int>(type: "int", nullable: false),
+                    ScheduledDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    AssignedVehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AssignedDriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Waypoints = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EstimatedDistance = table.Column<double>(type: "float", nullable: false),
+                    EstimatedDuration = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WasteCollectionRoutes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WasteCollectionRoutes_Drivers_AssignedDriverId",
+                        column: x => x.AssignedDriverId,
+                        principalTable: "Drivers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_WasteCollectionRoutes_WasteVehicles_AssignedVehicleId",
+                        column: x => x.AssignedVehicleId,
+                        principalTable: "WasteVehicles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PollOptions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PollId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OptionText = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PollOptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PollOptions_Polls_PollId",
+                        column: x => x.PollId,
+                        principalTable: "Polls",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CollectionPoints",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RouteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    SequenceOrder = table.Column<int>(type: "int", nullable: false),
+                    ActualCollectionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    WasteQuantity = table.Column<double>(type: "float", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollectionPoints", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CollectionPoints_WasteCollectionRoutes_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "WasteCollectionRoutes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RouteSchedules",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RouteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduledStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScheduledEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ActualStartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ActualEndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DelayReason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DelayMinutes = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RouteSchedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RouteSchedules_WasteCollectionRoutes_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "WasteCollectionRoutes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PollVotes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PollId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CitizenId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VotedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OptionId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PollId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PollVotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PollVotes_PollOptions_OptionId",
+                        column: x => x.OptionId,
+                        principalTable: "PollOptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PollVotes_PollOptions_OptionId1",
+                        column: x => x.OptionId1,
+                        principalTable: "PollOptions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PollVotes_Polls_PollId",
+                        column: x => x.PollId,
+                        principalTable: "Polls",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PollVotes_Polls_PollId1",
+                        column: x => x.PollId1,
+                        principalTable: "Polls",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Drivers",
+                columns: new[] { "Id", "AssignedRouteDate", "Email", "IsAvailable", "LicenseNumber", "Name", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { new Guid("158ba5d0-db3a-4052-8cdf-14255ea2d1ac"), null, "john@example.com", true, "DL-001", "John Doe", "1234567890" },
+                    { new Guid("dfef8e15-4618-4218-82c2-3456cdfd3164"), null, "jane@example.com", true, "DL-002", "Jane Smith", "0987654321" }
+                });
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "AccountStatus", "CitizenshipIssuedDate", "CitizenshipIssuedDistrict", "CitizenshipNumber", "CreatedAt", "DateOfBirth", "Department", "Designation", "District", "Email", "EmployeeId", "FullNameEnglish", "FullNameNepali", "Gender", "IsEmailConfirmed", "IsVerified", "Municipality", "NationalIdNumber", "OtpCode", "OtpExpiryTime", "PasswordHash", "PermanentAddress", "PhoneNumber", "Province", "Role", "TemporaryAddress", "UpdatedAt", "Username", "VerificationStatus", "VerifiedAt", "VerifiedBy", "WardNumber" },
-                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), "Active", new DateTime(2010, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kathmandu", "123456789", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Kathmandu", "admin@ward.gov.np", null, "System Admin", "प्रशासक", "Male", true, true, "Kathmandu Metropolitan", null, null, null, "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", "Kathmandu", "9800000000", "Bagmati", "Staff", "Kathmandu", new DateTime(2026, 3, 5, 15, 11, 15, 471, DateTimeKind.Utc).AddTicks(8600), "admin", 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("11111111-1111-1111-1111-111111111111"), "1" });
+                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), "Active", new DateTime(2010, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kathmandu", "123456789", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Kathmandu", "admin@ward.gov.np", null, "System Admin", "प्रशासक", "Male", true, true, "Kathmandu Metropolitan", null, null, null, "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", "Kathmandu", "9800000000", "Bagmati", "Staff", "Kathmandu", new DateTime(2026, 3, 16, 15, 14, 46, 551, DateTimeKind.Utc).AddTicks(5654), "admin", 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("11111111-1111-1111-1111-111111111111"), "1" });
+
+            migrationBuilder.InsertData(
+                table: "WasteVehicles",
+                columns: new[] { "Id", "Capacity", "CurrentFuelLevel", "IsActive", "LastMaintenanceDate", "LastUpdatedLocation", "Latitude", "Longitude", "NextMaintenanceDate", "Status", "VehicleName", "VehicleNumber", "VehicleType" },
+                values: new object[,]
+                {
+                    { new Guid("0f497326-7bee-4e26-918e-35bac7bb7ed5"), 3.0, 0.0, true, null, new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2200), 0.0, 0.0, null, 1, "Truck 2", "VH-002", "Dumper" },
+                    { new Guid("3dbbe2ae-dbbb-4af7-ae33-b540e8fe32a4"), 5.0, 0.0, true, null, new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2186), 0.0, 0.0, null, 1, "Truck 1", "VH-001", "Compactor" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CollectionPoints_RouteId",
+                table: "CollectionPoints",
+                column: "RouteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Drivers_LicenseNumber",
+                table: "Drivers",
+                column: "LicenseNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notices_CategoryId",
+                table: "Notices",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PollOptions_PollId",
+                table: "PollOptions",
+                column: "PollId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Polls_CategoryId",
+                table: "Polls",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PollVotes_OptionId",
+                table: "PollVotes",
+                column: "OptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PollVotes_OptionId1",
+                table: "PollVotes",
+                column: "OptionId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PollVotes_PollId",
+                table: "PollVotes",
+                column: "PollId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PollVotes_PollId1",
+                table: "PollVotes",
+                column: "PollId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RouteSchedules_RouteId",
+                table: "RouteSchedules",
+                column: "RouteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Routes_ScheduledDate",
+                table: "WasteCollectionRoutes",
+                column: "ScheduledDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Routes_Status",
+                table: "WasteCollectionRoutes",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WasteCollectionRoutes_AssignedDriverId",
+                table: "WasteCollectionRoutes",
+                column: "AssignedDriverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WasteCollectionRoutes_AssignedVehicleId",
+                table: "WasteCollectionRoutes",
+                column: "AssignedVehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WasteVehicles_VehicleNumber",
+                table: "WasteVehicles",
+                column: "VehicleNumber",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -437,6 +784,9 @@ namespace Smart_ward_management_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "CitizenVerificationRequests");
+
+            migrationBuilder.DropTable(
+                name: "CollectionPoints");
 
             migrationBuilder.DropTable(
                 name: "ComplaintEscalations");
@@ -457,10 +807,16 @@ namespace Smart_ward_management_system.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
+                name: "PollVotes");
+
+            migrationBuilder.DropTable(
                 name: "Queues");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "RouteSchedules");
 
             migrationBuilder.DropTable(
                 name: "ServiceApprovalFlows");
@@ -482,6 +838,27 @@ namespace Smart_ward_management_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "NoticeCategories");
+
+            migrationBuilder.DropTable(
+                name: "PollOptions");
+
+            migrationBuilder.DropTable(
+                name: "WasteCollectionRoutes");
+
+            migrationBuilder.DropTable(
+                name: "Polls");
+
+            migrationBuilder.DropTable(
+                name: "Drivers");
+
+            migrationBuilder.DropTable(
+                name: "WasteVehicles");
+
+            migrationBuilder.DropTable(
+                name: "PollCategories");
         }
     }
 }

@@ -38,3 +38,13 @@ wwwroot\uploads\IdentityDocs\d23c6954-c954-4785-84df-9c1b1094eafa_WhatsApp Image
 wwwroot\uploads\IdentityDocs\d61e9e8f-079d-42bc-8907-354da83b28f7_IMG-20250219-WA0015.jpg
 wwwroot\uploads\IdentityDocs\e1dc7090-3890-4887-8bdf-3f9c62848941_WhatsApp Image 2026-02-15 at 7.02.51 PM (1).jpeg
 wwwroot\uploads\IdentityDocs\f2b8d802-f15e-4d04-b541-3c0a64b72ec0_IMG_20250219_152451.jpg
+wwwroot\notices\464c12cc-7bcc-4bb7-9417-7e3c384ce52d.webp
+wwwroot\uploads\IdentityDocs\81c7e080-7bdd-46a0-9e2e-84d43a46f556_images.webp
+wwwroot\uploads\IdentityDocs\a967cf87-7c7c-4504-b408-fd11d68e9b16_images.webp
+wwwroot\uploads\IdentityDocs\f03129c6-ca53-49ab-9307-b8007a954fe2_images.webp
+wwwroot\uploads\ComplaintImages\0bebee4f-e6e5-4939-9651-34c186458d5d_images.webp
+wwwroot\notices\f741451f-8ca5-4050-9766-576d3812b1ca.webp
+wwwroot\uploads\ComplaintImages\e83a940d-38b2-45d1-8764-c1a1974c42fb_images.webp
+wwwroot\uploads\ComplaintImages\8e09ee69-04d6-4a98-814d-a612d383ce74_road_damage.jpg
+wwwroot\uploads\ComplaintImages\9ddddd0f-2b22-44b1-afe8-14b00e5a0cff_road_damage.jpg
+wwwroot\notices\5d8aadfc-2bc8-4d2f-b882-778d490cbf97.jpg

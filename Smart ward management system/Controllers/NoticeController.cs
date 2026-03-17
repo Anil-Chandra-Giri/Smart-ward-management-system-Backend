@@ -24,7 +24,7 @@ namespace Smart_ward_management_system.Controllers
 
         // GET api/<NoticeController>/5
         [HttpGet]
-        public async Task<IActionResult> GetAllNotices()
+        public async Task<ActionResult<IEnumerable<NoticeResponseDto>>> GetAllNotices()
         {
             var now = DateTime.UtcNow;
 
@@ -32,16 +32,16 @@ namespace Smart_ward_management_system.Controllers
                 .Include(n => n.Category)
                 .Where(n => n.IsActive &&
                        (n.ExpiryDate == null || n.ExpiryDate > now))
-                .Select(n => new
+                .Select(n => new NoticeResponseDto
                 {
-                    n.Id,
-                    n.Title,
-                    n.Description,
+                    Id = n.Id,
+                    Title = n.Title,
+                    Description = n.Description,
                     Category = n.Category!.Name,
-                    n.FileUrl,
-                    n.IsUrgent,
-                    n.PublishDate,
-                    n.ExpiryDate
+                    FileUrl = n.FileUrl,
+                    IsUrgent = n.IsUrgent,
+                    PublishDate = n.PublishDate,
+                    ExpiryDate = n.ExpiryDate
                 })
                 .OrderByDescending(n => n.PublishDate)
                 .ToListAsync();

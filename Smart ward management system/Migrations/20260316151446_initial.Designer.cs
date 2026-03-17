@@ -12,7 +12,7 @@ using Smart_ward_management_system.Data;
 namespace Smart_ward_management_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260305151115_initial")]
+    [Migration("20260316151446_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -109,6 +109,9 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<Guid>("AppointmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("IssuedAt")
                         .HasColumnType("datetime2");
 
@@ -192,38 +195,6 @@ namespace Smart_ward_management_system.Migrations
                     b.HasKey("DocumentId");
 
                     b.ToTable("Documents");
-                });
-
-            modelBuilder.Entity("Smart_ward_management_system.Model.Common.Notice", b =>
-                {
-                    b.Property<Guid>("NoticeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsUrgent")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("IssuedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("IssuedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("NoticeId");
-
-                    b.ToTable("Notices");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Common.Notification", b =>
@@ -435,7 +406,7 @@ namespace Smart_ward_management_system.Migrations
                             Province = "Bagmati",
                             Role = "Staff",
                             TemporaryAddress = "Kathmandu",
-                            UpdatedAt = new DateTime(2026, 3, 5, 15, 11, 15, 471, DateTimeKind.Utc).AddTicks(8600),
+                            UpdatedAt = new DateTime(2026, 3, 16, 15, 14, 46, 551, DateTimeKind.Utc).AddTicks(5654),
                             Username = "admin",
                             VerificationStatus = 2,
                             VerifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -542,6 +513,197 @@ namespace Smart_ward_management_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SystemLogs");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.Notice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUrgent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Notices");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.NoticeCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NoticeCategories");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.Poll", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AllowMultipleVotes")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Polls");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PollCategories");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OptionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PollId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PollId");
+
+                    b.ToTable("PollOptions");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollVote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CitizenId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OptionId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PollId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PollId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("VotedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OptionId");
+
+                    b.HasIndex("OptionId1");
+
+                    b.HasIndex("PollId");
+
+                    b.HasIndex("PollId1");
+
+                    b.ToTable("PollVotes");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Services.CitizenVerificationRequest", b =>
@@ -814,6 +976,292 @@ namespace Smart_ward_management_system.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.CollectionPoint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ActualCollectionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("RouteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SequenceOrder")
+                        .HasColumnType("int");
+
+                    b.Property<double>("WasteQuantity")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("CollectionPoints");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.Driver", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("AssignedRouteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LicenseNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LicenseNumber")
+                        .IsUnique();
+
+                    b.ToTable("Drivers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("158ba5d0-db3a-4052-8cdf-14255ea2d1ac"),
+                            Email = "john@example.com",
+                            IsAvailable = true,
+                            LicenseNumber = "DL-001",
+                            Name = "John Doe",
+                            PhoneNumber = "1234567890"
+                        },
+                        new
+                        {
+                            Id = new Guid("dfef8e15-4618-4218-82c2-3456cdfd3164"),
+                            Email = "jane@example.com",
+                            IsAvailable = true,
+                            LicenseNumber = "DL-002",
+                            Name = "Jane Smith",
+                            PhoneNumber = "0987654321"
+                        });
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.RouteSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ActualEndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ActualStartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DelayMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DelayReason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RouteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ScheduledEndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ScheduledStartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("RouteSchedules");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteCollectionRoute", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AssignedDriverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AssignedVehicleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("EstimatedDistance")
+                        .HasColumnType("float");
+
+                    b.Property<int>("EstimatedDuration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RouteName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("ScheduledDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WasteType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Waypoints")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedDriverId");
+
+                    b.HasIndex("AssignedVehicleId");
+
+                    b.HasIndex("ScheduledDate")
+                        .HasDatabaseName("IX_Routes_ScheduledDate");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_Routes_Status");
+
+                    b.ToTable("WasteCollectionRoutes");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteVehicle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Capacity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("CurrentFuelLevel")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastMaintenanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdatedLocation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("NextMaintenanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VehicleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("VehicleNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("VehicleType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleNumber")
+                        .IsUnique();
+
+                    b.ToTable("WasteVehicles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3dbbe2ae-dbbb-4af7-ae33-b540e8fe32a4"),
+                            Capacity = 5.0,
+                            CurrentFuelLevel = 0.0,
+                            IsActive = true,
+                            LastUpdatedLocation = new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2186),
+                            Latitude = 0.0,
+                            Longitude = 0.0,
+                            Status = 1,
+                            VehicleName = "Truck 1",
+                            VehicleNumber = "VH-001",
+                            VehicleType = "Compactor"
+                        },
+                        new
+                        {
+                            Id = new Guid("0f497326-7bee-4e26-918e-35bac7bb7ed5"),
+                            Capacity = 3.0,
+                            CurrentFuelLevel = 0.0,
+                            IsActive = true,
+                            LastUpdatedLocation = new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2200),
+                            Latitude = 0.0,
+                            Longitude = 0.0,
+                            Status = 1,
+                            VehicleName = "Truck 2",
+                            VehicleNumber = "VH-002",
+                            VehicleType = "Dumper"
+                        });
+                });
+
             modelBuilder.Entity("Smart_ward_management_system.Model.Services.ProbableServices.AddressVerificationRequest", b =>
                 {
                     b.HasBaseType("Smart_ward_management_system.Model.Services.ServiceRequest");
@@ -1017,6 +1465,142 @@ namespace Smart_ward_management_system.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("RecommendationLetterRequest");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.Notice", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Notice.NoticeCategory", "Category")
+                        .WithMany("Notices")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.Poll", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Polls.PollCategory", "Category")
+                        .WithMany("Polls")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollOption", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Polls.Poll", "Poll")
+                        .WithMany("Options")
+                        .HasForeignKey("PollId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Poll");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollVote", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Polls.PollOption", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Smart_ward_management_system.Model.Polls.PollOption", "Option")
+                        .WithMany()
+                        .HasForeignKey("OptionId1");
+
+                    b.HasOne("Smart_ward_management_system.Model.Polls.Poll", null)
+                        .WithMany()
+                        .HasForeignKey("PollId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Smart_ward_management_system.Model.Polls.Poll", "Poll")
+                        .WithMany()
+                        .HasForeignKey("PollId1");
+
+                    b.Navigation("Option");
+
+                    b.Navigation("Poll");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.CollectionPoint", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteCollectionRoute", "Route")
+                        .WithMany("CollectionPoints")
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Route");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.RouteSchedule", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteCollectionRoute", "Route")
+                        .WithMany()
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Route");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteCollectionRoute", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.Driver", "AssignedDriver")
+                        .WithMany("Routes")
+                        .HasForeignKey("AssignedDriverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteVehicle", "AssignedVehicle")
+                        .WithMany("Routes")
+                        .HasForeignKey("AssignedVehicleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AssignedDriver");
+
+                    b.Navigation("AssignedVehicle");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Notice.NoticeCategory", b =>
+                {
+                    b.Navigation("Notices");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.Poll", b =>
+                {
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollCategory", b =>
+                {
+                    b.Navigation("Polls");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollOption", b =>
+                {
+                    b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.Driver", b =>
+                {
+                    b.Navigation("Routes");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteCollectionRoute", b =>
+                {
+                    b.Navigation("CollectionPoints");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteVehicle", b =>
+                {
+                    b.Navigation("Routes");
                 });
 #pragma warning restore 612, 618
         }

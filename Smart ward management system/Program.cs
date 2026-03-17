@@ -1,11 +1,14 @@
+using Domain.Enumerators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Smart_ward_management_system.Common;
 using Smart_ward_management_system.Controllers;
 using Smart_ward_management_system.Data;
+using Smart_ward_management_system.Model.WasteManagement_And_Scheduling;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,14 +18,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddScoped<DocumentService>();
 builder.Services.AddSignalR();
-builder.Services.AddControllers();
-builder.Services.AddSignalR();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(
+        new JsonNumberEnumConverter<ApprovalStatusEnum>()
+    );
+
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+}); ;
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
     builder.AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader();
 }));
+builder.Services.AddSignalR();
+
 
 
 // Add services to the container.

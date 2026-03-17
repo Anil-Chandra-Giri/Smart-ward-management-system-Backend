@@ -1,0 +1,9 @@
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.csproj.AssemblyReference.cache
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\rpswa.dswa.cache.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.GeneratedMSBuildEditorConfig.editorconfig
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.AssemblyInfoInputs.cache
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.AssemblyInfo.cs
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.csproj.CoreCompileInputs.cache
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cs
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cache
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net10.0\Smart ward management system.sourcelink.json

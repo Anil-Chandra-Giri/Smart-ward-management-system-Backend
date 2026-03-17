@@ -1,0 +1,69 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\controllers\\wastecollectioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\controllers\\wastecollectioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\dtos\\wastecollectiondtos\\wastecollectionroute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\dtos\\wastecollectiondtos\\wastecollectionroute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Program.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Program.cs",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Program.cs",
+              "RelativeToolTip": "Smart ward management system\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T15:36:08.684Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WasteCollectionRoute.cs",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\DTOs\\WasteCollectionDTOs\\WasteCollectionRoute.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\DTOs\\WasteCollectionDTOs\\WasteCollectionRoute.cs",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\DTOs\\WasteCollectionDTOs\\WasteCollectionRoute.cs",
+              "RelativeToolTip": "Smart ward management system\\DTOs\\WasteCollectionDTOs\\WasteCollectionRoute.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAlwHUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T15:27:30.251Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WasteCollectionController.cs",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Controllers\\WasteCollectionController.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Controllers\\WasteCollectionController.cs",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Controllers\\WasteCollectionController.cs",
+              "RelativeToolTip": "Smart ward management system\\Controllers\\WasteCollectionController.cs",
+              "ViewState": "AgIAAN4BAAAAAAAAAAAuwOgBAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T15:26:30.991Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

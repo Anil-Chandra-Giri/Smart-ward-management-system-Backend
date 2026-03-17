@@ -11,6 +11,7 @@ using Smart_ward_management_system.Model.Polls;
 using Smart_ward_management_system.Model.Services;
 using Smart_ward_management_system.Model.Services.Complaints;
 using Smart_ward_management_system.Model.Services.ProbableServices;
+using Smart_ward_management_system.Model.WasteManagement_And_Scheduling;
 
 namespace Smart_ward_management_system.Data
 
@@ -57,6 +58,12 @@ namespace Smart_ward_management_system.Data
         public DbSet<MigrationCertificateRequest> MigrationCertificateRequests { get; set; }
         public DbSet<PropertyDocumentRequest> PropertyDocumentRequests { get; set; }
         public DbSet<RecommendationLetterRequest> RecommendationLetterRequests { get; set; }
+
+        public DbSet<WasteCollectionRoute> WasteCollectionRoutes { get; set; }
+        public DbSet<WasteVehicle> WasteVehicles { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<CollectionPoint> CollectionPoints { get; set; }
+        public DbSet<RouteSchedule> RouteSchedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -114,6 +121,46 @@ namespace Smart_ward_management_system.Data
                         .WithMany(o => o.Votes)
                         .HasForeignKey(v => v.OptionId)
                         .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WasteCollectionRoute>()
+                .HasOne(r => r.AssignedVehicle)
+                .WithMany(v => v.Routes)
+                .HasForeignKey(r => r.AssignedVehicleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WasteCollectionRoute>()
+                .HasOne(r => r.AssignedDriver)
+                .WithMany(d => d.Routes)
+                .HasForeignKey(r => r.AssignedDriverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure indexes
+            modelBuilder.Entity<WasteCollectionRoute>()
+                .HasIndex(r => r.ScheduledDate)
+                .HasDatabaseName("IX_Routes_ScheduledDate");
+
+            modelBuilder.Entity<WasteCollectionRoute>()
+                .HasIndex(r => r.Status)
+                .HasDatabaseName("IX_Routes_Status");
+
+            modelBuilder.Entity<WasteVehicle>()
+                .HasIndex(v => v.VehicleNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Driver>()
+                .HasIndex(d => d.LicenseNumber)
+                .IsUnique();
+
+            // Seed initial data
+            modelBuilder.Entity<WasteVehicle>().HasData(
+                new WasteVehicle { Id = Guid.NewGuid(), VehicleNumber = "VH-001", VehicleName = "Truck 1", Status = VehicleStatus.Available, Capacity = 5, VehicleType = "Compactor", IsActive = true, Latitude = 0, Longitude = 0, LastUpdatedLocation = DateTime.Now },
+                new WasteVehicle { Id = Guid.NewGuid(), VehicleNumber = "VH-002", VehicleName = "Truck 2", Status = VehicleStatus.Available, Capacity = 3, VehicleType = "Dumper", IsActive = true, Latitude = 0, Longitude = 0, LastUpdatedLocation = DateTime.Now }
+            );
+
+            modelBuilder.Entity<Driver>().HasData(
+                new Driver { Id = Guid.NewGuid(), Name = "John Doe", LicenseNumber = "DL-001", PhoneNumber = "1234567890", Email = "john@example.com", IsAvailable = true },
+                new Driver { Id = Guid.NewGuid(), Name = "Jane Smith", LicenseNumber = "DL-002", PhoneNumber = "0987654321", Email = "jane@example.com", IsAvailable = true }
+            );
 
         }
 

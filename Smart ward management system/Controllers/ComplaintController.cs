@@ -116,5 +116,27 @@ namespace Smart_ward_management_system.Controllers
             }
             return Ok(complaint);
         }
+
+        [HttpPut("update-status")]
+        public async Task<IActionResult> UpdateStatus([FromBody] ComplaintStatusDto model)
+        {
+            var complaintRequest = await db.Complaints
+                .FirstOrDefaultAsync(x => x.ComplaintId == model.Id);
+
+            if (complaintRequest == null)
+            {
+                return NotFound("Complaint request not found");
+            }
+
+            complaintRequest.Status = model.Status;
+            //complaintRequest.UpdatedAt = DateTime.Now;
+
+            await db.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Complaint status updated successfully"
+            });
+        }
     }
 }

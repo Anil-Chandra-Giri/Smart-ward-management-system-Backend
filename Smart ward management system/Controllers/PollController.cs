@@ -108,7 +108,7 @@ namespace Smart_ward_management_system.Controllers
                 .AnyAsync(v => v.PollId == dto.PollId && v.CitizenId == dto.CitizenId);
 
             if (alreadyVoted)
-                return BadRequest("You already voted.");
+                return BadRequest(new { Message = "You already voted." });
 
             var vote = new PollVote
             {
@@ -122,7 +122,7 @@ namespace Smart_ward_management_system.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Vote Submitted");
+            return Ok(new { Message = "Vote Submitted" });
         }
 
         [HttpGet("{pollId}/results")]
@@ -155,7 +155,7 @@ namespace Smart_ward_management_system.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Poll Deactivated");
+            return Ok(new { Message = "Poll Deactivated" });
         }
 
         // DELETE api/<PollController>/5

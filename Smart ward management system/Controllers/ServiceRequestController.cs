@@ -154,9 +154,26 @@ namespace Smart_ward_management_system.Controllers
         }
 
         // PUT api/<ServiceRequestController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("update-status")]
+        public async Task<IActionResult> UpdateStatus([FromBody] UpdateServiceStatusDTO model)
         {
+            var serviceRequest = await _context.ServiceRequests
+                .FirstOrDefaultAsync(x => x.ServiceRequestId == model.Id);
+
+            if (serviceRequest == null)
+            {
+                return NotFound("Service request not found");
+            }
+
+            serviceRequest.Status = model.Status;
+            serviceRequest.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Service status updated successfully"
+            });
         }
 
         // DELETE api/<ServiceRequestController>/5
