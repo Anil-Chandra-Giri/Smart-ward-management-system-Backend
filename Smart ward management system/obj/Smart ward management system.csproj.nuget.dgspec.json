@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj": {}
+    "C:\\Users\\anilg\\Source\\Repos\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj": {}
   },
   "projects": {
-    "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj": {
+    "C:\\Users\\anilg\\Source\\Repos\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj",
+        "projectUniqueName": "C:\\Users\\anilg\\Source\\Repos\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj",
         "projectName": "Smart ward management system",
-        "projectPath": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj",
-        "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-        "outputPath": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\obj\\",
+        "projectPath": "C:\\Users\\anilg\\Source\\Repos\\Smart-ward-management-system-Backend\\Smart ward management system\\Smart ward management system.csproj",
+        "packagesPath": "C:\\Users\\anilg\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\anilg\\Source\\Repos\\Smart-ward-management-system-Backend\\Smart ward management system\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\anilg\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,12 +44,20 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Emgu.CV": {
+              "target": "Package",
+              "version": "[4.12.0.5764, )"
+            },
+            "Emgu.CV.runtime.windows": {
+              "target": "Package",
+              "version": "[4.12.0.5764, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -83,6 +91,10 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[8.16.0, )"
+            },
+            "Tesseract": {
+              "target": "Package",
+              "version": "[5.2.0, )"
             }
           },
           "imports": [
@@ -96,24 +108,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.25, 8.0.25]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.25, 8.0.25]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -122,7 +116,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -907,6 +907,38 @@
         }
       }
     },
+    "/api/Ocr/scan": {
+      "post": {
+        "tags": [
+          "Ocr"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Poll/categories": {
       "get": {
         "tags": [
@@ -2020,6 +2052,48 @@
         }
       }
     },
+    "/api/WasteCollection/collection-points/{pointId}/complete": {
+      "post": {
+        "tags": [
+          "WasteCollection"
+        ],
+        "parameters": [
+          {
+            "name": "pointId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompletePointDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompletePointDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompletePointDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/WasteCollection/vehicles": {
       "get": {
         "tags": [
@@ -2467,6 +2541,20 @@
             "format": "uuid"
           },
           "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CompletePointDto": {
+        "type": "object",
+        "properties": {
+          "wasteQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "notes": {
             "type": "string",
             "nullable": true
           }
@@ -3634,6 +3722,9 @@
     },
     {
       "name": "NoticeCategory"
+    },
+    {
+      "name": "Ocr"
     },
     {
       "name": "Poll"

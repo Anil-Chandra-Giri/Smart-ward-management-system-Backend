@@ -586,6 +586,22 @@
     ]
   },
   {
+    "ContainingType": "OcrController",
+    "Method": "Scan",
+    "RelativePath": "api/Ocr/scan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Smart_ward_management_system.Controllers.PollController",
     "Method": "Get",
     "RelativePath": "api/Poll/{id}",
@@ -1189,6 +1205,27 @@
       {
         "Name": "wardId",
         "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.WasteCollectionController",
+    "Method": "CompleteCollectionPoint",
+    "RelativePath": "api/WasteCollection/collection-points/{pointId}/complete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pointId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "completeDto",
+        "Type": "Smart_ward_management_system.Controllers.WasteCollectionController\u002BCompletePointDto",
         "IsRequired": true
       }
     ],
