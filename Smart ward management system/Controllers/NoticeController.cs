@@ -104,8 +104,58 @@ namespace Smart_ward_management_system.Controllers
 
         // PUT api/<NoticeController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> UpdateNotice(Guid id, [FromForm] CreateNoticeDTO dto)
         {
+            try
+            {
+                var notice = await _context.Notices.FindAsync(id);
+
+                if (notice == null)
+                    return NotFound(new { Error = "Notice not found" });
+
+                // Update notice properties
+                notice.Title = dto.Title;
+                notice.Description = dto.Description;
+                notice.CategoryId = dto.CategoryId;
+                notice.Type = dto.Type;
+                notice.ExpiryDate = dto.ExpiryDate;
+                notice.IsUrgent = dto.IsUrgent;
+
+                // Handle file upload if new file is provided
+                if (dto.File != null && dto.File.Length > 0)
+                {
+                    // Delete old file if exists
+                    if (!string.IsNullOrEmpty(notice.FileUrl))
+                    {
+                        var oldFilePath = Path.Combine(_env.WebRootPath, notice.FileUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldFilePath))
+                            System.IO.File.Delete(oldFilePath);
+                    }
+
+                    // Save new file
+                    var folder = Path.Combine(_env.WebRootPath, "notices");
+                    if (!Directory.Exists(folder))
+                        Directory.CreateDirectory(folder);
+
+                    var fileName = Guid.NewGuid() + Path.GetExtension(dto.File.FileName);
+                    var filePath = Path.Combine(folder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await dto.File.CopyToAsync(stream);
+                    }
+
+                    notice.FileUrl = "/notices/" + fileName;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Notice updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = "Failed to update notice", Details = ex.Message });
+            }
         }
 
         // DELETE api/<NoticeController>/5
@@ -121,7 +171,7 @@ namespace Smart_ward_management_system.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok("Notice deleted");
+            return Ok(new { Message = "Notice deleted" });
         }
     }
 }

@@ -45,11 +45,14 @@ namespace Smart_ward_management_system.Controllers
         }
 
         // GET api/<AppointmentController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [Route("MyAppointments")]
+        [HttpGet]
+        public async Task<IActionResult> GetMyAppointments(Guid id)
         {
-            return "value";
+            var myAppointments =  await _context.Appointments.Where(s=>s.UserId == id).ToListAsync();
+            return Ok(myAppointments);
         }
+
 
         // POST api/<AppointmentController>
         [HttpPost("book")]

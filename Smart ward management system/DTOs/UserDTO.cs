@@ -9,7 +9,7 @@
         public string CitizenshipNumber { get; set; }
         public string CitizenshipIssuedDistrict { get; set; }
         public DateTime CitizenshipIssuedDate { get; set; }
-        public string NationalIdNumber { get; set; }
+        public string? NationalIdNumber { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }

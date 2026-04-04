@@ -48,7 +48,9 @@ namespace Smart_ward_management_system.Controllers
                     {
                         o.Id,
                         o.OptionText
-                    })
+                    }),
+                    p.StartDate,
+                    p.EndDate
                 })
                 .ToListAsync();
 

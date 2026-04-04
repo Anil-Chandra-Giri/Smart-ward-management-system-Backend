@@ -5,4 +5,9 @@
         public Guid UserId { get; set; }
         public string OtpCode { get; set; }
     }
+
+    public class ResendOtpDTO
+    {
+        public string Email { get; set; }
+    }
 }

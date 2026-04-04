@@ -3,6 +3,7 @@
 using Domain.Enumerators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Common;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs;
@@ -21,74 +22,164 @@ namespace Smart_ward_management_system.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly DocumentService _docService;
-        public SignUpController(ApplicationDbContext db, DocumentService _docService)
+        private readonly IConfiguration _configuration;
+        public SignUpController(ApplicationDbContext db, DocumentService _docService, IConfiguration _configuration)
         {
             this.db = db;
             this._docService = _docService;
+            this._configuration = _configuration;
         }
 
-        private async Task SendEmailAsync(string toEmail, string otp)
+        private string GenerateOTP()
         {
-            var smtpClient = new SmtpClient("smtp.gmail.com")
-            {
-                Port = 587,
-                Credentials = new NetworkCredential("dineshjoshi0025@gmail.com", "jhzcuiigttvriohy"),
-                EnableSsl = true,
-            };
+            // Generate a 6-digit OTP
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString();
+        }
 
-            var mailMessage = new MailMessage
+        private async Task SendEmailAsync(string toEmail, string otp, string fullName)
+        {
+            try
             {
-                From = new MailAddress("noreply@smartwardmanagementsystem.com"),
-                Subject = "Your One-Time Password (OTP) for Secure Login",
-                Body = $@"
+                // It's better to store email credentials in configuration
+                var smtpClient = new SmtpClient(_configuration["EmailSettings:SmtpServer"])
+                {
+                    Port = int.Parse(_configuration["EmailSettings:Port"]),
+                    Credentials = new NetworkCredential(
+                        _configuration["EmailSettings:Username"],
+                        _configuration["EmailSettings:Password"]),
+                    EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSSL"]),
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(_configuration["EmailSettings:FromEmail"],
+                           _configuration["EmailSettings:FromName"]),
+                    Subject = "Verify Your Email - Smart Ward Management System",
+                    Body = $@"
         <html>
+            <head>
+                <style>
+                    body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                    .header {{ background-color: #4CAF50; color: white; padding: 20px; text-align: center; }}
+                    .content {{ padding: 30px; background-color: #f9f9f9; }}
+                    .otp-code {{ font-size: 32px; font-weight: bold; color: #4CAF50; text-align: center; 
+                                 padding: 20px; letter-spacing: 5px; }}
+                    .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
+                </style>
+            </head>
             <body>
-                <p>Hello,</p>
-                <p>Your OTP code is: <strong>{otp}</strong></p>
-                <p>This code is valid for 10 minutes.</p>
-                <p>If you did not request this, please ignore this email.</p>
-                <br/>
-                <p>Thank you,<br/>Smart ward mangement system</p>
+                <div class='container'>
+                    <div class='header'>
+                        <h2>Email Verification</h2>
+                    </div>
+                    <div class='content'>
+                        <p>Hello <strong>{fullName}</strong>,</p>
+                        <p>Thank you for registering with Smart Ward Management System. Please use the following OTP code to verify your email address:</p>
+                        <div class='otp-code'>{otp}</div>
+                        <p>This code is valid for <strong>10 minutes</strong>.</p>
+                        <p>If you didn't request this verification, please ignore this email.</p>
+                        <p>For security reasons, never share this OTP with anyone.</p>
+                    </div>
+                    <div class='footer'>
+                        <p>© {DateTime.UtcNow.Year} Smart Ward Management System. All rights reserved.</p>
+                    </div>
+                </div>
             </body>
         </html>",
-                IsBodyHtml = true,
-            };
+                    IsBodyHtml = true,
+                };
 
-            mailMessage.To.Add(toEmail);
-
-            await smtpClient.SendMailAsync(mailMessage);
+                mailMessage.To.Add(toEmail);
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception($"Failed to send email: {ex.Message}");
+            }
         }
 
         // GET: api/<RecruiterSignUpController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("GetUserProfile/{userId}")]
+        public async Task<ActionResult> GetUserProfile(Guid userId)
         {
-            return new string[] { "value1", "value2" };
+            var user = await db.Users
+                .Where(u => u.UserId == userId)
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.Username,
+                    u.FullNameEnglish,
+                    u.Email,
+                    u.ProfilePicturePath,
+                    u.Role
+                })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+                return NotFound(new { message = "User not found" });
+
+            return Ok(user);
         }
 
-        // GET api/<RecruiterSignUpController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetProfilePicture/{userId}")]
+        public async Task<IActionResult> GetProfilePicture(Guid userId)
         {
-            return "value";
-        }
+            try
+            {
+                var user = await db.Users.FindAsync(userId);
+                if (user?.ProfilePicturePath == null)
+                {
+                    return NotFound(new { message = "Profile picture not found" });
+                }
 
-        // POST api/<RecruiterSignUpController>
+                // Get the full path
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), user.ProfilePicturePath.TrimStart('/'));
+
+                if (!System.IO.File.Exists(imagePath))
+                {
+                    return NotFound(new { message = "Image file not found" });
+                }
+
+                // Determine content type based on file extension
+                var fileExtension = Path.GetExtension(imagePath).ToLower();
+                var contentType = fileExtension switch
+                {
+                    ".jpg" or ".jpeg" => "image/jpeg",
+                    ".png" => "image/png",
+                    ".gif" => "image/gif",
+                    _ => "application/octet-stream"
+                };
+
+                var image = System.IO.File.OpenRead(imagePath);
+                return File(image, contentType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Error retrieving profile picture: {ex.Message}" });
+            }
+        }
 
         [HttpPost("Register")]
         public async Task<ActionResult> Register([FromForm] UserDTO request)
         {
-            var Email = db.Users.FirstOrDefault(s => s.Email == request.Email);
-            var UserDetails = db.Users.FirstOrDefault(s => s.Username == request.Username);
-            if (Email != null)
+            // Check for existing email and username
+            var existingEmail = await db.Users.FirstOrDefaultAsync(s => s.Email == request.Email);
+            var existingUsername = await db.Users.FirstOrDefaultAsync(s => s.Username == request.Username);
+
+            if (existingEmail != null)
             {
-                return BadRequest(new { message = "Email Already exist" });
+                return BadRequest(new { message = "Email already exists" });
             }
-            if (UserDetails != null)
+            if (existingUsername != null)
             {
-                return BadRequest(new { message = "Username Already exist" });
+                return BadRequest(new { message = "Username already exists" });
             }
+
             using var transaction = await db.Database.BeginTransactionAsync();
+            try
             {
                 var user = new User();
                 var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.PasswordHash);
@@ -114,21 +205,36 @@ namespace Smart_ward_management_system.Controllers
                 user.Province = request.Province;
                 user.Role = request.Role;
                 user.IsVerified = false;
-                user.IsEmailConfirmed = true;
+                user.IsEmailConfirmed = false; // Set to false initially
                 user.VerificationStatus = VerificationStatusEnum.Pending;
-                user.VerifiedBy = Guid.Empty;
+                user.VerifiedBy = null;
                 user.VerifiedAt = null;
-                user.AccountStatus = "Active";
+                user.AccountStatus = "Pending Verification";
+                if (request.LivePhoto != null)
+                {
+                    var profilePicPath = await FileHelper.SaveFileAsync(request.LivePhoto, "ProfilePictures");
+                    user.ProfilePicturePath = profilePicPath;
+                }
                 user.CreatedAt = DateTime.UtcNow;
                 user.UpdatedAt = DateTime.UtcNow;
 
+                // Generate and store OTP
+                string otpCode = GenerateOTP();
+                user.OtpCode = otpCode;
+                user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10);
+                user.OtpAttempts = 0;
+                user.LastOtpRequestTime = DateTime.UtcNow;
+
                 db.Users.Add(user);
+
+                // Handle document uploads
                 var documentTypes = new[]
-               {
+                {
                     (File: request.CitizenshipFront, Type: "CitizenshipFront"),
-                     (File: request.CitizenshipBack, Type: "CitizenshipBack"),
+                    (File: request.CitizenshipBack, Type: "CitizenshipBack"),
                     (File: request.LivePhoto, Type: "LivePhoto")
                 };
+
                 foreach (var doc in documentTypes)
                 {
                     if (doc.File != null)
@@ -146,18 +252,41 @@ namespace Smart_ward_management_system.Controllers
                             IssuedDate = request.CitizenshipIssuedDate,
                             IsVerified = false,
                             CreatedOn = DateTime.UtcNow,
-                            DocumentNumber = docNumber 
+                            DocumentNumber = docNumber
                         };
                         db.Documents.Add(document);
                     }
                 }
 
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 await transaction.CommitAsync();
-                return Ok(new { message = "Registered successfully. Please check your email for OTP to confirm your account.", userId = user.UserId });
 
+                // Send OTP email
+                try
+                {
+                    await SendEmailAsync(user.Email, otpCode, user.FullNameEnglish);
+                }
+                catch (Exception ex)
+                {
+                    // Log email failure but don't rollback transaction
+                    // User can request OTP again via resend endpoint
+                    Console.WriteLine($"Failed to send email: {ex.Message}");
+                }
+
+                return Ok(new
+                {
+                    message = "Registration successful. Please check your email for OTP verification.",
+                    userId = user.UserId,
+                    email = user.Email
+                });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = "Registration failed", error = ex.Message });
             }
         }
+
 
         [HttpPost("VerifyEmail")]
         public async Task<IActionResult> VerifyEmail([FromBody] OtpVerificationDTO req)
@@ -170,20 +299,76 @@ namespace Smart_ward_management_system.Controllers
             if (user.IsEmailConfirmed)
                 return BadRequest(new { message = "Email already confirmed." });
 
-            if (user.OtpExpiryTime < DateTime.UtcNow)
+            // Check OTP attempts
+            if (user.OtpAttempts >= 3)
+                return BadRequest(new { message = "Too many failed attempts. Please request a new OTP." });
+
+            if (user.OtpExpiryTime == null || user.OtpExpiryTime < DateTime.UtcNow)
                 return BadRequest(new { message = "OTP expired. Please request a new one." });
 
             if (user.OtpCode != req.OtpCode)
-                return BadRequest(new { message = "Invalid OTP." });
+            {
+                user.OtpAttempts++;
+                await db.SaveChangesAsync();
 
-            // OTP correct
+                int remainingAttempts = 3 - user.OtpAttempts;
+                return BadRequest(new { message = $"Invalid OTP. {remainingAttempts} attempts remaining." });
+            }
+
             user.IsEmailConfirmed = true;
-            user.OtpCode = null; // clear OTP
-            user.OtpExpiryTime = null; // clear expiry
+            user.AccountStatus = "Active";
+            user.OtpCode = null;
+            user.OtpExpiryTime = null;
+            user.OtpAttempts = 0;
+            user.UpdatedAt = DateTime.UtcNow;
 
             await db.SaveChangesAsync();
 
-            return Ok(new { message = "Email verified successfully!" });
+            return Ok(new
+            {
+                message = "Email verified successfully! Your account is now active.",
+                userId = user.UserId
+            });
+        }
+
+        [HttpPost("ResendOTP")]
+        public async Task<IActionResult> ResendOTP([FromBody] ResendOtpDTO req)
+        {
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+
+            if (user == null)
+            {
+                return Ok(new { message = "If your email is registered, you will receive an OTP." });
+            }
+
+            if (user.IsEmailConfirmed)
+                return BadRequest(new { message = "Email already confirmed." });
+
+            if (user.LastOtpRequestTime != null &&
+                user.LastOtpRequestTime.Value.AddMinutes(2) > DateTime.UtcNow)
+            {
+                var waitTime = user.LastOtpRequestTime.Value.AddMinutes(2) - DateTime.UtcNow;
+                return BadRequest(new { message = $"Please wait {waitTime.Seconds} seconds before requesting another OTP." });
+            }
+
+            string newOtp = GenerateOTP();
+            user.OtpCode = newOtp;
+            user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10);
+            user.OtpAttempts = 0;
+            user.LastOtpRequestTime = DateTime.UtcNow;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await db.SaveChangesAsync();
+
+            try
+            {
+                await SendEmailAsync(user.Email, newOtp, user.FullNameEnglish);
+                return Ok(new { message = "New OTP has been sent to your email." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to send OTP. Please try again." });
+            }
         }
 
         // PUT api/<RecruiterSignUpController>/5

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Model.Appointment;
 using Smart_ward_management_system.Model.Common;
+using Smart_ward_management_system.Model.FollowUp;
 using Smart_ward_management_system.Model.Identity;
 using Smart_ward_management_system.Model.Logging;
 using Smart_ward_management_system.Model.Notice;
@@ -11,6 +12,7 @@ using Smart_ward_management_system.Model.Polls;
 using Smart_ward_management_system.Model.Services;
 using Smart_ward_management_system.Model.Services.Complaints;
 using Smart_ward_management_system.Model.Services.ProbableServices;
+using Smart_ward_management_system.Model.Volunteer;
 using Smart_ward_management_system.Model.WasteManagement_And_Scheduling;
 
 namespace Smart_ward_management_system.Data
@@ -29,8 +31,10 @@ namespace Smart_ward_management_system.Data
         public DbSet<CitizenVerificationRequest> CitizenVerificationRequests { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<ComplaintEscalation> ComplaintEscalations { get; set; }
+        public DbSet<ReminderLog> ReminderLogs { get; set; }
+        public DbSet<EscalationHistory> EscalationHistories { get; set; }
         public DbSet<Document> Documents { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<UserNotification> UserNotifications { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<ServiceApprovalFlow>ServiceApprovalFlows { get; set; }
@@ -64,6 +68,13 @@ namespace Smart_ward_management_system.Data
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<CollectionPoint> CollectionPoints { get; set; }
         public DbSet<RouteSchedule> RouteSchedules { get; set; }
+
+        public DbSet<Volunteer> Volunteers { get; set; }
+        public DbSet<Resource> Resources { get; set; }
+        public DbSet<DisasterEvent> DisasterEvents { get; set; }
+        public DbSet<VolunteerAssignment> VolunteerAssignments { get; set; }
+        public DbSet<ResourceDistribution> ResourceDistributions { get; set; }
+        public DbSet<SmsAlert> SmsAlerts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -161,6 +172,60 @@ namespace Smart_ward_management_system.Data
                 new Driver { Id = Guid.NewGuid(), Name = "John Doe", LicenseNumber = "DL-001", PhoneNumber = "1234567890", Email = "john@example.com", IsAvailable = true },
                 new Driver { Id = Guid.NewGuid(), Name = "Jane Smith", LicenseNumber = "DL-002", PhoneNumber = "0987654321", Email = "jane@example.com", IsAvailable = true }
             );
+
+            modelBuilder.Entity<VolunteerAssignment>()
+               .HasOne(va => va.Volunteer)
+               .WithMany(v => v.Assignments)
+               .HasForeignKey(va => va.VolunteerId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<VolunteerAssignment>()
+                .HasOne(va => va.DisasterEvent)
+                .WithMany(de => de.VolunteerAssignments)
+                .HasForeignKey(va => va.DisasterEventId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ResourceDistribution>()
+                .HasOne(rd => rd.Resource)
+                .WithMany(r => r.Distributions)
+                .HasForeignKey(rd => rd.ResourceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ResourceDistribution>()
+                .HasOne(rd => rd.DisasterEvent)
+                .WithMany()
+                .HasForeignKey(rd => rd.DisasterEventId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ResourceDistribution>()
+                .HasOne(rd => rd.DistributedBy)
+                .WithMany()
+                .HasForeignKey(rd => rd.DistributedByVolunteerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SmsAlert>()
+                .HasOne(sa => sa.DisasterEvent)
+                .WithMany()
+                .HasForeignKey(sa => sa.DisasterEventId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Add indexes
+            modelBuilder.Entity<Volunteer>()
+                .HasIndex(v => v.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Volunteer>()
+                .HasIndex(v => v.PhoneNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Resource>()
+                .HasIndex(r => r.Name);
+
+            modelBuilder.Entity<DisasterEvent>()
+                .HasIndex(de => de.Status);
+
+            modelBuilder.Entity<VolunteerAssignment>()
+                .HasIndex(va => va.Status);
 
         }
 

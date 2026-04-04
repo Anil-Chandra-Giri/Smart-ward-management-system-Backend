@@ -26,6 +26,14 @@ namespace Smart_ward_management_system.Model.Services
         // Audit
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        // Add these properties to your existing ServiceRequest class
+        public DateTime? AssignedDate { get; set; }
+        public DateTime? LastReminderDate { get; set; }
+        public bool IsEscalated { get; set; } = false;
+        public DateTime? EscalatedDate { get; set; }
+        public Guid? EscalatedToOfficerId { get; set; }
+        public int ReminderCount { get; set; } = 0;
     }
 
 }

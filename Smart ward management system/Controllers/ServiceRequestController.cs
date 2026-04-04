@@ -176,10 +176,147 @@ namespace Smart_ward_management_system.Controllers
             });
         }
 
+        // PUT api/<ServiceRequestController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateRequest(Guid id, [FromBody] ServiceRequestDTO dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            try
+            {
+                var existingRequest = await _context.ServiceRequests
+                    .FirstOrDefaultAsync(sr => sr.ServiceRequestId == id);
+
+                if (existingRequest == null)
+                {
+                    return NotFound("Service request not found");
+                }
+
+                // Update base properties
+                existingRequest.Purpose = dto.Purpose;
+                existingRequest.Description = dto.Description;
+                existingRequest.RequestedWard = dto.RequestedWard;
+                existingRequest.RequestedMunicipality = dto.RequestedMunicipality;
+                existingRequest.PriorityLevel = (PriorityLevelEnum)dto.PriorityLevel;
+                existingRequest.Remarks = dto.Remarks;
+                existingRequest.UpdatedAt = DateTime.Now;
+
+                // Update service-specific properties based on type
+                switch (existingRequest.ServiceType)
+                {
+                    case ServiceEnum.BirthCertificate:
+                        if (existingRequest is BirthCertificateRequest birthRequest)
+                        {
+                            birthRequest.ChildFullName = dto.ChildFullName;
+                            birthRequest.DateOfBirth = dto.DateOfBirth ?? DateTime.Now;
+                            birthRequest.Gender = dto.Gender;
+                            birthRequest.PlaceOfBirth = dto.PlaceOfBirth;
+                            birthRequest.FatherFullName = dto.FatherFullName;
+                            birthRequest.MotherFullName = dto.MotherFullName;
+                            birthRequest.GrandfatherFullName = dto.GrandfatherFullName;
+                            birthRequest.PermanentAddress = dto.PermanentAddress;
+                        }
+                        break;
+
+                    case ServiceEnum.DeathCertificate:
+                        if (existingRequest is DeathCertificateRequest deathRequest)
+                        {
+                            deathRequest.DeceasedFullName = dto.DeceasedFullName;
+                            deathRequest.DateOfDeath = dto.DateOfDeath ?? DateTime.Now;
+                            deathRequest.PlaceOfDeath = dto.PlaceOfDeath;
+                            deathRequest.CauseOfDeath = dto.CauseOfDeath;
+                            deathRequest.RelationshipToApplicant = dto.RelationshipToApplicant;
+                            deathRequest.CitizenshipNoOfDeceased = dto.CitizenshipNoOfDeceased;
+                        }
+                        break;
+
+                    case ServiceEnum.RecommendationLetter:
+                        if (existingRequest is RecommendationLetterRequest recRequest)
+                        {
+                            recRequest.LetterCategory = dto.LetterCategory;
+                            recRequest.RecipientOrganization = dto.RecipientOrganization;
+                        }
+                        break;
+
+                    case ServiceEnum.PropertyDocument:
+                        if (existingRequest is PropertyDocumentRequest propRequest)
+                        {
+                            propRequest.PlotNumber = dto.PlotNumber;
+                            propRequest.SheetNumber = dto.SheetNumber;
+                            propRequest.TotalArea = dto.TotalArea ?? 0;
+                            propRequest.PropertyType = dto.PropertyType;
+                            propRequest.CurrentOwnerName = dto.CurrentOwnerName;
+                            propRequest.LandRevenueReceiptNumber = dto.LandRevenueReceiptNumber;
+                        }
+                        break;
+
+                    case ServiceEnum.MarriageRegistration:
+                        if (existingRequest is MarriageRegistrationRequest marriageRequest)
+                        {
+                            marriageRequest.GroomFullName = dto.GroomFullName;
+                            marriageRequest.BrideFullName = dto.BrideFullName;
+                            marriageRequest.MarriageDate = dto.MarriageDate ?? DateTime.Now;
+                            marriageRequest.MarriageVenue = dto.MarriageVenue;
+                            marriageRequest.GroomCitizenshipNo = dto.GroomCitizenshipNo;
+                            marriageRequest.BrideCitizenshipNo = dto.BrideCitizenshipNo;
+                            marriageRequest.WitnessName = dto.WitnessName;
+                        }
+                        break;
+
+                    case ServiceEnum.MigrationCertificate:
+                        if (existingRequest is MigrationCertificateRequest migrationRequest)
+                        {
+                            migrationRequest.MigrationType = dto.MigrationType;
+                            migrationRequest.OriginAddress = dto.OriginAddress;
+                            migrationRequest.DestinationAddress = dto.DestinationAddress;
+                            migrationRequest.TotalFamilyMembersMoving = dto.TotalFamilyMembersMoving ?? 1;
+                            migrationRequest.ReasonForMigration = dto.ReasonForMigration;
+                        }
+                        break;
+
+                    case ServiceEnum.AddressVerification:
+                        if (existingRequest is AddressVerificationRequest addressRequest)
+                        {
+                            addressRequest.HouseNumber = dto.HouseNumber;
+                            addressRequest.StreetName = dto.StreetName;
+                            addressRequest.YearsOfStay = dto.YearsOfStay ?? 0;
+                        }
+                        break;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Request updated successfully!", reference = existingRequest.ApplicationNumber });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Server error", details = ex.Message });
+            }
+        }
+
         // DELETE api/<ServiceRequestController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteRequest(Guid id)
         {
+            try
+            {
+                var serviceRequest = await _context.ServiceRequests
+                    .FirstOrDefaultAsync(sr => sr.ServiceRequestId == id);
+
+                if (serviceRequest == null)
+                {
+                    return NotFound("Service request not found");
+                }
+
+                _context.ServiceRequests.Remove(serviceRequest);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Request deleted successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Server error", details = ex.Message });
+            }
         }
     }
 }

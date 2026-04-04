@@ -53,6 +53,9 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<string>("TokenNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("WardNumber")
                         .HasColumnType("int");
 
@@ -318,12 +321,18 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("LastOtpRequestTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Municipality")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NationalIdNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OtpAttempts")
+                        .HasColumnType("int");
 
                     b.Property<string>("OtpCode")
                         .HasColumnType("nvarchar(max)");
@@ -340,6 +349,10 @@ namespace Smart_ward_management_system.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicturePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -397,13 +410,15 @@ namespace Smart_ward_management_system.Migrations
                             IsEmailConfirmed = true,
                             IsVerified = true,
                             Municipality = "Kathmandu Metropolitan",
+                            OtpAttempts = 0,
                             PasswordHash = "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==",
                             PermanentAddress = "Kathmandu",
                             PhoneNumber = "9800000000",
+                            ProfilePicturePath = "",
                             Province = "Bagmati",
                             Role = "Staff",
                             TemporaryAddress = "Kathmandu",
-                            UpdatedAt = new DateTime(2026, 3, 16, 15, 14, 46, 551, DateTimeKind.Utc).AddTicks(5654),
+                            UpdatedAt = new DateTime(2026, 3, 19, 4, 39, 13, 612, DateTimeKind.Utc).AddTicks(9639),
                             Username = "admin",
                             VerificationStatus = 2,
                             VerifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -973,6 +988,333 @@ namespace Smart_ward_management_system.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.DisasterEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AffectedPeople")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Coordinator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequiredResources")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("DisasterEvents");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.Resource", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MinimumThreshold")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StorageLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Supplier")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("Resources");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.ResourceDistribution", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DisasterEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DistributedByVolunteerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DistributionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DistributionLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecipientContact")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecipientName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecipientType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisasterEventId");
+
+                    b.HasIndex("DistributedByVolunteerId");
+
+                    b.HasIndex("ResourceId");
+
+                    b.ToTable("ResourceDistributions");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.SmsAlert", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DisasterEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecipientCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecipientGroup")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SentByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SuccessCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisasterEventId");
+
+                    b.ToTable("SmsAlerts");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.Volunteer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Availability")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmergencyContact")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmergencyPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Skills")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
+                    b.ToTable("Volunteers");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.VolunteerAssignment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AssignedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DisasterEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("VolunteerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisasterEventId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("VolunteerId");
+
+                    b.ToTable("VolunteerAssignments");
+                });
+
             modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.CollectionPoint", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1054,7 +1396,7 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("158ba5d0-db3a-4052-8cdf-14255ea2d1ac"),
+                            Id = new Guid("eae5d481-cba1-4e24-bcd7-829f89e44092"),
                             Email = "john@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-001",
@@ -1063,7 +1405,7 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dfef8e15-4618-4218-82c2-3456cdfd3164"),
+                            Id = new Guid("d07f4c6b-8bf7-4f8d-8a4b-637d72d5fb62"),
                             Email = "jane@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-002",
@@ -1231,11 +1573,11 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3dbbe2ae-dbbb-4af7-ae33-b540e8fe32a4"),
+                            Id = new Guid("d0582a64-f576-4c56-abe2-e7451e89858b"),
                             Capacity = 5.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2186),
+                            LastUpdatedLocation = new DateTime(2026, 3, 19, 10, 24, 13, 615, DateTimeKind.Local).AddTicks(447),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
@@ -1245,11 +1587,11 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0f497326-7bee-4e26-918e-35bac7bb7ed5"),
+                            Id = new Guid("07338798-c858-4526-9dfe-71c2b58918b4"),
                             Capacity = 3.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2200),
+                            LastUpdatedLocation = new DateTime(2026, 3, 19, 10, 24, 13, 615, DateTimeKind.Local).AddTicks(460),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
@@ -1524,6 +1866,60 @@ namespace Smart_ward_management_system.Migrations
                     b.Navigation("Poll");
                 });
 
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.ResourceDistribution", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Volunteer.DisasterEvent", "DisasterEvent")
+                        .WithMany()
+                        .HasForeignKey("DisasterEventId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Smart_ward_management_system.Model.Volunteer.Volunteer", "DistributedBy")
+                        .WithMany()
+                        .HasForeignKey("DistributedByVolunteerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Smart_ward_management_system.Model.Volunteer.Resource", "Resource")
+                        .WithMany("Distributions")
+                        .HasForeignKey("ResourceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DisasterEvent");
+
+                    b.Navigation("DistributedBy");
+
+                    b.Navigation("Resource");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.SmsAlert", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Volunteer.DisasterEvent", "DisasterEvent")
+                        .WithMany()
+                        .HasForeignKey("DisasterEventId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("DisasterEvent");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.VolunteerAssignment", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.Volunteer.DisasterEvent", "DisasterEvent")
+                        .WithMany("VolunteerAssignments")
+                        .HasForeignKey("DisasterEventId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Smart_ward_management_system.Model.Volunteer.Volunteer", "Volunteer")
+                        .WithMany("Assignments")
+                        .HasForeignKey("VolunteerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DisasterEvent");
+
+                    b.Navigation("Volunteer");
+                });
+
             modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.CollectionPoint", b =>
                 {
                     b.HasOne("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.WasteCollectionRoute", "Route")
@@ -1583,6 +1979,21 @@ namespace Smart_ward_management_system.Migrations
             modelBuilder.Entity("Smart_ward_management_system.Model.Polls.PollOption", b =>
                 {
                     b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.DisasterEvent", b =>
+                {
+                    b.Navigation("VolunteerAssignments");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.Resource", b =>
+                {
+                    b.Navigation("Distributions");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Volunteer.Volunteer", b =>
+                {
+                    b.Navigation("Assignments");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.WasteManagement_And_Scheduling.Driver", b =>

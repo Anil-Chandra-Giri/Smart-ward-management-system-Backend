@@ -1,16 +1,11 @@
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.csproj.AssemblyReference.cache
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rpswa.dswa.cache.json
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfoInputs.cache
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfo.cs
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.csproj.CoreCompileInputs.cache
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.sourcelink.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.runtime.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.endpoints.json
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x86\leptonica-1.82.0.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x86\tesseract50.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x64\leptonica-1.82.0.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x64\tesseract50.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.exe
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.deps.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.runtimeconfig.json
@@ -69,6 +64,7 @@ C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward mana
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Permissions.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Windows.Extensions.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Tesseract.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -133,6 +129,15 @@ C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward mana
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.csproj.AssemblyReference.cache
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfoInputs.cache
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfo.cs
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.csproj.CoreCompileInputs.cache
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.sourcelink.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
@@ -148,10 +153,48 @@ C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward mana
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.pdb
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.genruntimeconfig.cache
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\ref\Smart ward management system.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Emgu.CV.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.IO.Pipelines.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Text.Json.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\cvextern.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\cvextern.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\libusb-1.0.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\opencv_videoio_ffmpeg4120_64.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\cvextern.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\libusb-1.0.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\opencv_videoio_ffmpeg4120.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\concrt140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_1.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_2.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_atomic_wait.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_codecvt_ids.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\vcruntime140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\vcruntime140_1.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\concrt140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_1.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_2.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_atomic_wait.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_codecvt_ids.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\vcruntime140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\vcruntime140_1.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\concrt140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_1.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_2.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_atomic_wait.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_codecvt_ids.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\vcruntime140.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.Development.json
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.json
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.runtime.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.endpoints.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x86\leptonica-1.82.0.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x86\tesseract50.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x64\leptonica-1.82.0.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\x64\tesseract50.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.exe
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.deps.json
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.runtimeconfig.json
@@ -159,6 +202,7 @@ G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management 
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.pdb
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Azure.Core.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Azure.Identity.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Emgu.CV.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Humanizer.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
@@ -204,12 +248,16 @@ G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management 
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Drawing.Common.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.IO.Pipelines.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Memory.Data.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Runtime.Caching.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Permissions.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Text.Json.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Windows.Extensions.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Tesseract.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -262,6 +310,36 @@ G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management 
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\cvextern.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\cvextern.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\libusb-1.0.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\opencv_videoio_ffmpeg4120_64.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\cvextern.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\libusb-1.0.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\opencv_videoio_ffmpeg4120.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\concrt140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_1.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_2.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_atomic_wait.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\msvcp140_codecvt_ids.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\vcruntime140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\vcruntime140_1.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\concrt140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_1.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_2.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_atomic_wait.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\msvcp140_codecvt_ids.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\vcruntime140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\vcruntime140_1.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\concrt140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_1.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_2.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_atomic_wait.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\msvcp140_codecvt_ids.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\vcruntime140.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
@@ -273,9 +351,9 @@ G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management 
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.csproj.AssemblyReference.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rpswa.dswa.cache.json
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.GeneratedMSBuildEditorConfig.editorconfig
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfoInputs.cache
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfo.cs
@@ -283,16 +361,14 @@ G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management 
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cs
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cache
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.sourcelink.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjimswa.dswa.cache.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\scopedcss\bundle\Smart ward management system.styles.css
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.json.cache
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.development.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\swae.build.ex.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.Smart ward management system.Microsoft.AspNetCore.StaticWebAssets.props
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.build.Smart ward management system.props
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Smart ward management system.props
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Smart ward management system.props
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.pack.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\scopedcss\bundle\Smart ward management system.styles.css
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart wa.3B6DA49C.Up2Date
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.dll
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\refint\Smart ward management system.dll

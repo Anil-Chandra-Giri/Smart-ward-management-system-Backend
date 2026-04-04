@@ -1,11 +1,14 @@
 using Domain.Enumerators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Smart_ward_management_system.Common;
 using Smart_ward_management_system.Controllers;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.Model.WasteManagement_And_Scheduling;
+using Smart_ward_management_system.Services;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -33,8 +36,14 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
         .AllowAnyHeader();
 }));
 builder.Services.AddSignalR();
+builder.Services.AddHttpClient<ISmsService, SparrowSmsService>();
+builder.Services.AddScoped<ISmsService, SparrowSmsService>();
+builder.Services.AddScoped<IFollowUpService, FollowUpService>();
+builder.Services.AddScoped<IEmailService, EmailService>(); // You need to implement this
+builder.Services.AddScoped<INotificationService, NotificationService>(); // You need to implement this
 
-
+// Add background service
+builder.Services.AddHostedService<FollowUpBackgroundService>();
 
 // Add services to the container.
 var jwtSecret = builder.Configuration.GetValue<string>("JWT:Key");
@@ -59,7 +68,6 @@ builder.Services.AddAuthentication(O =>
         ValidAudience = "localhost:4200",
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
-        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
         NameClaimType = ClaimTypes.NameIdentifier
     };
 
@@ -82,6 +90,18 @@ builder.Services.AddAuthentication(O =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// Configure file upload limits
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = int.MaxValue;
+    options.MemoryBufferThreshold = int.MaxValue;
+});
 
 var app = builder.Build();
 

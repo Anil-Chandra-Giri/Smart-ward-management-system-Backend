@@ -129,7 +129,6 @@ namespace Smart_ward_management_system.Controllers
             }
 
             complaintRequest.Status = model.Status;
-            //complaintRequest.UpdatedAt = DateTime.Now;
 
             await db.SaveChangesAsync();
 
