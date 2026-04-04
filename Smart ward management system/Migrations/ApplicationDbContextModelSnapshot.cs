@@ -300,6 +300,9 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("int");
+
                     b.Property<string>("FullNameEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -317,6 +320,15 @@ namespace Smart_ward_management_system.Migrations
 
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastLoginIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LockoutEnd")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Municipality")
                         .IsRequired()
@@ -391,6 +403,7 @@ namespace Smart_ward_management_system.Migrations
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             District = "Kathmandu",
                             Email = "admin@ward.gov.np",
+                            FailedLoginAttempts = 0,
                             FullNameEnglish = "System Admin",
                             FullNameNepali = "प्रशासक",
                             Gender = "Male",
@@ -403,13 +416,97 @@ namespace Smart_ward_management_system.Migrations
                             Province = "Bagmati",
                             Role = "Staff",
                             TemporaryAddress = "Kathmandu",
-                            UpdatedAt = new DateTime(2026, 3, 16, 15, 14, 46, 551, DateTimeKind.Utc).AddTicks(5654),
+                            UpdatedAt = new DateTime(2026, 4, 4, 7, 4, 4, 447, DateTimeKind.Utc).AddTicks(7990),
                             Username = "admin",
                             VerificationStatus = 2,
                             VerifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             VerifiedBy = new Guid("11111111-1111-1111-1111-111111111111"),
                             WardNumber = "1"
                         });
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.LogEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdditionalData")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("AppointmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CitizenId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ComplaintId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CorrelationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DocumentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExceptionDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GrievanceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PollId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RequestPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ServiceRequestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Source")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WardNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Logging.ActivityLog", b =>
@@ -633,6 +730,9 @@ namespace Smart_ward_management_system.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -827,33 +927,32 @@ namespace Smart_ward_management_system.Migrations
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Services.Complaints.StatusHistory", b =>
                 {
-                    b.Property<Guid>("HistoryId")
+                    b.Property<Guid>("StatusHistoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ChangeReason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ChangedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ChangedBy")
+                    b.Property<Guid?>("ChangedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("NewStatusId")
+                    b.Property<Guid>("EntityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OldStatusId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ReferenceId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("NewStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReferenceType")
-                        .HasColumnType("int");
+                    b.Property<string>("OldStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("HistoryId");
+                    b.HasKey("StatusHistoryId");
 
                     b.ToTable("StatusHistories");
                 });
@@ -1054,7 +1153,7 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("158ba5d0-db3a-4052-8cdf-14255ea2d1ac"),
+                            Id = new Guid("6381cdc6-29cf-4ce3-863a-f7e3c76b9728"),
                             Email = "john@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-001",
@@ -1063,7 +1162,7 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dfef8e15-4618-4218-82c2-3456cdfd3164"),
+                            Id = new Guid("275fdffe-a0f6-4568-bb7e-58b9fc673477"),
                             Email = "jane@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-002",
@@ -1231,11 +1330,11 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3dbbe2ae-dbbb-4af7-ae33-b540e8fe32a4"),
+                            Id = new Guid("8dca7e83-04af-435e-b0f6-4aed1d05c670"),
                             Capacity = 5.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2186),
+                            LastUpdatedLocation = new DateTime(2026, 4, 4, 12, 49, 4, 450, DateTimeKind.Local).AddTicks(7429),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
@@ -1245,11 +1344,11 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0f497326-7bee-4e26-918e-35bac7bb7ed5"),
+                            Id = new Guid("713e77a9-73b2-427d-83ef-f30b261e8bc5"),
                             Capacity = 3.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2200),
+                            LastUpdatedLocation = new DateTime(2026, 4, 4, 12, 49, 4, 450, DateTimeKind.Local).AddTicks(7444),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,

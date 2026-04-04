@@ -1,0 +1,89 @@
+﻿<!-- Views/Log/Index.cshtml - Updated to use partial view -->
+@using Smart_ward_management_system.Extensions
+@model IEnumerable<Smart_ward_management_system.Model.LogEntry>
+@{
+    ViewData["Title"] = "System Logs";
+}
+
+<div class="container-fluid">
+    <h2>📋 System Activity Logs</h2>
+
+    <!-- Filter Form (same as before) -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-2">
+                    <label>Level</label>
+                    <select name="level" class="form-select" asp-items="Html.GetEnumSelectList<LogLevel>()">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Category</label>
+                    <select name="category" class="form-select" asp-items="Html.GetEnumSelectList<LogCategory>()">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Start Date</label>
+                    <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate" />
+                </div>
+                <div class="col-md-2">
+                    <label>End Date</label>
+                    <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate" />
+                </div>
+                <div class="col-md-3">
+                    <label>Search</label>
+                    <input type="text" name="searchTerm" class="form-control"
+                           placeholder="Search by message, user, citizen ID..."
+                           value="@ViewBag.CurrentSearchTerm" />
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Log Table - Using Partial View -->
+    <partial name="_LogTable" model="Model" />
+
+    <!-- Pagination -->
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&level=@ViewBag.CurrentLevel&category=@ViewBag.CurrentCategory&searchTerm=@ViewBag.CurrentSearchTerm&startDate=@ViewBag.StartDate&endDate=@ViewBag.EndDate">
+                            @i
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+
+    <div class="mt-3">
+        <a href="@Url.Action("Export", new { level = ViewBag.CurrentLevel, category = ViewBag.CurrentCategory, startDate = ViewBag.StartDate, endDate = ViewBag.EndDate })"
+           class="btn btn-success">
+            <i class="bi bi-download"></i> Export to CSV
+        </a>
+        <button onclick="window.print()" class="btn btn-secondary">
+            <i class="bi bi-printer"></i> Print
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-submit form on filter change (optional)
+        $(document).ready(function() {
+            $('select, input[type="date"]').change(function() {
+                $(this).closest('form').submit();
+            });
+        });
+    </script>
+}

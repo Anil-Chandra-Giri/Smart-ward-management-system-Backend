@@ -1,0 +1,118 @@
+﻿<!-- Views/Log/Dashboard.cshtml -->
+@* @model LogDashboardViewModel *@
+@{
+    ViewData["Title"] = "Ward Management Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">📊 Ward Operations Dashboard</h2>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Operations Today</h5>
+                    <h2>@Model.TotalLogsToday</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Errors (24h)</h5>
+                    <h2>@Model.ErrorCount24h</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Citizen Services</h5>
+                    <h2>@Model.CitizenServiceRequests</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Grievances</h5>
+                    <h2>@Model.GrievancesFiled / @Model.GrievancesResolved</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>⚠️ Recent Errors</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @foreach (var error in Model.RecentErrors)
+                        {
+                            <a href="@Url.Action("Details", new { id = error.Id })" class="list-group-item list-group-item-action">
+                                <small class="text-danger">@error.Timestamp.ToString("HH:mm:ss")</small>
+                                <div>@error.Message</div>
+                                <small class="text-muted">@error.Department - @error.UserName</small>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>👥 Recent Citizen Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @foreach (var action in Model.RecentCitizenActions)
+                        {
+                            <a href="@Url.Action("Details", new { id = action.Id })" class="list-group-item list-group-item-action">
+                                <small>@action.Timestamp.ToString("HH:mm:ss")</small>
+                                <div>@action.Message</div>
+                                <small class="text-muted">Citizen: @action.CitizenId</small>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>📈 Activity by Department</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="deptChart" style="height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('deptChart').getContext('2d');
+        var deptChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.TopActiveDepartments.Keys)),
+                datasets: [{
+                    label: 'Activities',
+                    data: @Html.Raw(Json.Serialize(Model.TopActiveDepartments.Values)),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                }]
+            }
+        });
+    </script>
+}

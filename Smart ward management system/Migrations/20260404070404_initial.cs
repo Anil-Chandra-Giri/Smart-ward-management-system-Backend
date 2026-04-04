@@ -166,6 +166,41 @@ namespace Smart_ward_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Category = table.Column<int>(type: "int", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Source = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CitizenId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WardNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Department = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RequestPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AdditionalData = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExceptionDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorrelationId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ComplaintId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ServiceRequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PaymentId = table.Column<int>(type: "int", nullable: true),
+                    DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PollId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ApplicationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GrievanceId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NoticeCategories",
                 columns: table => new
                 {
@@ -220,6 +255,7 @@ namespace Smart_ward_management_system.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -342,18 +378,17 @@ namespace Smart_ward_management_system.Migrations
                 name: "StatusHistories",
                 columns: table => new
                 {
-                    HistoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReferenceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReferenceType = table.Column<int>(type: "int", nullable: false),
-                    OldStatusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NewStatusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChangedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChangeReason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    StatusHistoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EntityType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OldStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NewStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ChangedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StatusHistories", x => x.HistoryId);
+                    table.PrimaryKey("PK_StatusHistories", x => x.StatusHistoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -441,7 +476,11 @@ namespace Smart_ward_management_system.Migrations
                     VerifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastLoginAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastLoginIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FailedLoginAttempts = table.Column<int>(type: "int", nullable: false),
+                    LockoutEnd = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -674,22 +713,22 @@ namespace Smart_ward_management_system.Migrations
                 columns: new[] { "Id", "AssignedRouteDate", "Email", "IsAvailable", "LicenseNumber", "Name", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("158ba5d0-db3a-4052-8cdf-14255ea2d1ac"), null, "john@example.com", true, "DL-001", "John Doe", "1234567890" },
-                    { new Guid("dfef8e15-4618-4218-82c2-3456cdfd3164"), null, "jane@example.com", true, "DL-002", "Jane Smith", "0987654321" }
+                    { new Guid("275fdffe-a0f6-4568-bb7e-58b9fc673477"), null, "jane@example.com", true, "DL-002", "Jane Smith", "0987654321" },
+                    { new Guid("6381cdc6-29cf-4ce3-863a-f7e3c76b9728"), null, "john@example.com", true, "DL-001", "John Doe", "1234567890" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "AccountStatus", "CitizenshipIssuedDate", "CitizenshipIssuedDistrict", "CitizenshipNumber", "CreatedAt", "DateOfBirth", "Department", "Designation", "District", "Email", "EmployeeId", "FullNameEnglish", "FullNameNepali", "Gender", "IsEmailConfirmed", "IsVerified", "Municipality", "NationalIdNumber", "OtpCode", "OtpExpiryTime", "PasswordHash", "PermanentAddress", "PhoneNumber", "Province", "Role", "TemporaryAddress", "UpdatedAt", "Username", "VerificationStatus", "VerifiedAt", "VerifiedBy", "WardNumber" },
-                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), "Active", new DateTime(2010, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kathmandu", "123456789", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Kathmandu", "admin@ward.gov.np", null, "System Admin", "प्रशासक", "Male", true, true, "Kathmandu Metropolitan", null, null, null, "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", "Kathmandu", "9800000000", "Bagmati", "Staff", "Kathmandu", new DateTime(2026, 3, 16, 15, 14, 46, 551, DateTimeKind.Utc).AddTicks(5654), "admin", 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("11111111-1111-1111-1111-111111111111"), "1" });
+                columns: new[] { "UserId", "AccountStatus", "CitizenshipIssuedDate", "CitizenshipIssuedDistrict", "CitizenshipNumber", "CreatedAt", "DateOfBirth", "Department", "Designation", "District", "Email", "EmployeeId", "FailedLoginAttempts", "FullNameEnglish", "FullNameNepali", "Gender", "IsEmailConfirmed", "IsVerified", "LastLoginAt", "LastLoginIp", "LockoutEnd", "Municipality", "NationalIdNumber", "OtpCode", "OtpExpiryTime", "PasswordHash", "PermanentAddress", "PhoneNumber", "Province", "Role", "TemporaryAddress", "UpdatedAt", "Username", "VerificationStatus", "VerifiedAt", "VerifiedBy", "WardNumber" },
+                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), "Active", new DateTime(2010, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kathmandu", "123456789", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Kathmandu", "admin@ward.gov.np", null, 0, "System Admin", "प्रशासक", "Male", true, true, null, null, null, "Kathmandu Metropolitan", null, null, null, "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", "Kathmandu", "9800000000", "Bagmati", "Staff", "Kathmandu", new DateTime(2026, 4, 4, 7, 4, 4, 447, DateTimeKind.Utc).AddTicks(7990), "admin", 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("11111111-1111-1111-1111-111111111111"), "1" });
 
             migrationBuilder.InsertData(
                 table: "WasteVehicles",
                 columns: new[] { "Id", "Capacity", "CurrentFuelLevel", "IsActive", "LastMaintenanceDate", "LastUpdatedLocation", "Latitude", "Longitude", "NextMaintenanceDate", "Status", "VehicleName", "VehicleNumber", "VehicleType" },
                 values: new object[,]
                 {
-                    { new Guid("0f497326-7bee-4e26-918e-35bac7bb7ed5"), 3.0, 0.0, true, null, new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2200), 0.0, 0.0, null, 1, "Truck 2", "VH-002", "Dumper" },
-                    { new Guid("3dbbe2ae-dbbb-4af7-ae33-b540e8fe32a4"), 5.0, 0.0, true, null, new DateTime(2026, 3, 16, 20, 59, 46, 553, DateTimeKind.Local).AddTicks(2186), 0.0, 0.0, null, 1, "Truck 1", "VH-001", "Compactor" }
+                    { new Guid("713e77a9-73b2-427d-83ef-f30b261e8bc5"), 3.0, 0.0, true, null, new DateTime(2026, 4, 4, 12, 49, 4, 450, DateTimeKind.Local).AddTicks(7444), 0.0, 0.0, null, 1, "Truck 2", "VH-002", "Dumper" },
+                    { new Guid("8dca7e83-04af-435e-b0f6-4aed1d05c670"), 5.0, 0.0, true, null, new DateTime(2026, 4, 4, 12, 49, 4, 450, DateTimeKind.Local).AddTicks(7429), 0.0, 0.0, null, 1, "Truck 1", "VH-001", "Compactor" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -796,6 +835,9 @@ namespace Smart_ward_management_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "Documents");
+
+            migrationBuilder.DropTable(
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Notices");
