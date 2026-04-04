@@ -363,11 +363,6 @@ G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management 
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.sourcelink.json
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.json
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.development.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.Smart ward management system.Microsoft.AspNetCore.StaticWebAssets.props
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.build.Smart ward management system.props
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Smart ward management system.props
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Smart ward management system.props
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.pack.json
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\scopedcss\bundle\Smart ward management system.styles.css
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart wa.3B6DA49C.Up2Date
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.dll
@@ -375,3 +370,17 @@ G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management 
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.pdb
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.genruntimeconfig.cache
 G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\ref\Smart ward management system.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.endpoints.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\MailKit.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\MimeKit.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rpswa.dswa.cache.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjimswa.dswa.cache.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.json.cache
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\swae.build.ex.cache
+G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

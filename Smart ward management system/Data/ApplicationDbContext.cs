@@ -28,6 +28,8 @@ namespace Smart_ward_management_system.Data
         }
         public DbSet<ActivityLog>ActivityLogs { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+
+        public DbSet<Assignment> Assignments { get; set; }
         public DbSet<CitizenVerificationRequest> CitizenVerificationRequests { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<ComplaintEscalation> ComplaintEscalations { get; set; }

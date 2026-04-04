@@ -1,12 +1,125 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\bin\\debug\\net8.0\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\bin\\debug\\net8.0\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\bin\\debug\\net8.0\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\bin\\debug\\net8.0\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|g:\\programmings\\swms\\smart-ward-management-system-backend\\smart ward management system\\migrations\\20260404024655_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F894125-3C2B-4887-B90C-39CFF0A0FC67}|Smart ward management system\\Smart ward management system.csproj|solutionrelative:smart ward management system\\migrations\\20260404024655_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20260404024655_initial.cs",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Migrations\\20260404024655_initial.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Migrations\\20260404024655_initial.cs",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Migrations\\20260404024655_initial.cs",
+              "RelativeToolTip": "Smart ward management system\\Migrations\\20260404024655_initial.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-04T02:46:55.499Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Program.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Program.cs",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Program.cs",
+              "RelativeToolTip": "Smart ward management system\\Program.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAADwvywAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-04T02:45:26.913Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Smart ward management system\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Smart ward management system\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAYwCIAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-04T02:43:32.619Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\appsettings.json",
+              "RelativeDocumentMoniker": "Smart ward management system\\appsettings.json",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\appsettings.json",
+              "RelativeToolTip": "Smart ward management system\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-04T02:43:08.121Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\bin\\Debug\\net8.0\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "Smart ward management system\\bin\\Debug\\net8.0\\appsettings.Development.json",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\bin\\Debug\\net8.0\\appsettings.Development.json",
+              "RelativeToolTip": "Smart ward management system\\bin\\Debug\\net8.0\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-04T02:37:40.155Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\bin\\Debug\\net8.0\\appsettings.json",
+              "RelativeDocumentMoniker": "Smart ward management system\\bin\\Debug\\net8.0\\appsettings.json",
+              "ToolTip": "G:\\Programmings\\SWMS\\Smart-ward-management-system-Backend\\Smart ward management system\\bin\\Debug\\net8.0\\appsettings.json",
+              "RelativeToolTip": "Smart ward management system\\bin\\Debug\\net8.0\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-04T02:37:34.136Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

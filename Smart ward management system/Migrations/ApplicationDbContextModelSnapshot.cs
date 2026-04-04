@@ -197,34 +197,6 @@ namespace Smart_ward_management_system.Migrations
                     b.ToTable("Documents");
                 });
 
-            modelBuilder.Entity("Smart_ward_management_system.Model.Common.Notification", b =>
-                {
-                    b.Property<Guid>("NotificationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DeliveredAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDelivered")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotificationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("NotificationId");
-
-                    b.ToTable("Notifications");
-                });
-
             modelBuilder.Entity("Smart_ward_management_system.Model.Common.Payment", b =>
                 {
                     b.Property<Guid>("PaymentId")
@@ -257,6 +229,148 @@ namespace Smart_ward_management_system.Migrations
                     b.HasKey("PaymentId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.Common.UserNotification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ActionUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserNotifications");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.FollowUp.Assignment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AssignedByAdminId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AssignedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("AssignedToOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastReminderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ReferenceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReferenceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReminderCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Assignment");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.FollowUp.EscalationHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AssignmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EscalatedByOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EscalatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EscalatedToOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("EscalationLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EscalationReason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignmentId");
+
+                    b.ToTable("EscalationHistories");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.FollowUp.ReminderLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AssignmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ReadDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReminderType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SentToOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReminderLogs");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Identity.User", b =>
@@ -418,7 +532,7 @@ namespace Smart_ward_management_system.Migrations
                             Province = "Bagmati",
                             Role = "Staff",
                             TemporaryAddress = "Kathmandu",
-                            UpdatedAt = new DateTime(2026, 3, 19, 4, 39, 13, 612, DateTimeKind.Utc).AddTicks(9639),
+                            UpdatedAt = new DateTime(2026, 4, 4, 2, 46, 52, 138, DateTimeKind.Utc).AddTicks(441),
                             Username = "admin",
                             VerificationStatus = 2,
                             VerifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -756,6 +870,12 @@ namespace Smart_ward_management_system.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("AssignedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("AssignedOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -770,8 +890,20 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("EscalatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("EscalatedToOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEscalated")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastReminderDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
@@ -786,6 +918,9 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<string>("Priority")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReminderCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -926,6 +1061,9 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<Guid?>("ApprovedByUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("AssignedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("AssignedOfficerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -941,6 +1079,18 @@ namespace Smart_ward_management_system.Migrations
                         .HasMaxLength(34)
                         .HasColumnType("nvarchar(34)");
 
+                    b.Property<DateTime?>("EscalatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("EscalatedToOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsEscalated")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastReminderDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -954,6 +1104,9 @@ namespace Smart_ward_management_system.Migrations
 
                     b.Property<string>("Remarks")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReminderCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("RequestedMunicipality")
                         .IsRequired()
@@ -1396,7 +1549,7 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("eae5d481-cba1-4e24-bcd7-829f89e44092"),
+                            Id = new Guid("9b052dc0-8b94-49a1-90fd-eed680b6dd05"),
                             Email = "john@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-001",
@@ -1405,7 +1558,7 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d07f4c6b-8bf7-4f8d-8a4b-637d72d5fb62"),
+                            Id = new Guid("5bd806cd-16d3-4eb8-a1d8-191310e969ab"),
                             Email = "jane@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-002",
@@ -1573,11 +1726,11 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d0582a64-f576-4c56-abe2-e7451e89858b"),
+                            Id = new Guid("d29ef8a6-2d67-46ac-994c-9d40e8fa21ed"),
                             Capacity = 5.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 3, 19, 10, 24, 13, 615, DateTimeKind.Local).AddTicks(447),
+                            LastUpdatedLocation = new DateTime(2026, 4, 4, 8, 31, 52, 139, DateTimeKind.Local).AddTicks(8053),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
@@ -1587,11 +1740,11 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("07338798-c858-4526-9dfe-71c2b58918b4"),
+                            Id = new Guid("919f656d-137e-48af-b07d-074d10b288a0"),
                             Capacity = 3.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 3, 19, 10, 24, 13, 615, DateTimeKind.Local).AddTicks(460),
+                            LastUpdatedLocation = new DateTime(2026, 4, 4, 8, 31, 52, 139, DateTimeKind.Local).AddTicks(8075),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
@@ -1806,6 +1959,17 @@ namespace Smart_ward_management_system.Migrations
                     b.HasDiscriminator().HasValue("RecommendationLetterRequest");
                 });
 
+            modelBuilder.Entity("Smart_ward_management_system.Model.FollowUp.EscalationHistory", b =>
+                {
+                    b.HasOne("Smart_ward_management_system.Model.FollowUp.Assignment", "Assignment")
+                        .WithMany("Escalations")
+                        .HasForeignKey("AssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assignment");
+                });
+
             modelBuilder.Entity("Smart_ward_management_system.Model.Notice.Notice", b =>
                 {
                     b.HasOne("Smart_ward_management_system.Model.Notice.NoticeCategory", "Category")
@@ -1959,6 +2123,11 @@ namespace Smart_ward_management_system.Migrations
                     b.Navigation("AssignedDriver");
 
                     b.Navigation("AssignedVehicle");
+                });
+
+            modelBuilder.Entity("Smart_ward_management_system.Model.FollowUp.Assignment", b =>
+                {
+                    b.Navigation("Escalations");
                 });
 
             modelBuilder.Entity("Smart_ward_management_system.Model.Notice.NoticeCategory", b =>
