@@ -5,14 +5,12 @@ namespace Smart_ward_management_system.Model.Services.Complaints
 {
     public class StatusHistory
     {
-        [Key] public Guid HistoryId { get; set; }
-        public Guid ReferenceId { get; set; }
-        public ReferenceTypeEnum ReferenceType { get; set; }
-        public Guid OldStatusId { get; set; }
-        public Guid NewStatusId { get; set; }
-        public Guid ChangedBy { get; set; }
-        public string ChangeReason { get; set; }
+        public Guid StatusHistoryId { get; set; }
+        public Guid EntityId { get; set; }
+        public string EntityType { get; set; } = string.Empty;
+        public string OldStatus { get; set; } = string.Empty;
+        public string NewStatus { get; set; } = string.Empty;
         public DateTime ChangedAt { get; set; }
-
+        public Guid? ChangedBy { get; set; }
     }
 }

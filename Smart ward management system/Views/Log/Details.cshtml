@@ -1,0 +1,351 @@
+﻿<!-- Views/Log/Details.cshtml -->
+@using Smart_ward_management_system.Extensions
+@using Smart_ward_management_system.Model
+@{
+    ViewData["Title"] = "Log Details";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Log")">Logs</a></li>
+                    <li class="breadcrumb-item active">Log Details</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Main Log Details Card -->
+            <div class="card mb-4">
+                <div class="card-header @(Model.Log.Level == LogLevel.Error ? "bg-danger text-white" : "bg-primary text-white")">
+                    <h5 class="mb-0">
+                        @if (Model.Log.Level == LogLevel.Error)
+                        {
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        }
+                        else if (Model.Log.Level == LogLevel.Warning)
+                        {
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-info-circle-fill"></i>
+                        }
+                        Log Entry #@Model.Log.Id
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Timestamp:</strong>
+                            <div>@Model.Log.Timestamp.ToString("dddd, MMMM dd, yyyy HH:mm:ss")</div>
+                            <small class="text-muted">@Model.Log.Timestamp.ToString("fff") ms</small>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Correlation ID:</strong>
+                            <div>
+                                <code>@Model.Log.CorrelationId</code>
+                                <button class="btn btn-sm btn-outline-secondary ms-2"
+                                        onclick="copyToClipboard('@Model.Log.CorrelationId')">
+                                    <i class="bi bi-clipboard"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <strong>Level:</strong>
+                            <div>
+                                <span class="badge @GetBadgeClass(Model.Log.Level) fs-6">
+                                    @Model.Log.Level
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Category:</strong>
+                            <div>
+                                <span class="badge bg-secondary fs-6">
+                                    @Model.Log.Category
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Source:</strong>
+                            <div>@(Model.Log.Source ?? "N/A")</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Message:</strong>
+                        <div class="alert alert-light border mt-2 p-3">
+                            @Model.Log.Message
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Log.ExceptionDetails))
+                    {
+                        <div class="mb-3">
+                            <strong class="text-danger">Exception Details:</strong>
+                            <div class="alert alert-danger mt-2 p-3" style="max-height: 300px; overflow-y: auto;">
+                                <pre class="mb-0" style="white-space: pre-wrap;">@Model.Log.ExceptionDetails</pre>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.ParsedAdditionalData != null && Model.ParsedAdditionalData.Any())
+                    {
+                        <div class="mb-3">
+                            <strong>Additional Data:</strong>
+                            <div class="table-responsive mt-2">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Key</th>
+                                            <th>Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ParsedAdditionalData)
+                                        {
+                                            <tr>
+                                                <td style="width: 30%;"><code>@item.Key</code></td>
+                                                <td>
+                                                    @if (item.Value?.ToString()?.Length > 100)
+                                                    {
+                                                        <details>
+                                                            <summary>Click to expand</summary>
+                                                            <pre class="mt-2">@Json.Serialize(item.Value)</pre>
+                                                        </details>
+                                                    }
+                                                    else
+                                                    {
+                                                        @item.Value
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- Context Information Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="bi bi-person-badge"></i> User & Location</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">User ID:</dt>
+                        <dd class="col-sm-7">@(Model.Log.UserId ?? "N/A")</dd>
+
+                        <dt class="col-sm-5">User Name:</dt>
+                        <dd class="col-sm-7">@(Model.Log.UserName ?? "System")</dd>
+
+                        <dt class="col-sm-5">Ward Number:</dt>
+                        <dd class="col-sm-7">@(Model.Log.WardNumber ?? "N/A")</dd>
+
+                        <dt class="col-sm-5">Department:</dt>
+                        <dd class="col-sm-7">@(Model.Log.Department ?? "N/A")</dd>
+
+                        <dt class="col-sm-5">IP Address:</dt>
+                        <dd class="col-sm-7"><code>@(Model.Log.IpAddress ?? "N/A")</code></dd>
+
+                        <dt class="col-sm-5">Request Path:</dt>
+                        <dd class="col-sm-7">@(Model.Log.RequestPath ?? "N/A")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Citizen/Grievance Information Card -->
+            @if (!string.IsNullOrEmpty(Model.Log.CitizenId) || !string.IsNullOrEmpty(Model.Log.GrievanceId))
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-people"></i> Related Records</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Model.Log.CitizenId))
+                        {
+                            <div class="mb-3">
+                                <strong>Citizen ID:</strong>
+                                <div>
+                                    <code>@Model.Log.CitizenId</code>
+                                    <a href="@Url.Action("CitizenActivity", "Log", new { citizenId = Model.Log.CitizenId })"
+                                       class="btn btn-sm btn-link">
+                                        View Activity
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Log.GrievanceId))
+                        {
+                            <div class="mb-3">
+                                <strong>Grievance ID:</strong>
+                                <div>
+                                    <code>@Model.Log.GrievanceId</code>
+                                    <a href="@Url.Action("Details", "Grievance", new { id = Model.Log.GrievanceId })"
+                                       class="btn btn-sm btn-link">
+                                        View Grievance
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Log.ApplicationId))
+                        {
+                            <div>
+                                <strong>Application ID:</strong>
+                                <div><code>@Model.Log.ApplicationId</code></div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Actions Card -->
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-gear"></i> Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Index", "Log")" class="btn btn-primary">
+                            <i class="bi bi-arrow-left"></i> Back to Logs
+                        </a>
+                        <button onclick="window.print()" class="btn btn-info">
+                            <i class="bi bi-printer"></i> Print Details
+                        </button>
+                        <button onclick="shareLog(@Model.Log.Id)" class="btn btn-success">
+                            <i class="bi bi-share"></i> Share Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Logs Section -->
+    @if (Model.RelatedLogs.Any())
+    {
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-link-45deg"></i> Related Logs (Same Correlation ID)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Level</th>
+                                        <th>Category</th>
+                                        <th>Message</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var relatedLog in Model.RelatedLogs.Take(10))
+                                    {
+                                        <tr>
+                                            <td>@relatedLog.Timestamp.ToString("HH:mm:ss")</td>
+                                            <td>
+                                                <span class="badge @GetBadgeClass(relatedLog.Level)">
+                                                    @relatedLog.Level
+                                                </span>
+                                            </td>
+                                            <td>@relatedLog.Category</td>
+                                            <td>@relatedLog.Message.Truncate(60)</td>
+                                            <td>
+                                                <a href="@Url.Action("Details", new { id = relatedLog.Id })"
+                                                   class="btn btn-sm btn-outline-info">
+                                                    View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        @if (Model.RelatedLogs.Count() > 10)
+                        {
+                            <div class="text-center mt-3">
+                                <a href="@Url.Action("Index", "Log", new { searchTerm = Model.Log.CorrelationId })"
+                                   class="btn btn-link">
+                                    View all @Model.RelatedLogs.Count() related logs
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard: ' + text);
+            }).catch(function() {
+                alert('Failed to copy to clipboard');
+            });
+        }
+
+        function shareLog(logId) {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Log Details',
+                    text: 'Check out this log entry',
+                    url: url
+                }).catch(() => {});
+            } else {
+                copyToClipboard(url);
+            }
+        }
+
+        // Highlight search terms if coming from search
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchTerm = urlParams.get('searchTerm');
+            if (searchTerm) {
+                $('.alert-light').each(function() {
+                    const text = $(this).html();
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    $(this).html(text.replace(regex, '<mark>$1</mark>'));
+                });
+            }
+        });
+    </script>
+}
+
+@functions {
+    public string GetBadgeClass(LogLevel level)
+    {
+        return level switch
+        {
+            LogLevel.Debug => "bg-secondary",
+            LogLevel.Information => "bg-primary",
+            LogLevel.Warning => "bg-warning text-dark",
+            LogLevel.Error => "bg-danger",
+            LogLevel.Critical => "bg-dark",
+            _ => "bg-secondary"
+        };
+    }
+}

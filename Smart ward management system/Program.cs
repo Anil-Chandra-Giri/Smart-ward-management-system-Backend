@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Smart_ward_management_system.Common;
 using Smart_ward_management_system.Controllers;
 using Smart_ward_management_system.Data;
+using Smart_ward_management_system.Filters;
 using Smart_ward_management_system.Model.WasteManagement_And_Scheduling;
 using Smart_ward_management_system.Services;
 using System.Security.Claims;
@@ -14,6 +15,15 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<LoggingFilter>(); // Add automatic logging filter
+});
+
+builder.Services.AddScoped<ILoggingService, LoggingService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

@@ -1,25 +1,19 @@
 [
   {
     "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
-    "Method": "Delete",
-    "RelativePath": "api/Appointment/{id}",
-    "HttpMethod": "DELETE",
+    "Method": "GetAppointmentsByWard",
+    "RelativePath": "api/Appointment/appointments/ward/{wardNumber}",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "wardNumber",
         "Type": "System.Int32",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
@@ -32,6 +26,22 @@
       {
         "Name": "appointment",
         "Type": "Smart_ward_management_system.DTOs.AppointmentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "CancelAppointment",
+    "RelativePath": "api/Appointment/cancel/{appointmentId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "appointmentId",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
@@ -81,6 +91,22 @@
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "GetQueueStatistics",
+    "RelativePath": "api/Appointment/queue/statistics/{wardNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "wardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
     "Method": "UpdateQueueStatus",
     "RelativePath": "api/Appointment/queue/update/{tokenNumber}",
     "HttpMethod": "PUT",
@@ -94,6 +120,22 @@
       },
       {
         "Name": "status",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.AppointmentController",
+    "Method": "GetTokenStatus",
+    "RelativePath": "api/Appointment/token/{tokenNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tokenNumber",
         "Type": "System.String",
         "IsRequired": true
       }
@@ -128,6 +170,22 @@
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
+    "Method": "DeleteComplaint",
+    "RelativePath": "api/Complaint/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
     "Method": "GetComplaints",
     "RelativePath": "api/Complaint/Complaints",
     "HttpMethod": "GET",
@@ -156,6 +214,64 @@
     "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
     "Method": "GetAllComplaints",
     "RelativePath": "api/Complaint/GetAllComplaints",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
+    "Method": "GetByPriority",
+    "RelativePath": "api/Complaint/GetByPriority",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "priority",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
+    "Method": "GetByStatus",
+    "RelativePath": "api/Complaint/GetByStatus",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
+    "Method": "GetByWard",
+    "RelativePath": "api/Complaint/GetByWard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "wardNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ComplaintController",
+    "Method": "GetStatistics",
+    "RelativePath": "api/Complaint/GetStatistics",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -384,6 +500,96 @@
     ]
   },
   {
+    "ContainingType": "Smart_ward_management_system.Controllers.FollowUpController",
+    "Method": "GetDashboardStats",
+    "RelativePath": "api/FollowUp/dashboard-stats/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "role",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.FollowUpController",
+    "Method": "EscalateTask",
+    "RelativePath": "api/FollowUp/escalate/{assignmentId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "assignmentId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "reason",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.FollowUpController",
+    "Method": "GetEscalatedTasks",
+    "RelativePath": "api/FollowUp/escalated-tasks/{adminId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "adminId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.FollowUpController",
+    "Method": "GetOfficerAssignments",
+    "RelativePath": "api/FollowUp/officer-assignments/{officerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "officerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.FollowUpController",
+    "Method": "SendManualReminder",
+    "RelativePath": "api/FollowUp/send-reminder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reminder",
+        "Type": "Smart_ward_management_system.DTOs.FollowUp.ReminderDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Smart_ward_management_system.Controllers.LoginController",
     "Method": "Get",
     "RelativePath": "api/Login",
@@ -505,6 +711,32 @@
     ]
   },
   {
+    "ContainingType": "Smart_ward_management_system.Controllers.LoginController",
+    "Method": "Logout",
+    "RelativePath": "api/Login/Logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.LoginController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/Login/RefreshToken",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "refreshTokenRequest",
+        "Type": "Smart_ward_management_system.DTOs.RefreshTokenDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
     "Method": "GetAllNotices",
     "RelativePath": "api/Notice",
@@ -553,6 +785,11 @@
         "IsRequired": false
       },
       {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
         "Name": "ExpiryDate",
         "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
@@ -561,11 +798,22 @@
         "Name": "IsUrgent",
         "Type": "System.Boolean",
         "IsRequired": false
-      },
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
+    "Method": "GetNoticeById",
+    "RelativePath": "api/Notice/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Name": "File",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -604,6 +852,11 @@
         "IsRequired": false
       },
       {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
         "Name": "ExpiryDate",
         "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
@@ -612,11 +865,32 @@
         "Name": "IsUrgent",
         "Type": "System.Boolean",
         "IsRequired": false
-      },
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
+    "Method": "GetActiveNotices",
+    "RelativePath": "api/Notice/active",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
+    "Method": "GetNoticesByCategory",
+    "RelativePath": "api/Notice/category/{categoryId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Name": "File",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
+        "Name": "categoryId",
+        "Type": "System.Guid",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -624,7 +898,7 @@
   {
     "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
     "Method": "DeleteNotice",
-    "RelativePath": "api/Notice/{id}",
+    "RelativePath": "api/Notice/delete/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -633,6 +907,99 @@
         "Name": "id",
         "Type": "System.Guid",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
+    "Method": "GetExpiredNotices",
+    "RelativePath": "api/Notice/expired",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
+    "Method": "PermanentDeleteNotice",
+    "RelativePath": "api/Notice/permanent/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
+    "Method": "SearchNotices",
+    "RelativePath": "api/Notice/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "keyword",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.NoticeController",
+    "Method": "UpdateNotice",
+    "RelativePath": "api/Notice/update/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CategoryId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "ExpiryDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsUrgent",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -771,57 +1138,25 @@
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.PollController",
-    "Method": "Get",
-    "RelativePath": "api/Poll/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.PollController",
-    "Method": "Delete",
-    "RelativePath": "api/Poll/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.PollController",
     "Method": "GetResults",
     "RelativePath": "api/Poll/{pollId}/results",
     "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pollId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.PollController",
+    "Method": "ActivatePoll",
+    "RelativePath": "api/Poll/activate/{pollId}",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -895,10 +1230,68 @@
     "Parameters": [
       {
         "Name": "pollId",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.PollController",
+    "Method": "DeletePoll",
+    "RelativePath": "api/Poll/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.PollController",
+    "Method": "GetCitizenVotes",
+    "RelativePath": "api/Poll/my-votes/{citizenId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "citizenId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.PollController",
+    "Method": "GetPollById",
+    "RelativePath": "api/Poll/poll/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.PollController",
+    "Method": "GetPollStatistics",
+    "RelativePath": "api/Poll/statistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -1218,7 +1611,7 @@
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
-    "Method": "Get",
+    "Method": "GetServiceRequestById",
     "RelativePath": "api/ServiceRequest/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1226,21 +1619,11 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
@@ -1265,8 +1648,24 @@
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
-    "Method": "DeleteRequest",
+    "Method": "DeleteService",
     "RelativePath": "api/ServiceRequest/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
+    "Method": "DeleteRequest",
+    "RelativePath": "api/ServiceRequest/Delete/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -1307,6 +1706,38 @@
   },
   {
     "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
+    "Method": "GetByStatus",
+    "RelativePath": "api/ServiceRequest/GetByStatus",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
+    "Method": "GetByWard",
+    "RelativePath": "api/ServiceRequest/GetByWard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "wardNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Smart_ward_management_system.Controllers.ServiceRequestController",
     "Method": "UpdateStatus",
     "RelativePath": "api/ServiceRequest/update-status",
     "HttpMethod": "PUT",
@@ -1316,240 +1747,6 @@
       {
         "Name": "model",
         "Type": "Smart_ward_management_system.DTOs.UpdateServiceStatusDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
-    "Method": "Put",
-    "RelativePath": "api/SignUp/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "value",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
-    "Method": "Delete",
-    "RelativePath": "api/SignUp/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
-    "Method": "GetProfilePicture",
-    "RelativePath": "api/SignUp/GetProfilePicture/{userId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
-    "Method": "GetUserProfile",
-    "RelativePath": "api/SignUp/GetUserProfile/{userId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
-    "Method": "Register",
-    "RelativePath": "api/SignUp/Register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "FullNameNepali",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "FullNameEnglish",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Gender",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "DateOfBirth",
-        "Type": "System.DateTime",
-        "IsRequired": false
-      },
-      {
-        "Name": "CitizenshipNumber",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "CitizenshipIssuedDistrict",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "CitizenshipIssuedDate",
-        "Type": "System.DateTime",
-        "IsRequired": false
-      },
-      {
-        "Name": "NationalIdNumber",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "PhoneNumber",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Email",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Username",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "PasswordHash",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "PermanentAddress",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "TemporaryAddress",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "WardNumber",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Municipality",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "District",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Province",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Role",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "CitizenshipFront",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "CitizenshipBack",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "LivePhoto",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
-    "Method": "ResendOTP",
-    "RelativePath": "api/SignUp/ResendOTP",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "req",
-        "Type": "Smart_ward_management_system.DTOs.ResendOtpDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Smart_ward_management_system.Controllers.SignUpController",
-    "Method": "VerifyEmail",
-    "RelativePath": "api/SignUp/VerifyEmail",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "req",
-        "Type": "Smart_ward_management_system.DTOs.OtpVerificationDTO",
         "IsRequired": true
       }
     ],

@@ -6,11 +6,16 @@ namespace OCR.Services
 {
     public class FieldExtractorService
     {
+        //public dynamic ExtractFields(string ocrText);
         private readonly Dictionary<string, string> genderMap = new Dictionary<string, string>
         {
-            { "पुरुष", "Male" },
-            { "महिला", "Female" },
-            { "अन्य", "Other" }
+            //var data = new Dictionary<string, string>();
+            //var genderMap = new Dictionary<string, string>
+    
+        { "पुरुष", "Male" },
+        { "महिला", "Female" },
+        { "अन्य", "Other" },  // optional, if applicable
+                { "अन्य", "Other" }
         };
 
         private readonly Dictionary<string, string> nepaliToEnglishMonth = new Dictionary<string, string>
@@ -37,18 +42,43 @@ namespace OCR.Services
             ocrText = CleanOcrText(ocrText);
 
             // Detect document type
-            string docType = DetectDocumentType(ocrText);
+            string docType = "Unknown";
+            if (ocrText.Contains("नागरिकता") || ocrText.Contains("Citizen")) docType = "Nepal Citizenship";
+            else if (ocrText.Contains("Passport")) docType = "Passport";
+            //string docType = DetectDocumentType(ocrText);
 
+            // Extract fields with simple rules / AI placeholder
+            // Citizenship example:
             if (docType == "Nepal Citizenship")
             {
+                var nameMatch = Regex.Match(ocrText, @"नाम\s*(?:थर)?\s*[:\-]?\s*([\u0900-\u097F\s]+?)(?=\s+लिङ्ग|\s+पुरुष|\s+महिला|[:\n])");
+                var genderMatch = Regex.Match(ocrText, @"लिङ्ग[:\s]*([^\s]+)");
+                string nepaliGender = genderMatch.Success ? genderMatch.Groups[1].Value.Trim() : "";
+                var citizenshipMatch = Regex.Match(ocrText, @"\d{1,2}-\d{1,2}-\d{1,2}-\d+");
+                var districtMatch = Regex.Match(ocrText, @"जिल्ला\s*:\s*([^\s]+)");
+                var municipalityMatch = Regex.Match(ocrText, @"L\.\s*[:]*\s*([^\s]+)");
+                var wardMatch = Regex.Match(ocrText, @"वडा\s*(\d+)");
+                var dobMatch = Regex.Match(ocrText, @"साल[:\s]*(\d+)\s*महिना[:\s]*(\d+)\s*गते[:\s]*(\d+)");
+
+                data["fullName"] = nameMatch.Success ? nameMatch.Groups[1].Value.Trim() : "";
+                data["gender"] = genderMap.ContainsKey(nepaliGender) ? genderMap[nepaliGender] : "Unknown";
+                data["citizenshipNumber"] = citizenshipMatch.Success ? NumberConversion.ConvertNepaliDigits(citizenshipMatch.Value) : "";
+                data["district"] = districtMatch.Success ? districtMatch.Groups[1].Value.Trim() : "";
+                data["municipality"] = municipalityMatch.Success ? municipalityMatch.Groups[1].Value.Trim() : "";
+                data["ward"] = wardMatch.Success ? NumberConversion.ConvertNepaliDigits(wardMatch.Groups[1].Value) : "";
+                if (dobMatch.Success)
                 if (isFrontSide)
                 {
+                    var year = NumberConversion.ConvertNepaliDigits(dobMatch.Groups[1].Value);
+                    var month = NumberConversion.ConvertNepaliDigits(dobMatch.Groups[2].Value);
+                    var day = NumberConversion.ConvertNepaliDigits(dobMatch.Groups[3].Value);
+                    data["dateOfBirthBS"] = $"{year}-{month}-{day}";
                     ExtractFrontSideFields(ocrText, data);
                 }
                 else
                 {
                     ExtractBackSideFields(ocrText, data);
-                }
+            }
             }
 
             return new
@@ -67,7 +97,7 @@ namespace OCR.Services
             ocrText = Regex.Replace(ocrText, @"[|•·]", "");
 
             return ocrText.Trim();
-        }
+    }
 
         private string DetectDocumentType(string ocrText)
         {
@@ -83,7 +113,7 @@ namespace OCR.Services
                 return "Driving License";
 
             return "Unknown";
-        }
+}
 
         private void ExtractFrontSideFields(string ocrText, Dictionary<string, string> data)
         {

@@ -2,6 +2,7 @@
 ﻿using Domain.Enumerators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Model.Appointment;
 using Smart_ward_management_system.Model.Common;
 using Smart_ward_management_system.Model.FollowUp;
@@ -70,6 +71,8 @@ namespace Smart_ward_management_system.Data
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<CollectionPoint> CollectionPoints { get; set; }
         public DbSet<RouteSchedule> RouteSchedules { get; set; }
+
+        public DbSet<LogEntry> Logs { get; set; }
 
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Resource> Resources { get; set; }

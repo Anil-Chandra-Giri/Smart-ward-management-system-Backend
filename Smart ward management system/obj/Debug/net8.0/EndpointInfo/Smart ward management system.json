@@ -62,6 +62,28 @@
         }
       }
     },
+    "/api/Appointment/token/{tokenNumber}": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "tokenNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Appointment/book": {
       "post": {
         "tags": [
@@ -134,19 +156,65 @@
         }
       }
     },
-    "/api/Appointment/{id}": {
+    "/api/Appointment/queue/statistics/{wardNumber}": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "wardNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Appointment/appointments/ward/{wardNumber}": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "wardNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Appointment/cancel/{appointmentId}": {
       "delete": {
         "tags": [
           "Appointment"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "appointmentId",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -348,6 +416,102 @@
                 }
               }
             }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Complaint"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Complaint/GetByStatus": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Complaint/GetByWard": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "parameters": [
+          {
+            "name": "wardNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Complaint/GetByPriority": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "parameters": [
+          {
+            "name": "priority",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Complaint/GetStatistics": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -644,6 +808,155 @@
         }
       }
     },
+    "/api/FollowUp/officer-assignments/{officerId}": {
+      "get": {
+        "tags": [
+          "FollowUp"
+        ],
+        "parameters": [
+          {
+            "name": "officerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/FollowUp/escalated-tasks/{adminId}": {
+      "get": {
+        "tags": [
+          "FollowUp"
+        ],
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/FollowUp/send-reminder": {
+      "post": {
+        "tags": [
+          "FollowUp"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReminderDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReminderDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReminderDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/FollowUp/escalate/{assignmentId}": {
+      "post": {
+        "tags": [
+          "FollowUp"
+        ],
+        "parameters": [
+          {
+            "name": "assignmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/FollowUp/dashboard-stats/{userId}": {
+      "get": {
+        "tags": [
+          "FollowUp"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Login": {
       "get": {
         "tags": [
@@ -829,6 +1142,49 @@
         }
       }
     },
+    "/api/Login/Logout": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Login/RefreshToken": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Notice": {
       "get": {
         "tags": [
@@ -889,16 +1245,16 @@
                   "Type": {
                     "$ref": "#/components/schemas/NoticeType"
                   },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
                   "ExpiryDate": {
                     "type": "string",
                     "format": "date-time"
                   },
                   "IsUrgent": {
                     "type": "boolean"
-                  },
-                  "File": {
-                    "type": "string",
-                    "format": "binary"
                   }
                 }
               },
@@ -915,13 +1271,13 @@
                 "Type": {
                   "style": "form"
                 },
+                "File": {
+                  "style": "form"
+                },
                 "ExpiryDate": {
                   "style": "form"
                 },
                 "IsUrgent": {
-                  "style": "form"
-                },
-                "File": {
                   "style": "form"
                 }
               }
@@ -947,7 +1303,63 @@
         }
       }
     },
+    "/api/Notice/category/{categoryId}": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notice/active": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Notice/{id}": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
       "put": {
         "tags": [
           "Notice"
@@ -982,16 +1394,16 @@
                   "Type": {
                     "$ref": "#/components/schemas/NoticeType"
                   },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
                   "ExpiryDate": {
                     "type": "string",
                     "format": "date-time"
                   },
                   "IsUrgent": {
                     "type": "boolean"
-                  },
-                  "File": {
-                    "type": "string",
-                    "format": "binary"
                   }
                 }
               },
@@ -1008,13 +1420,13 @@
                 "Type": {
                   "style": "form"
                 },
+                "File": {
+                  "style": "form"
+                },
                 "ExpiryDate": {
                   "style": "form"
                 },
                 "IsUrgent": {
-                  "style": "form"
-                },
-                "File": {
                   "style": "form"
                 }
               }
@@ -1026,7 +1438,90 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/Notice/update/{id}": {
+      "put": {
+        "tags": [
+          "Notice"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "CategoryId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "Type": {
+                    "type": "string"
+                  },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "ExpiryDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "IsUrgent": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "CategoryId": {
+                  "style": "form"
+                },
+                "Type": {
+                  "style": "form"
+                },
+                "File": {
+                  "style": "form"
+                },
+                "ExpiryDate": {
+                  "style": "form"
+                },
+                "IsUrgent": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notice/delete/{id}": {
       "delete": {
         "tags": [
           "Notice"
@@ -1039,6 +1534,62 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notice/permanent/{id}": {
+      "delete": {
+        "tags": [
+          "Notice"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notice/expired": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notice/search": {
+      "get": {
+        "tags": [
+          "Notice"
+        ],
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1282,7 +1833,7 @@
         }
       }
     },
-    "/api/Poll/{id}": {
+    "/api/Poll/poll/{id}": {
       "get": {
         "tags": [
           "Poll"
@@ -1293,46 +1844,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Poll"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1428,6 +1941,28 @@
         }
       }
     },
+    "/api/Poll/my-votes/{citizenId}": {
+      "get": {
+        "tags": [
+          "Poll"
+        ],
+        "parameters": [
+          {
+            "name": "citizenId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Poll/deactivate/{pollId}": {
       "put": {
         "tags": [
@@ -1439,8 +1974,66 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Poll/activate/{pollId}": {
+      "put": {
+        "tags": [
+          "Poll"
+        ],
+        "parameters": [
+          {
+            "name": "pollId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Poll/statistics": {
+      "get": {
+        "tags": [
+          "Poll"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Poll/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Poll"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1967,31 +2560,14 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -2119,19 +2695,17 @@
         }
       }
     },
-    "/api/SignUp/GetUserProfile/{userId}": {
+    "/api/ServiceRequest/GetByStatus": {
       "get": {
         "tags": [
-          "SignUp"
+          "ServiceRequest"
         ],
         "parameters": [
           {
-            "name": "userId",
-            "in": "path",
-            "required": true,
+            "name": "status",
+            "in": "query",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/ApprovalStatusEnum"
             }
           }
         ],
@@ -2142,19 +2716,17 @@
         }
       }
     },
-    "/api/SignUp/GetProfilePicture/{userId}": {
+    "/api/ServiceRequest/GetByWard": {
       "get": {
         "tags": [
-          "SignUp"
+          "ServiceRequest"
         ],
         "parameters": [
           {
-            "name": "userId",
-            "in": "path",
-            "required": true,
+            "name": "wardNumber",
+            "in": "query",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -2165,274 +2737,10 @@
         }
       }
     },
-    "/api/SignUp/Register": {
-      "post": {
-        "tags": [
-          "SignUp"
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "FullNameNepali": {
-                    "type": "string"
-                  },
-                  "FullNameEnglish": {
-                    "type": "string"
-                  },
-                  "Gender": {
-                    "type": "string"
-                  },
-                  "DateOfBirth": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "CitizenshipNumber": {
-                    "type": "string"
-                  },
-                  "CitizenshipIssuedDistrict": {
-                    "type": "string"
-                  },
-                  "CitizenshipIssuedDate": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "NationalIdNumber": {
-                    "type": "string"
-                  },
-                  "PhoneNumber": {
-                    "type": "string"
-                  },
-                  "Email": {
-                    "type": "string"
-                  },
-                  "Username": {
-                    "type": "string"
-                  },
-                  "PasswordHash": {
-                    "type": "string"
-                  },
-                  "PermanentAddress": {
-                    "type": "string"
-                  },
-                  "TemporaryAddress": {
-                    "type": "string"
-                  },
-                  "WardNumber": {
-                    "type": "string"
-                  },
-                  "Municipality": {
-                    "type": "string"
-                  },
-                  "District": {
-                    "type": "string"
-                  },
-                  "Province": {
-                    "type": "string"
-                  },
-                  "Role": {
-                    "type": "string"
-                  },
-                  "CitizenshipFront": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "CitizenshipBack": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "LivePhoto": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              },
-              "encoding": {
-                "FullNameNepali": {
-                  "style": "form"
-                },
-                "FullNameEnglish": {
-                  "style": "form"
-                },
-                "Gender": {
-                  "style": "form"
-                },
-                "DateOfBirth": {
-                  "style": "form"
-                },
-                "CitizenshipNumber": {
-                  "style": "form"
-                },
-                "CitizenshipIssuedDistrict": {
-                  "style": "form"
-                },
-                "CitizenshipIssuedDate": {
-                  "style": "form"
-                },
-                "NationalIdNumber": {
-                  "style": "form"
-                },
-                "PhoneNumber": {
-                  "style": "form"
-                },
-                "Email": {
-                  "style": "form"
-                },
-                "Username": {
-                  "style": "form"
-                },
-                "PasswordHash": {
-                  "style": "form"
-                },
-                "PermanentAddress": {
-                  "style": "form"
-                },
-                "TemporaryAddress": {
-                  "style": "form"
-                },
-                "WardNumber": {
-                  "style": "form"
-                },
-                "Municipality": {
-                  "style": "form"
-                },
-                "District": {
-                  "style": "form"
-                },
-                "Province": {
-                  "style": "form"
-                },
-                "Role": {
-                  "style": "form"
-                },
-                "CitizenshipFront": {
-                  "style": "form"
-                },
-                "CitizenshipBack": {
-                  "style": "form"
-                },
-                "LivePhoto": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/SignUp/VerifyEmail": {
-      "post": {
-        "tags": [
-          "SignUp"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtpVerificationDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtpVerificationDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtpVerificationDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/SignUp/ResendOTP": {
-      "post": {
-        "tags": [
-          "SignUp"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResendOtpDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResendOtpDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResendOtpDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/SignUp/{id}": {
-      "put": {
-        "tags": [
-          "SignUp"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/api/ServiceRequest/Delete/{id}": {
       "delete": {
         "tags": [
-          "SignUp"
+          "ServiceRequest"
         ],
         "parameters": [
           {
@@ -2440,8 +2748,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -3956,6 +4264,38 @@
           "status": {
             "type": "string",
             "nullable": true
+          },
+          "assignedOfficerId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "assignedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastReminderDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isEscalated": {
+            "type": "boolean"
+          },
+          "escalatedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "escalatedToOfficerId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "reminderCount": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -3968,6 +4308,10 @@
             "format": "uuid"
           },
           "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "remarks": {
             "type": "string",
             "nullable": true
           }
@@ -4570,24 +4914,11 @@
         "enum": [
           1,
           2,
-          3
+          3,
+          4
         ],
         "type": "integer",
         "format": "int32"
-      },
-      "OtpVerificationDTO": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "otpCode": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       },
       "Poll": {
         "type": "object",
@@ -4654,6 +4985,10 @@
           "name": {
             "type": "string",
             "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "isActive": {
             "type": "boolean"
@@ -4728,15 +5063,66 @@
         },
         "additionalProperties": false
       },
-      "ResendOtpDTO": {
+      "RefreshTokenDTO": {
         "type": "object",
         "properties": {
-          "email": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "refreshToken": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
+      },
+      "ReminderDTO": {
+        "type": "object",
+        "properties": {
+          "assignmentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "officerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "officerEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "officerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "referenceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "referenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "daysOverdue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reminderType": {
+            "$ref": "#/components/schemas/ReminderType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReminderType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "Resource": {
         "required": [
@@ -5394,6 +5780,14 @@
           },
           "status": {
             "$ref": "#/components/schemas/ApprovalStatusEnum"
+          },
+          "remarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -6111,6 +6505,9 @@
       "name": "DisasterEvents"
     },
     {
+      "name": "FollowUp"
+    },
+    {
       "name": "Login"
     },
     {
@@ -6133,9 +6530,6 @@
     },
     {
       "name": "ServiceRequest"
-    },
-    {
-      "name": "SignUp"
     },
     {
       "name": "SmsAlerts"

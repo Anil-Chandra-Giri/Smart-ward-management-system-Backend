@@ -1,0 +1,129 @@
+﻿<!-- Views/Log/_LogTable.cshtml -->
+@using Smart_ward_management_system.Extensions
+@using Smart_ward_management_system.Model
+@model IEnumerable<Smart_ward_management_system.Model.LogEntry>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.Timestamp)</th>
+                <th>@Html.DisplayNameFor(m => m.Level)</th>
+                <th>@Html.DisplayNameFor(m => m.Category)</th>
+                <th>@Html.DisplayNameFor(m => m.Message)</th>
+                <th>@Html.DisplayNameFor(m => m.UserName)</th>
+                <th>@Html.DisplayNameFor(m => m.WardNumber)</th>
+                <th>@Html.DisplayNameFor(m => m.Department)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-5">
+                        <i class="bi bi-inbox"></i> No logs found
+                    </td>
+                </tr>
+            }
+            @foreach (var log in Model)
+            {
+                // FIXED: Use fully qualified enum names or compare with integer values
+                var isError = log.Level == Smart_ward_management_system.Model.LogLevel.Error;
+                var isWarning = log.Level == Smart_ward_management_system.Model.LogLevel.Warning;
+
+                <tr class="@(isError ? "table-danger" : (isWarning ? "table-warning" : ""))">
+                    <td style="min-width: 100px;">
+                        <small>@log.Timestamp.ToString("yyyy-MM-dd")</small><br />
+                        <small class="text-muted">@log.Timestamp.ToString("HH:mm:ss")</small>
+                    </td>
+                    <td>
+                        <span class="badge @GetBadgeClass(log.Level)">
+                            @log.Level
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge bg-secondary">
+                            @log.Category
+                        </span>
+                    </td>
+                    <td style="max-width: 400px;">
+                        <div class="text-truncate" style="max-width: 400px;" title="@log.Message">
+                            @log.Message.Truncate(80)
+                        </div>
+                        @if (!string.IsNullOrEmpty(log.CitizenId))
+                        {
+                            <small class="text-muted">
+                                <i class="bi bi-person"></i> Citizen: @log.CitizenId
+                            </small>
+                        }
+                        @if (!string.IsNullOrEmpty(log.GrievanceId))
+                        {
+                            <br />
+                            <small class="text-muted">
+                                <i class="bi bi-chat"></i> Grievance: @log.GrievanceId
+                            </small>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(log.UserName))
+                        {
+                            <span>@log.UserName</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">System</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(log.WardNumber))
+                        {
+                            <span class="badge bg-info">Ward @log.WardNumber</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">-</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(log.Department))
+                        {
+                            <span class="badge bg-light text-dark">@log.Department</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">-</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", new { id = log.Id })"
+                           class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-eye"></i> Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@functions {
+    public string GetBadgeClass(Smart_ward_management_system.Model.LogLevel level)
+    {
+        switch (level)
+        {
+            case Smart_ward_management_system.Model.LogLevel.Debug:
+                return "bg-secondary";
+            case Smart_ward_management_system.Model.LogLevel.Information:
+                return "bg-primary";
+            case Smart_ward_management_system.Model.LogLevel.Warning:
+                return "bg-warning text-dark";
+            case Smart_ward_management_system.Model.LogLevel.Error:
+                return "bg-danger";
+            case Smart_ward_management_system.Model.LogLevel.Critical:
+                return "bg-dark";
+            default:
+                return "bg-secondary";
+        }
+    }
+}

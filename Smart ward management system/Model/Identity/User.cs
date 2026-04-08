@@ -44,5 +44,11 @@ namespace Smart_ward_management_system.Model.Identity
         public DateTime? VerifiedAt { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        // Add to User class
+        public DateTime? LastLoginAt { get; set; }
+        public string? LastLoginIp { get; set; }
+        public int FailedLoginAttempts { get; set; }
+        public DateTime? LockoutEnd { get; set; }
     }
 }
