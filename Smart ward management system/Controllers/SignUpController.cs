@@ -1,631 +1,371 @@
-﻿//using Domain.Enumerators;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using Smart_ward_management_system.Common;
-//using Smart_ward_management_system.Data;
-//using Smart_ward_management_system.DTOs;
-//using Smart_ward_management_system.Model;
-//using Smart_ward_management_system.Model.Common;
-//using Smart_ward_management_system.Model.Identity;
-//using Smart_ward_management_system.Services; // Add this
-//using System.Net;
-//using System.Net.Mail;
-//using System.Threading;
-//using static System.Net.WebRequestMethods;
+﻿using Domain.Enumerators;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Smart_ward_management_system.Common;
+using Smart_ward_management_system.Data;
+using Smart_ward_management_system.DTOs;
+using Smart_ward_management_system.Model;
+using Smart_ward_management_system.Model.Common;
+using Smart_ward_management_system.Model.Identity;
+using Smart_ward_management_system.Services; // Add this
+using System.Net;
+using System.Net.Mail;
+using System.Threading;
+using static System.Net.WebRequestMethods;
 
-//namespace Smart_ward_management_system.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class SignUpController : ControllerBase
-//    {
-//        private readonly ApplicationDbContext db;
-//        private readonly DocumentService _docService;
-//        private readonly ILoggingService _logger; // Add logging service
+namespace Smart_ward_management_system.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SignUpController : ControllerBase
+    {
+        private readonly ApplicationDbContext db;
+        private readonly DocumentService _docService;
+        private readonly ILoggingService _logger; // Add logging service
+        private readonly IConfiguration _configuration;
 
-//        public SignUpController(ApplicationDbContext db, DocumentService _docService, ILoggingService logger)
-//        private readonly IConfiguration _configuration;
-//        public SignUpController(ApplicationDbContext db, DocumentService _docService, IConfiguration _configuration)
-//        {
-//            this.db = db;
-//            this._docService = _docService;
-//            this._logger = logger;
-//            this._configuration = _configuration;
-//        }
+        public SignUpController(ApplicationDbContext db, DocumentService _docService, ILoggingService logger, IConfiguration _configuration)
+        {
+            this.db = db;
+            this._docService = _docService;
+            this._logger = logger;
+            this._configuration = _configuration;
+        }
 
-//        private string GenerateOTP()
-//        {
-//            try
-//            {
-//                await _logger.LogInfoAsync($"Sending OTP email to {toEmail}", LogCategory.CitizenServices);
+        private string GenerateOTP()
+        {
+            // Generate a 6-digit OTP
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString();
+        }
 
-//                var smtpClient = new SmtpClient("smtp.gmail.com")
-//                {
-//                    Port = 587,
-//                    Credentials = new NetworkCredential("dineshjoshi0025@gmail.com", "jhzcuiigttvriohy"),
-//                    EnableSsl = true,
-//                };
-//            // Generate a 6-digit OTP
-//            Random random = new Random();
-//            return random.Next(100000, 999999).ToString();
-//        }
+        private async Task SendEmailAsync(string toEmail, string otp, string fullName)
+        {
+            try
+            {
+                // It's better to store email credentials in configuration
+                var smtpClient = new SmtpClient(_configuration["EmailSettings:SmtpServer"])
+                {
+                    Port = int.Parse(_configuration["EmailSettings:Port"]),
+                    Credentials = new NetworkCredential(
+                        _configuration["EmailSettings:Username"],
+                        _configuration["EmailSettings:Password"]),
+                    EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSSL"]),
+                };
 
-//        private async Task SendEmailAsync(string toEmail, string otp, string fullName)
-//        {
-//            try
-//            {
-//                // It's better to store email credentials in configuration
-//                var smtpClient = new SmtpClient(_configuration["EmailSettings:SmtpServer"])
-//                {
-//                    Port = int.Parse(_configuration["EmailSettings:Port"]),
-//                    Credentials = new NetworkCredential(
-//                        _configuration["EmailSettings:Username"],
-//                        _configuration["EmailSettings:Password"]),
-//                    EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSSL"]),
-//                };
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(_configuration["EmailSettings:FromEmail"],
+                           _configuration["EmailSettings:FromName"]),
+                    Subject = "Verify Your Email - Smart Ward Management System",
+                    Body = $@"
+        <html>
+            <head>
+                <style>
+                    body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                    .header {{ background-color: #4CAF50; color: white; padding: 20px; text-align: center; }}
+                    .content {{ padding: 30px; background-color: #f9f9f9; }}
+                    .otp-code {{ font-size: 32px; font-weight: bold; color: #4CAF50; text-align: center; 
+                                 padding: 20px; letter-spacing: 5px; }}
+                    .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <div class='header'>
+                        <h2>Email Verification</h2>
+                    </div>
+                    <div class='content'>
+                        <p>Hello <strong>{fullName}</strong>,</p>
+                        <p>Thank you for registering with Smart Ward Management System. Please use the following OTP code to verify your email address:</p>
+                        <div class='otp-code'>{otp}</div>
+                        <p>This code is valid for <strong>10 minutes</strong>.</p>
+                        <p>If you didn't request this verification, please ignore this email.</p>
+                        <p>For security reasons, never share this OTP with anyone.</p>
+                    </div>
+                    <div class='footer'>
+                        <p>© {DateTime.UtcNow.Year} Smart Ward Management System. All rights reserved.</p>
+                    </div>
+                </div>
+            </body>
+        </html>",
+                    IsBodyHtml = true,
+                };
 
-//                var mailMessage = new MailMessage
-//                {
-//                    From = new MailAddress("noreply@smartwardmanagementsystem.com"),
-//                    Subject = "Your One-Time Password (OTP) for Secure Login",
-//                    Body = $@"
-//                var mailMessage = new MailMessage
-//                {
-//                    From = new MailAddress(_configuration["EmailSettings:FromEmail"],
-//                           _configuration["EmailSettings:FromName"]),
-//                    Subject = "Verify Your Email - Smart Ward Management System",
-//                    Body = $@"
-//        <html>
-//            <head>
-//                <style>
-//                    body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-//                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-//                    .header {{ background-color: #4CAF50; color: white; padding: 20px; text-align: center; }}
-//                    .content {{ padding: 30px; background-color: #f9f9f9; }}
-//                    .otp-code {{ font-size: 32px; font-weight: bold; color: #4CAF50; text-align: center; 
-//                                 padding: 20px; letter-spacing: 5px; }}
-//                    .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
-//                </style>
-//            </head>
-//            <body>
-//                <p>Hello,</p>
-//                <p>Your OTP code is: <strong>{otp}</strong></p>
-//                <p>This code is valid for 10 minutes.</p>
-//                <p>If you did not request this, please ignore this email.</p>
-//                <br/>
-//                <p>Thank you,<br/>Smart ward management system</p>
-//                <div class='container'>
-//                    <div class='header'>
-//                        <h2>Email Verification</h2>
-//                    </div>
-//                    <div class='content'>
-//                        <p>Hello <strong>{fullName}</strong>,</p>
-//                        <p>Thank you for registering with Smart Ward Management System. Please use the following OTP code to verify your email address:</p>
-//                        <div class='otp-code'>{otp}</div>
-//                        <p>This code is valid for <strong>10 minutes</strong>.</p>
-//                        <p>If you didn't request this verification, please ignore this email.</p>
-//                        <p>For security reasons, never share this OTP with anyone.</p>
-//                    </div>
-//                    <div class='footer'>
-//                        <p>© {DateTime.UtcNow.Year} Smart Ward Management System. All rights reserved.</p>
-//                    </div>
-//                </div>
-//            </body>
-//        </html>",
-//                    IsBodyHtml = true,
-//                };
-
-//                mailMessage.To.Add(toEmail);
-//                await smtpClient.SendMailAsync(mailMessage);
-
-//                await _logger.LogInfoAsync($"OTP email sent successfully to {toEmail}", LogCategory.CitizenServices);
-//            }
-//            catch (Exception ex)
-//            {
-//                await _logger.LogErrorAsync($"Failed to send OTP email to {toEmail}", ex, LogCategory.CitizenServices);
-//                throw;
-//            }
-//        }
-//                mailMessage.To.Add(toEmail);
-//                await smtpClient.SendMailAsync(mailMessage);
-//            }
-//            catch (Exception ex)
-//            {
-//                // Log the exception
-//                throw new Exception($"Failed to send email: {ex.Message}");
-//            }
-//        }
-
-//        // GET: api/<SignUpController>
-//        [HttpGet]
-//        public IEnumerable<string> Get()
-//        {
-//            _logger.LogInfoAsync("SignUpController GET endpoint called", LogCategory.System).Wait();
-//            return new string[] { "value1", "value2" };
-//        }
-//        // GET: api/<RecruiterSignUpController>
-//        [HttpGet("GetUserProfile/{userId}")]
-//        public async Task<ActionResult> GetUserProfile(Guid userId)
-//        {
-//            var user = await db.Users
-//                .Where(u => u.UserId == userId)
-//                .Select(u => new
-//                {
-//                    u.UserId,
-//                    u.Username,
-//                    u.FullNameEnglish,
-//                    u.Email,
-//                    u.ProfilePicturePath,
-//                    u.Role
-//                })
-//                .FirstOrDefaultAsync();
-
-//            if (user == null)
-//                return NotFound(new { message = "User not found" });
-
-//            return Ok(user);
-//        }
-
-//        [HttpGet("GetProfilePicture/{userId}")]
-//        public async Task<IActionResult> GetProfilePicture(Guid userId)
-//        {
-//            try
-//            {
-//                var user = await db.Users.FindAsync(userId);
-//                if (user?.ProfilePicturePath == null)
-//                {
-//                    return NotFound(new { message = "Profile picture not found" });
-//                }
-
-//        // GET api/<SignUpController>/5
-//        [HttpGet("{id}")]
-//        public string Get(int id)
-//        {
-//            _logger.LogInfoAsync($"SignUpController GET by id {id} called", LogCategory.System).Wait();
-//            return "value";
-//        }
-//                // Get the full path
-//                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), user.ProfilePicturePath.TrimStart('/'));
-
-//                if (!System.IO.File.Exists(imagePath))
-//                {
-//                    return NotFound(new { message = "Image file not found" });
-//                }
-
-//        // POST api/<SignUpController>/Register
-//                // Determine content type based on file extension
-//                var fileExtension = Path.GetExtension(imagePath).ToLower();
-//                var contentType = fileExtension switch
-//                {
-//                    ".jpg" or ".jpeg" => "image/jpeg",
-//                    ".png" => "image/png",
-//                    ".gif" => "image/gif",
-//                    _ => "application/octet-stream"
-//                };
-
-//                var image = System.IO.File.OpenRead(imagePath);
-//                return File(image, contentType);
-//            }
-//            catch (Exception ex)
-//            {
-//                return StatusCode(500, new { message = $"Error retrieving profile picture: {ex.Message}" });
-//            }
-//        }
-
-//        [HttpPost("Register")]
-//        public async Task<ActionResult> Register([FromForm] UserDTO request)
-//        {
-//            var correlationId = Guid.NewGuid().ToString();
-
-//            try
-//            // Check for existing email and username
-//            var existingEmail = await db.Users.FirstOrDefaultAsync(s => s.Email == request.Email);
-//            var existingUsername = await db.Users.FirstOrDefaultAsync(s => s.Username == request.Username);
-
-//            if (existingEmail != null)
-//            {
-//                await _logger.LogInfoAsync($"Registration started for user: {request.Username}, Email: {request.Email}",
-//                    LogCategory.UserManagement,
-//                    new { CorrelationId = correlationId, Username = request.Username, Email = request.Email });
-
-//                // Check for existing email
-//                var existingEmail = db.Users.FirstOrDefault(s => s.Email == request.Email);
-//                if (existingEmail != null)
-//                {
-//                    await _logger.LogWarningAsync($"Registration failed: Email already exists - {request.Email}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, Email = request.Email });
-//                    return BadRequest(new { message = "Email Already exist" });
-//                }
-
-//                // Check for existing username
-//                var existingUser = db.Users.FirstOrDefault(s => s.Username == request.Username);
-//                if (existingUser != null)
-//                {
-//                    await _logger.LogWarningAsync($"Registration failed: Username already exists - {request.Username}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, Username = request.Username });
-//                    return BadRequest(new { message = "Username Already exist" });
-//                }
-
-//                using var transaction = await db.Database.BeginTransactionAsync();
-//                try
-//                {
-//                    var user = new User();
-//                    var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.PasswordHash);
-//                return BadRequest(new { message = "Email already exists" });
-//            }
-//            if (existingUsername != null)
-//            {
-//                return BadRequest(new { message = "Username already exists" });
-//            }
-
-//            using var transaction = await db.Database.BeginTransactionAsync();
-//            try
-//            {
-//                var user = new User();
-//                var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.PasswordHash);
-
-//                    user.UserId = Guid.NewGuid();
-//                    user.FullNameNepali = request.FullNameNepali;
-//                    user.FullNameEnglish = request.FullNameEnglish;
-//                    user.Gender = request.Gender;
-//                    user.DateOfBirth = request.DateOfBirth;
-//                    user.CitizenshipNumber = request.CitizenshipNumber;
-//                    user.CitizenshipIssuedDistrict = request.CitizenshipIssuedDistrict;
-//                    user.CitizenshipIssuedDate = request.CitizenshipIssuedDate;
-//                    user.NationalIdNumber = request.NationalIdNumber;
-//                    user.PhoneNumber = request.PhoneNumber;
-//                    user.Email = request.Email;
-//                    user.Username = request.Username;
-//                    user.PasswordHash = hashedPassword;
-//                    user.PermanentAddress = request.PermanentAddress;
-//                    user.TemporaryAddress = request.TemporaryAddress;
-//                    user.WardNumber = request.WardNumber;
-//                    user.Municipality = request.Municipality;
-//                    user.District = request.District;
-//                    user.Province = request.Province;
-//                    user.Role = request.Role;
-//                    user.IsVerified = false;
-//                    user.IsEmailConfirmed = true;
-//                    user.VerificationStatus = VerificationStatusEnum.Pending;
-//                    user.VerifiedBy = Guid.Empty;
-//                    user.VerifiedAt = null;
-//                    user.AccountStatus = "Active";
-//                    user.CreatedAt = DateTime.UtcNow;
-//                    user.UpdatedAt = DateTime.UtcNow;
-//                user.UserId = Guid.NewGuid();
-//                user.FullNameNepali = request.FullNameNepali;
-//                user.FullNameEnglish = request.FullNameEnglish;
-//                user.Gender = request.Gender;
-//                user.DateOfBirth = request.DateOfBirth;
-//                user.CitizenshipNumber = request.CitizenshipNumber;
-//                user.CitizenshipIssuedDistrict = request.CitizenshipIssuedDistrict;
-//                user.CitizenshipIssuedDate = request.CitizenshipIssuedDate;
-//                user.NationalIdNumber = request.NationalIdNumber;
-//                user.PhoneNumber = request.PhoneNumber;
-//                user.Email = request.Email;
-//                user.Username = request.Username;
-//                user.PasswordHash = hashedPassword;
-//                user.PermanentAddress = request.PermanentAddress;
-//                user.TemporaryAddress = request.TemporaryAddress;
-//                user.WardNumber = request.WardNumber;
-//                user.Municipality = request.Municipality;
-//                user.District = request.District;
-//                user.Province = request.Province;
-//                user.Role = request.Role;
-//                user.IsVerified = false;
-//                user.IsEmailConfirmed = false; // Set to false initially
-//                user.VerificationStatus = VerificationStatusEnum.Pending;
-//                user.VerifiedBy = null;
-//                user.VerifiedAt = null;
-//                user.AccountStatus = "Pending Verification";
-//                if (request.LivePhoto != null)
-//                {
-//                    var profilePicPath = await FileHelper.SaveFileAsync(request.LivePhoto, "ProfilePictures");
-//                    user.ProfilePicturePath = profilePicPath;
-//                }
-//                user.CreatedAt = DateTime.UtcNow;
-//                user.UpdatedAt = DateTime.UtcNow;
-
-//                    db.Users.Add(user);
-
-//                    await _logger.LogInfoAsync($"User created successfully with ID: {user.UserId}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, UserId = user.UserId, WardNumber = user.WardNumber });
-
-//                    // Process documents
-//                    var documentTypes = new[]
-//                    {
-//                        (File: request.CitizenshipFront, Type: "CitizenshipFront"),
-//                        (File: request.CitizenshipBack, Type: "CitizenshipBack"),
-//                        (File: request.LivePhoto, Type: "LivePhoto")
-//                    };
-
-//                    int documentCount = 0;
-//                    foreach (var doc in documentTypes)
-//                    {
-//                        if (doc.File != null)
-//                        {
-//                            var path = await FileHelper.SaveFileAsync(doc.File, "IdentityDocs");
-//                            string docNumber = await _docService.GenerateDocumentNumber(request.WardNumber, "REG");
-//                            var document = new Document
-//                            {
-//                                DocumentId = Guid.NewGuid(),
-//                                ReferenceId = user.UserId,
-//                                ReferenceType = "User",
-//                                DocumentType = doc.Type,
-//                                FilePath = path,
-//                                IssuedBy = request.CitizenshipIssuedDistrict,
-//                                IssuedDate = request.CitizenshipIssuedDate,
-//                                IsVerified = false,
-//                                CreatedOn = DateTime.UtcNow,
-//                                DocumentNumber = docNumber
-//                            };
-//                            db.Documents.Add(document);
-//                            documentCount++;
-//                        }
-//                    }
-//                // Generate and store OTP
-//                string otpCode = GenerateOTP();
-//                user.OtpCode = otpCode;
-//                user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10);
-//                user.OtpAttempts = 0;
-//                user.LastOtpRequestTime = DateTime.UtcNow;
-
-//                db.Users.Add(user);
-
-//                // Handle document uploads
-//                var documentTypes = new[]
-//                {
-//                    (File: request.CitizenshipFront, Type: "CitizenshipFront"),
-//                    (File: request.CitizenshipBack, Type: "CitizenshipBack"),
-//                    (File: request.LivePhoto, Type: "LivePhoto")
-//                };
-
-//                foreach (var doc in documentTypes)
-//                {
-//                    if (doc.File != null)
-//                    {
-//                        var path = await FileHelper.SaveFileAsync(doc.File, "IdentityDocs");
-//                        string docNumber = await _docService.GenerateDocumentNumber(request.WardNumber, "REG");
-//                        var document = new Document
-//                        {
-//                            DocumentId = Guid.NewGuid(),
-//                            ReferenceId = user.UserId,
-//                            ReferenceType = "User",
-//                            DocumentType = doc.Type,
-//                            FilePath = path,
-//                            IssuedBy = request.CitizenshipIssuedDistrict,
-//                            IssuedDate = request.CitizenshipIssuedDate,
-//                            IsVerified = false,
-//                            CreatedOn = DateTime.UtcNow,
-//                            DocumentNumber = docNumber
-//                        };
-//                        db.Documents.Add(document);
-//                    }
-//                }
-
-//                    await db.SaveChangesAsync();
-//                    await transaction.CommitAsync();
-//                await db.SaveChangesAsync();
-//                await transaction.CommitAsync();
-
-//                // Send OTP email
-//                try
-//                {
-//                    await SendEmailAsync(user.Email, otpCode, user.FullNameEnglish);
-//                }
-//                catch (Exception ex)
-//                {
-//                    // Log email failure but don't rollback transaction
-//                    // User can request OTP again via resend endpoint
-//                    Console.WriteLine($"Failed to send email: {ex.Message}");
-//                }
-
-//                    await _logger.LogInfoAsync($"Registration completed successfully for user: {user.UserId}. Documents uploaded: {documentCount}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, UserId = user.UserId, DocumentsUploaded = documentCount });
-
-//                    // Log citizen action
-//                    await _logger.LogCitizenActionAsync(
-//                        user.UserId.ToString(),
-//                        "Registered as new user",
-//                        "User Registration"
-//                    );
-
-//                    return Ok(new
-//                    {
-//                        message = "Registered successfully. Please check your email for OTP to confirm your account.",
-//                        userId = user.UserId
-//                    });
-//                }
-//                catch (Exception ex)
-//                {
-//                    await transaction.RollbackAsync();
-//                    await _logger.LogErrorAsync($"Registration failed during database operation",
-//                        ex,
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, Username = request.Username, Email = request.Email });
-//                    throw;
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                await _logger.LogErrorAsync($"Unexpected error during registration for user: {request.Username}",
-//                    ex,
-//                    LogCategory.UserManagement,
-//                    new { CorrelationId = correlationId, Username = request.Username });
-//                return StatusCode(500, new { message = "An error occurred during registration. Please try again." });
-//                return Ok(new
-//                {
-//                    message = "Registration successful. Please check your email for OTP verification.",
-//                    userId = user.UserId,
-//                    email = user.Email
-//                });
-//            }
-//            catch (Exception ex)
-//            {
-//                await transaction.RollbackAsync();
-//                return StatusCode(500, new { message = "Registration failed", error = ex.Message });
-//            }
-//        }
+                mailMessage.To.Add(toEmail);
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                throw new Exception($"Failed to send email: {ex.Message}");
+            }
+        }
 
 
-//        [HttpPost("VerifyEmail")]
-//        public async Task<IActionResult> VerifyEmail([FromBody] OtpVerificationDTO req)
-//        {
-//            var correlationId = Guid.NewGuid().ToString();
+        // GET: api/<SignUpController>
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            _logger.LogInfoAsync("SignUpController GET endpoint called", LogCategory.System).Wait();
+            return new string[] { "value1", "value2" };
+        }
 
-//            try
-//            {
-//                await _logger.LogInfoAsync($"Email verification started for UserId: {req.UserId}",
-//                    LogCategory.UserManagement,
-//                    new { CorrelationId = correlationId, UserId = req.UserId });
+        // GET api/<SignUpController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            _logger.LogInfoAsync($"SignUpController GET by id {id} called", LogCategory.System).Wait();
+            return "value";
+        }
 
-//                var user = await db.Users.FindAsync(req.UserId);
+        // POST api/<SignUpController>/Register
+        [HttpPost("Register")]
+        public async Task<ActionResult> Register([FromForm] UserDTO request)
+        {
+            var correlationId = Guid.NewGuid().ToString();
 
-//                if (user == null)
-//                {
-//                    await _logger.LogWarningAsync($"Email verification failed: User not found - {req.UserId}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, UserId = req.UserId });
-//                    return NotFound(new { message = "User not found" });
-//                }
+            try
+            {
+                await _logger.LogInfoAsync($"Registration started for user: {request.Username}, Email: {request.Email}",
+                    LogCategory.UserManagement,
+                    new { CorrelationId = correlationId, Username = request.Username, Email = request.Email });
 
-//                if (user.IsEmailConfirmed)
-//                {
-//                    await _logger.LogWarningAsync($"Email verification failed: Email already confirmed for user {req.UserId}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, UserId = req.UserId });
-//                    return BadRequest(new { message = "Email already confirmed." });
-//                }
+                // Check for existing email
+                var existingEmail = db.Users.FirstOrDefault(s => s.Email == request.Email);
+                if (existingEmail != null)
+                {
+                    await _logger.LogWarningAsync($"Registration failed: Email already exists - {request.Email}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, Email = request.Email });
+                    return BadRequest(new { message = "Email Already exist" });
+                }
 
-//                if (user.OtpExpiryTime < DateTime.UtcNow)
-//                {
-//                    await _logger.LogWarningAsync($"Email verification failed: OTP expired for user {req.UserId}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, UserId = req.UserId, OtpExpiry = user.OtpExpiryTime });
-//                    return BadRequest(new { message = "OTP expired. Please request a new one." });
-//                }
-//            // Check OTP attempts
-//            if (user.OtpAttempts >= 3)
-//                return BadRequest(new { message = "Too many failed attempts. Please request a new OTP." });
+                // Check for existing username
+                var existingUser = db.Users.FirstOrDefault(s => s.Username == request.Username);
+                if (existingUser != null)
+                {
+                    await _logger.LogWarningAsync($"Registration failed: Username already exists - {request.Username}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, Username = request.Username });
+                    return BadRequest(new { message = "Username Already exist" });
+                }
 
-//            if (user.OtpExpiryTime == null || user.OtpExpiryTime < DateTime.UtcNow)
-//                return BadRequest(new { message = "OTP expired. Please request a new one." });
+                using var transaction = await db.Database.BeginTransactionAsync();
+                try
+                {
+                    var user = new User();
+                    var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.PasswordHash);
 
-//                if (user.OtpCode != req.OtpCode)
-//                {
-//                    await _logger.LogWarningAsync($"Email verification failed: Invalid OTP for user {req.UserId}",
-//                        LogCategory.UserManagement,
-//                        new { CorrelationId = correlationId, UserId = req.UserId, ProvidedOtp = req.OtpCode });
-//                    return BadRequest(new { message = "Invalid OTP." });
-//                }
-//            if (user.OtpCode != req.OtpCode)
-//            {
-//                user.OtpAttempts++;
-//                await db.SaveChangesAsync();
+                    user.UserId = Guid.NewGuid();
+                    user.FullNameNepali = request.FullNameNepali;
+                    user.FullNameEnglish = request.FullNameEnglish;
+                    user.Gender = request.Gender;
+                    user.DateOfBirth = request.DateOfBirth;
+                    user.CitizenshipNumber = request.CitizenshipNumber;
+                    user.CitizenshipIssuedDistrict = request.CitizenshipIssuedDistrict;
+                    user.CitizenshipIssuedDate = request.CitizenshipIssuedDate;
+                    user.NationalIdNumber = request.NationalIdNumber;
+                    user.PhoneNumber = request.PhoneNumber;
+                    user.Email = request.Email;
+                    user.Username = request.Username;
+                    user.PasswordHash = hashedPassword;
+                    user.PermanentAddress = request.PermanentAddress;
+                    user.TemporaryAddress = request.TemporaryAddress;
+                    user.WardNumber = request.WardNumber;
+                    user.Municipality = request.Municipality;
+                    user.District = request.District;
+                    user.Province = request.Province;
+                    user.Role = request.Role;
+                    user.IsVerified = false;
+                    user.IsEmailConfirmed = false;
+                    user.VerificationStatus = VerificationStatusEnum.Pending;
+                    user.VerifiedBy = Guid.Empty;
+                    user.VerifiedAt = null;
+                    user.AccountStatus = "Active";
+                    user.CreatedAt = DateTime.UtcNow;
+                    user.UpdatedAt = DateTime.UtcNow;
 
-//                // OTP correct - verify email
-//                user.IsEmailConfirmed = true;
-//                user.OtpCode = null;
-//                user.OtpExpiryTime = null;
-//                int remainingAttempts = 3 - user.OtpAttempts;
-//                return BadRequest(new { message = $"Invalid OTP. {remainingAttempts} attempts remaining." });
-//            }
+                    db.Users.Add(user);
 
-//            user.IsEmailConfirmed = true;
-//            user.AccountStatus = "Active";
-//            user.OtpCode = null;
-//            user.OtpExpiryTime = null;
-//            user.OtpAttempts = 0;
-//            user.UpdatedAt = DateTime.UtcNow;
+                    await _logger.LogInfoAsync($"User created successfully with ID: {user.UserId}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, UserId = user.UserId, WardNumber = user.WardNumber });
 
-//            await db.SaveChangesAsync();
+                    // Process documents
+                    var documentTypes = new[]
+                    {
+                        (File: request.CitizenshipFront, Type: "CitizenshipFront"),
+                        (File: request.CitizenshipBack, Type: "CitizenshipBack"),
+                        (File: request.LivePhoto, Type: "LivePhoto")
+                    };
 
-//            return Ok(new
-//            {
-//                message = "Email verified successfully! Your account is now active.",
-//                userId = user.UserId
-//            });
-//        }
+                    int documentCount = 0;
+                    foreach (var doc in documentTypes)
+                    {
+                        if (doc.File != null)
+                        {
+                            var path = await FileHelper.SaveFileAsync(doc.File, "IdentityDocs");
+                            string docNumber = await _docService.GenerateDocumentNumber(request.WardNumber, "REG");
+                            var document = new Document
+                            {
+                                DocumentId = Guid.NewGuid(),
+                                ReferenceId = user.UserId,
+                                ReferenceType = "User",
+                                DocumentType = doc.Type,
+                                FilePath = path,
+                                IssuedBy = request.CitizenshipIssuedDistrict,
+                                IssuedDate = request.CitizenshipIssuedDate,
+                                IsVerified = false,
+                                CreatedOn = DateTime.UtcNow,
+                                DocumentNumber = docNumber
+                            };
+                            db.Documents.Add(document);
+                            documentCount++;
+                        }
+                    }
+                    string otpCode = GenerateOTP();
+                                    user.OtpCode = otpCode;
+                                   user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10);
+                                   user.OtpAttempts = 0;
+                                 user.LastOtpRequestTime = DateTime.UtcNow;
 
-//        [HttpPost("ResendOTP")]
-//        public async Task<IActionResult> ResendOTP([FromBody] ResendOtpDTO req)
-//        {
-//            var user = await db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+                    await db.SaveChangesAsync();
+                    await transaction.CommitAsync();
 
-//            if (user == null)
-//            {
-//                return Ok(new { message = "If your email is registered, you will receive an OTP." });
-//            }
+                    try
+               {                    await SendEmailAsync(user.Email, otpCode, user.FullNameEnglish);
+               }
+               catch (Exception ex)
+                {
+                   Console.WriteLine($"Failed to send email: {ex.Message}");
+                }
 
-//            if (user.IsEmailConfirmed)
-//                return BadRequest(new { message = "Email already confirmed." });
+                    await _logger.LogInfoAsync($"Registration completed successfully for user: {user.UserId}. Documents uploaded: {documentCount}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, UserId = user.UserId, DocumentsUploaded = documentCount });
 
-//            if (user.LastOtpRequestTime != null &&
-//                user.LastOtpRequestTime.Value.AddMinutes(2) > DateTime.UtcNow)
-//            {
-//                var waitTime = user.LastOtpRequestTime.Value.AddMinutes(2) - DateTime.UtcNow;
-//                return BadRequest(new { message = $"Please wait {waitTime.Seconds} seconds before requesting another OTP." });
-//            }
+                    // Log citizen action
+                    await _logger.LogCitizenActionAsync(
+                        user.UserId.ToString(),
+                        "Registered as new user",
+                        "User Registration"
+                    );
 
-//            string newOtp = GenerateOTP();
-//            user.OtpCode = newOtp;
-//            user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10);
-//            user.OtpAttempts = 0;
-//            user.LastOtpRequestTime = DateTime.UtcNow;
-//            user.UpdatedAt = DateTime.UtcNow;
+                    return Ok(new
+                    {
+                        message = "Registered successfully. Please check your email for OTP to confirm your account.",
+                        userId = user.UserId
+                    });
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    await _logger.LogErrorAsync($"Registration failed during database operation",
+                        ex,
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, Username = request.Username, Email = request.Email });
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Unexpected error during registration for user: {request.Username}",
+                    ex,
+                    LogCategory.UserManagement,
+                    new { CorrelationId = correlationId, Username = request.Username });
+                return StatusCode(500, new { message = "An error occurred during registration. Please try again." });
+            }
+        }
 
-//                await db.SaveChangesAsync();
+        [HttpPost("VerifyEmail")]
+        public async Task<IActionResult> VerifyEmail([FromBody] OtpVerificationDTO req)
+        {
+            var correlationId = Guid.NewGuid().ToString();
 
-//                await _logger.LogInfoAsync($"Email verified successfully for user {req.UserId}",
-//                    LogCategory.UserManagement,
-//                    new { CorrelationId = correlationId, UserId = req.UserId, Email = user.Email });
+            try
+            {
+                await _logger.LogInfoAsync($"Email verification started for UserId: {req.UserId}",
+                    LogCategory.UserManagement,
+                    new { CorrelationId = correlationId, UserId = req.UserId });
 
-//                // Log citizen action
-//                await _logger.LogCitizenActionAsync(
-//                    user.UserId.ToString(),
-//                    "Email verified successfully",
-//                    "Account Verification"
-//                );
+                var user = await db.Users.FindAsync(req.UserId);
 
-//                return Ok(new { message = "Email verified successfully!" });
-//            }
-//            catch (Exception ex)
-//            {
-//                await _logger.LogErrorAsync($"Error during email verification for user {req.UserId}",
-//                    ex,
-//                    LogCategory.UserManagement,
-//                    new { CorrelationId = correlationId, UserId = req.UserId });
-//                return StatusCode(500, new { message = "An error occurred during email verification." });
-//            }
-//        }
-//            try
-//            {
-//                await SendEmailAsync(user.Email, newOtp, user.FullNameEnglish);
-//                return Ok(new { message = "New OTP has been sent to your email." });
-//            }
-//            catch (Exception ex)
-//            {
-//                return StatusCode(500, new { message = "Failed to send OTP. Please try again." });
-//            }
-//        }
+                if (user == null)
+                {
+                    await _logger.LogWarningAsync($"Email verification failed: User not found - {req.UserId}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, UserId = req.UserId });
+                    return NotFound(new { message = "User not found" });
+                }
 
-//        // PUT api/<SignUpController>/5
-//        [HttpPut("{id}")]
-//        public void Put(int id, [FromBody] string value)
-//        {
-//            _logger.LogInfoAsync($"SignUpController PUT called for id {id}", LogCategory.System).Wait();
-//        }
+                if (user.IsEmailConfirmed)
+                {
+                    await _logger.LogWarningAsync($"Email verification failed: Email already confirmed for user {req.UserId}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, UserId = req.UserId });
+                    return BadRequest(new { message = "Email already confirmed." });
+                }
 
-//        // DELETE api/<SignUpController>/5
-//        [HttpDelete("{id}")]
-//        public void Delete(int id)
-//        {
-//            _logger.LogWarningAsync($"SignUpController DELETE called for id {id}", LogCategory.System).Wait();
-//        }
-//    }
-//}
+                if (user.OtpExpiryTime < DateTime.UtcNow)
+                {
+                    await _logger.LogWarningAsync($"Email verification failed: OTP expired for user {req.UserId}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, UserId = req.UserId, OtpExpiry = user.OtpExpiryTime });
+                    return BadRequest(new { message = "OTP expired. Please request a new one." });
+                }
+
+                if (user.OtpCode != req.OtpCode)
+                {
+                    await _logger.LogWarningAsync($"Email verification failed: Invalid OTP for user {req.UserId}",
+                        LogCategory.UserManagement,
+                        new { CorrelationId = correlationId, UserId = req.UserId, ProvidedOtp = req.OtpCode });
+                    return BadRequest(new { message = "Invalid OTP." });
+                }
+
+                // OTP correct - verify email
+                user.IsEmailConfirmed = true;
+                user.OtpCode = null;
+                user.OtpExpiryTime = null;
+
+                await db.SaveChangesAsync();
+
+                await _logger.LogInfoAsync($"Email verified successfully for user {req.UserId}",
+                    LogCategory.UserManagement,
+                    new { CorrelationId = correlationId, UserId = req.UserId, Email = user.Email });
+
+                // Log citizen action
+                await _logger.LogCitizenActionAsync(
+                    user.UserId.ToString(),
+                    "Email verified successfully",
+                    "Account Verification"
+                );
+
+                return Ok(new { message = "Email verified successfully!" });
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error during email verification for user {req.UserId}",
+                    ex,
+                    LogCategory.UserManagement,
+                    new { CorrelationId = correlationId, UserId = req.UserId });
+                return StatusCode(500, new { message = "An error occurred during email verification." });
+            }
+        }
+
+        // PUT api/<SignUpController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+            _logger.LogInfoAsync($"SignUpController PUT called for id {id}", LogCategory.System).Wait();
+        }
+
+        // DELETE api/<SignUpController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            _logger.LogWarningAsync($"SignUpController DELETE called for id {id}", LogCategory.System).Wait();
+        }
+    }
+}
