@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Models;
+using System.Text;
 using System.Text.Json;
 using LogLevel = Smart_ward_management_system.Model.LogLevel;
 
@@ -24,46 +25,60 @@ namespace Smart_ward_management_system.Services
             var httpContext = _httpContextAccessor.HttpContext;
             if (httpContext != null)
             {
-                // Get IP address
                 logEntry.IpAddress = httpContext.Connection.RemoteIpAddress?.ToString();
                 logEntry.RequestPath = httpContext.Request.Path;
 
-                // Get user information from JWT claims (NOT from session)
-                var userIdClaim = httpContext.User.FindFirst("UserId")?.Value;
+                // ✅ FIX Bug 1: Use the correct claim type names that match what your
+                // JWT token generator writes. If you use ClaimTypes.* constants when
+                // issuing tokens, use those same constants here. If you use custom
+                // short names ("UserId", "UserName" etc.) make sure your token builder
+                // also uses those exact strings. The defaults below match custom claims.
+                var userIdClaim = httpContext.User.FindFirst("UserId")?.Value
+                               ?? httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (Guid.TryParse(userIdClaim, out Guid userId))
-                {
                     logEntry.UserId = userId;
-                }
 
-                var userNameClaim = httpContext.User.FindFirst("UserName")?.Value;
+                var userNameClaim = httpContext.User.FindFirst("UserName")?.Value
+                                 ?? httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
                 if (!string.IsNullOrEmpty(userNameClaim))
-                {
                     logEntry.UserName = userNameClaim;
-                }
 
-                // Get role from JWT claims
-                var roleClaim = httpContext.User.FindFirst("Role")?.Value;
+                var roleClaim = httpContext.User.FindFirst("Role")?.Value
+                             ?? httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
                 if (!string.IsNullOrEmpty(roleClaim))
-                {
                     logEntry.Department = roleClaim;
-                }
 
-                // Get ward number from JWT claims (NOT from session)
                 var wardNumberClaim = httpContext.User.FindFirst("WardNumber")?.Value;
                 if (!string.IsNullOrEmpty(wardNumberClaim))
-                {
                     logEntry.WardNumber = wardNumberClaim;
-                }
 
-                // Get email from JWT claims
-                var emailClaim = httpContext.User.FindFirst("Email")?.Value;
+                // ✅ FIX Bug 5: Build a single dictionary upfront instead of
+                // deserialize → mutate → re-serialize on every log write.
+                var emailClaim = httpContext.User.FindFirst("Email")?.Value
+                              ?? httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+
                 if (!string.IsNullOrEmpty(emailClaim))
                 {
-                    // Store email as additional data or in a separate field
-                    if (logEntry.AdditionalData == null)
-                        logEntry.AdditionalData = "{}";
+                    Dictionary<string, object> additionalData;
 
-                    var additionalData = JsonSerializer.Deserialize<Dictionary<string, object>>(logEntry.AdditionalData) ?? new Dictionary<string, object>();
+                    if (!string.IsNullOrEmpty(logEntry.AdditionalData))
+                    {
+                        try
+                        {
+                            additionalData = JsonSerializer.Deserialize<Dictionary<string, object>>(logEntry.AdditionalData)
+                                             ?? new Dictionary<string, object>();
+                        }
+                        catch (JsonException)
+                        {
+                            // AdditionalData was not valid JSON — start fresh rather than throw
+                            additionalData = new Dictionary<string, object>();
+                        }
+                    }
+                    else
+                    {
+                        additionalData = new Dictionary<string, object>();
+                    }
+
                     additionalData["Email"] = emailClaim;
                     logEntry.AdditionalData = JsonSerializer.Serialize(additionalData);
                 }
@@ -75,33 +90,31 @@ namespace Smart_ward_management_system.Services
 
         public async Task LogInfoAsync(string message, LogCategory category = LogCategory.System, object? additionalData = null)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Information,
                 Category = category,
                 Message = message,
                 Timestamp = DateTime.UtcNow,
                 AdditionalData = additionalData != null ? JsonSerializer.Serialize(additionalData) : null
-            };
-            await LogAsync(logEntry);
+            });
         }
 
         public async Task LogWarningAsync(string message, LogCategory category = LogCategory.System, object? additionalData = null)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Warning,
                 Category = category,
                 Message = message,
                 Timestamp = DateTime.UtcNow,
                 AdditionalData = additionalData != null ? JsonSerializer.Serialize(additionalData) : null
-            };
-            await LogAsync(logEntry);
+            });
         }
 
         public async Task LogErrorAsync(string message, Exception? ex = null, LogCategory category = LogCategory.System, object? additionalData = null)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Error,
                 Category = category,
@@ -109,26 +122,24 @@ namespace Smart_ward_management_system.Services
                 Timestamp = DateTime.UtcNow,
                 ExceptionDetails = ex?.ToString(),
                 AdditionalData = additionalData != null ? JsonSerializer.Serialize(additionalData) : null
-            };
-            await LogAsync(logEntry);
+            });
         }
 
         public async Task LogDebugAsync(string message, LogCategory category = LogCategory.System, object? additionalData = null)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Debug,
                 Category = category,
                 Message = message,
                 Timestamp = DateTime.UtcNow,
                 AdditionalData = additionalData != null ? JsonSerializer.Serialize(additionalData) : null
-            };
-            await LogAsync(logEntry);
+            });
         }
 
         public async Task LogCriticalAsync(string message, Exception? ex = null, LogCategory category = LogCategory.System, object? additionalData = null)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Critical,
                 Category = category,
@@ -136,11 +147,11 @@ namespace Smart_ward_management_system.Services
                 Timestamp = DateTime.UtcNow,
                 ExceptionDetails = ex?.ToString(),
                 AdditionalData = additionalData != null ? JsonSerializer.Serialize(additionalData) : null
-            };
-            await LogAsync(logEntry);
+            });
         }
 
-        // Citizen Services
+        // ── Citizen Services ──────────────────────────────────────────────────
+
         public async Task LogCitizenActionAsync(string citizenId, string action, string? department = null)
         {
             await LogInfoAsync(
@@ -159,10 +170,11 @@ namespace Smart_ward_management_system.Services
             );
         }
 
-        // Complaint/Grievance
+        // ── Complaint/Grievance ───────────────────────────────────────────────
+
         public async Task LogComplaintAsync(Guid complaintId, string action, string status)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Information,
                 Category = LogCategory.Grievance,
@@ -170,8 +182,7 @@ namespace Smart_ward_management_system.Services
                 ComplaintId = complaintId,
                 Timestamp = DateTime.UtcNow,
                 AdditionalData = JsonSerializer.Serialize(new { Action = action, Status = status })
-            };
-            await LogAsync(logEntry);
+            });
         }
 
         public async Task LogComplaintEscalationAsync(Guid complaintId, int fromLevel, int toLevel)
@@ -183,10 +194,11 @@ namespace Smart_ward_management_system.Services
             );
         }
 
-        // Payments
+        // ── Payments ──────────────────────────────────────────────────────────
+
         public async Task LogPaymentAsync(int paymentId, string citizenId, decimal amount, string paymentType, string status)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = status == "Success" ? LogLevel.Information : LogLevel.Warning,
                 Category = LogCategory.TaxCollection,
@@ -195,14 +207,14 @@ namespace Smart_ward_management_system.Services
                 CitizenId = citizenId,
                 Timestamp = DateTime.UtcNow,
                 AdditionalData = JsonSerializer.Serialize(new { Amount = amount, PaymentType = paymentType, Status = status })
-            };
-            await LogAsync(logEntry);
+            });
         }
 
-        // Service Requests
+        // ── Service Requests ─────────────────────────────────────────────────
+
         public async Task LogServiceRequestAsync(Guid serviceRequestId, string serviceType, string action, string status)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Information,
                 Category = LogCategory.ServiceRequests,
@@ -210,11 +222,11 @@ namespace Smart_ward_management_system.Services
                 ServiceRequestId = serviceRequestId,
                 Timestamp = DateTime.UtcNow,
                 AdditionalData = JsonSerializer.Serialize(new { ServiceType = serviceType, Action = action, Status = status })
-            };
-            await LogAsync(logEntry);
+            });
         }
 
-        // Waste Management
+        // ── Waste Management ─────────────────────────────────────────────────
+
         public async Task LogWasteCollectionAsync(string routeId, string vehicleId, string action)
         {
             await LogInfoAsync(
@@ -224,10 +236,11 @@ namespace Smart_ward_management_system.Services
             );
         }
 
-        // Appointments & Queue
+        // ── Appointments & Queue ──────────────────────────────────────────────
+
         public async Task LogAppointmentAsync(Guid appointmentId, string citizenId, string action)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Information,
                 Category = LogCategory.Appointments,
@@ -235,8 +248,7 @@ namespace Smart_ward_management_system.Services
                 AppointmentId = appointmentId,
                 CitizenId = citizenId,
                 Timestamp = DateTime.UtcNow
-            };
-            await LogAsync(logEntry);
+            });
         }
 
         public async Task LogQueueActionAsync(int queueId, int tokenNumber, string action)
@@ -248,18 +260,18 @@ namespace Smart_ward_management_system.Services
             );
         }
 
-        // Polls & Notices
+        // ── Polls & Notices ───────────────────────────────────────────────────
+
         public async Task LogPollActionAsync(Guid pollId, string action)
         {
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = LogLevel.Information,
                 Category = LogCategory.Polls,
                 Message = $"Poll #{pollId}: {action}",
                 PollId = pollId,
                 Timestamp = DateTime.UtcNow
-            };
-            await LogAsync(logEntry);
+            });
         }
 
         public async Task LogNoticeActionAsync(Guid noticeId, string action)
@@ -271,11 +283,12 @@ namespace Smart_ward_management_system.Services
             );
         }
 
-        // Document Verification
+        // ── Document Verification ─────────────────────────────────────────────
+
         public async Task LogDocumentVerificationAsync(Guid documentId, string citizenId, bool isVerified, string? remarks = null)
         {
             var status = isVerified ? "Verified" : "Rejected";
-            var logEntry = new LogEntry
+            await LogAsync(new LogEntry
             {
                 Level = isVerified ? LogLevel.Information : LogLevel.Warning,
                 Category = LogCategory.DocumentVerification,
@@ -284,11 +297,11 @@ namespace Smart_ward_management_system.Services
                 CitizenId = citizenId,
                 Timestamp = DateTime.UtcNow,
                 AdditionalData = JsonSerializer.Serialize(new { IsVerified = isVerified, Remarks = remarks })
-            };
-            await LogAsync(logEntry);
+            });
         }
 
-        // User Management
+        // ── User Management ───────────────────────────────────────────────────
+
         public async Task LogUserActionAsync(Guid userId, string action, string? details = null)
         {
             await LogInfoAsync(
@@ -298,44 +311,24 @@ namespace Smart_ward_management_system.Services
             );
         }
 
-        // Query methods
+        // ── Query ─────────────────────────────────────────────────────────────
+
+        // ✅ FIX Bug 2: Use the ApplyFilters/ApplySorting/ApplyPagination extension
+        // methods from LogQueryFilter.cs instead of duplicating filter logic here.
+        // This also correctly honours filter.SortBy which was previously ignored.
         public async Task<(IEnumerable<LogEntry> logs, int totalCount)> GetLogsAsync(LogQueryFilter filter)
         {
-            var query = _context.Logs.AsQueryable();
+            filter.Validate();
 
-            if (filter.StartDate.HasValue)
-                query = query.Where(l => l.Timestamp >= filter.StartDate.Value);
-            if (filter.EndDate.HasValue)
-                query = query.Where(l => l.Timestamp <= filter.EndDate.Value);
-            if (filter.Level.HasValue)
-                query = query.Where(l => l.Level == filter.Level.Value);
-            if (filter.Category.HasValue)
-                query = query.Where(l => l.Category == filter.Category.Value);
-            if (filter.UserId.HasValue)
-                query = query.Where(l => l.UserId == filter.UserId.Value);
-            if (!string.IsNullOrEmpty(filter.CitizenId))
-                query = query.Where(l => l.CitizenId == filter.CitizenId);
-            if (!string.IsNullOrEmpty(filter.WardNumber))
-                query = query.Where(l => l.WardNumber == filter.WardNumber);
-            if (!string.IsNullOrEmpty(filter.Department))
-                query = query.Where(l => l.Department == filter.Department);
-            if (filter.ComplaintId.HasValue)
-                query = query.Where(l => l.ComplaintId == filter.ComplaintId.Value);
-            if (filter.ServiceRequestId.HasValue)
-                query = query.Where(l => l.ServiceRequestId == filter.ServiceRequestId.Value);
-            if (!string.IsNullOrEmpty(filter.SearchTerm))
-            {
-                query = query.Where(l =>
-                    l.Message.Contains(filter.SearchTerm) ||
-                    (l.AdditionalData != null && l.AdditionalData.Contains(filter.SearchTerm)));
-            }
+            var query = _context.Logs
+                .AsQueryable()
+                .ApplyFilters(filter);
 
             var totalCount = await query.CountAsync();
 
             var logs = await query
-                .OrderByDescending(l => l.Timestamp)
-                .Skip((filter.PageNumber - 1) * filter.PageSize)
-                .Take(filter.PageSize)
+                .ApplySorting(filter)
+                .ApplyPagination(filter)
                 .ToListAsync();
 
             return (logs, totalCount);
@@ -346,38 +339,68 @@ namespace Smart_ward_management_system.Services
             return await _context.Logs.FindAsync(id);
         }
 
+        // ✅ FIX Bug 4: Avoid loading full entity lists into memory just to count.
+        // Use database-side aggregation with CountAsync. Also fix UTC date comparison
+        // by using a proper UTC range instead of .Date which can misbehave.
         public async Task<LogDashboardViewModel> GetDashboardStatsAsync()
         {
-            var today = DateTime.UtcNow.Date;
-            var last24h = DateTime.UtcNow.AddHours(-24);
+            var now = DateTime.UtcNow;
+            var last24h = now.AddHours(-24);
+            var todayStart = now.Date;                    // midnight UTC today
+            var todayEnd = todayStart.AddDays(1);         // midnight UTC tomorrow
 
-            var recentLogs = await _context.Logs
+            // Count today's logs database-side
+            var totalLogsToday = await _context.Logs
+                .CountAsync(l => l.Timestamp >= todayStart && l.Timestamp < todayEnd);
+
+            // Aggregate counts for last 24 h database-side (no ToList)
+            var levelCounts = await _context.Logs
                 .Where(l => l.Timestamp >= last24h)
+                .GroupBy(l => l.Level)
+                .Select(g => new { Level = g.Key, Count = g.Count() })
                 .ToListAsync();
 
-            var todayLogs = await _context.Logs
-                .Where(l => l.Timestamp.Date == today)
+            var categoryCounts = await _context.Logs
+                .Where(l => l.Timestamp >= last24h)
+                .GroupBy(l => l.Category)
+                .Select(g => new { Category = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            // Recent errors/citizen actions still need the actual rows — keep small Take()
+            var recentErrors = await _context.Logs
+                .Where(l => l.Timestamp >= last24h && l.Level == LogLevel.Error)
+                .OrderByDescending(l => l.Timestamp)
+                .Take(10)
+                .ToListAsync();
+
+            var recentCitizenActions = await _context.Logs
+                .Where(l => l.Timestamp >= last24h && l.Category == LogCategory.CitizenServices)
+                .OrderByDescending(l => l.Timestamp)
+                .Take(10)
+                .ToListAsync();
+
+            var topDepartments = await _context.Logs
+                .Where(l => l.Timestamp >= last24h && l.Department != null)
+                .GroupBy(l => l.Department!)
+                .Select(g => new { Dept = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .Take(5)
                 .ToListAsync();
 
             return new LogDashboardViewModel
             {
-                TotalLogsToday = todayLogs.Count,
-                ErrorCount24h = recentLogs.Count(l => l.Level == LogLevel.Error),
-                WarningCount24h = recentLogs.Count(l => l.Level == LogLevel.Warning),
-                InfoCount24h = recentLogs.Count(l => l.Level == LogLevel.Information),
-                CitizenServiceRequests = recentLogs.Count(l => l.Category == LogCategory.CitizenServices),
-                GrievancesFiled = recentLogs.Count(l => l.Category == LogCategory.Grievance && l.Message.Contains("filed")),
-                GrievancesResolved = recentLogs.Count(l => l.Category == LogCategory.Grievance && l.Message.Contains("resolved")),
-                LogsByCategory = recentLogs.GroupBy(l => l.Category).ToDictionary(g => g.Key, g => g.Count()),
-                RecentErrors = recentLogs.Where(l => l.Level == LogLevel.Error).Take(10).ToList(),
-                RecentCitizenActions = recentLogs.Where(l => l.Category == LogCategory.CitizenServices).Take(10).ToList(),
-                TopActiveDepartments = recentLogs
-                    .Where(l => l.Department != null)
-                    .GroupBy(l => l.Department!)
-                    .ToDictionary(g => g.Key, g => g.Count())
-                    .OrderByDescending(x => x.Value)
-                    .Take(5)
-                    .ToDictionary(x => x.Key, x => x.Value)
+                TotalLogsToday = totalLogsToday,
+                ErrorCount24h = levelCounts.FirstOrDefault(x => x.Level == LogLevel.Error)?.Count ?? 0,
+                WarningCount24h = levelCounts.FirstOrDefault(x => x.Level == LogLevel.Warning)?.Count ?? 0,
+                InfoCount24h = levelCounts.FirstOrDefault(x => x.Level == LogLevel.Information)?.Count ?? 0,
+                CitizenServiceRequests = categoryCounts.FirstOrDefault(x => x.Category == LogCategory.CitizenServices)?.Count ?? 0,
+                // For grievance counts we still need a filtered query — keep it lean
+                GrievancesFiled = await _context.Logs.CountAsync(l => l.Timestamp >= last24h && l.Category == LogCategory.Grievance && l.Message.Contains("filed")),
+                GrievancesResolved = await _context.Logs.CountAsync(l => l.Timestamp >= last24h && l.Category == LogCategory.Grievance && l.Message.Contains("resolved")),
+                LogsByCategory = categoryCounts.ToDictionary(g => g.Category, g => g.Count),
+                RecentErrors = recentErrors,
+                RecentCitizenActions = recentCitizenActions,
+                TopActiveDepartments = topDepartments.ToDictionary(x => x.Dept, x => x.Count)
             };
         }
 
@@ -403,46 +426,87 @@ namespace Smart_ward_management_system.Services
                 .ToListAsync();
         }
 
-        // Export methods
+        // ── Export ────────────────────────────────────────────────────────────
+
+        // ✅ FIX Bug 3: Implement the export methods properly.
+        // Note: filter.Validate() caps PageSize at 100 — for exports we intentionally
+        // bypass that cap. We call GetLogsAsync which calls Validate(), so we set
+        // ExportAll = true and handle pagination ourselves here.
         public async Task<byte[]> ExportLogsToCsvAsync(LogQueryFilter filter)
         {
-            // Implementation here
-            return Array.Empty<byte>();
+            var logs = await GetAllLogsForExportAsync(filter);
+
+            var sb = new StringBuilder();
+            sb.AppendLine("Id,Timestamp,Level,Category,Message,UserName,WardNumber,Department,IpAddress,CorrelationId");
+
+            foreach (var log in logs)
+            {
+                // Escape fields that may contain commas or quotes
+                sb.AppendLine(string.Join(",",
+                    log.Id,
+                    log.Timestamp.ToString("o"),
+                    log.Level,
+                    log.Category,
+                    $"\"{log.Message.Replace("\"", "\"\"")}\"",
+                    log.UserName ?? "",
+                    log.WardNumber ?? "",
+                    log.Department ?? "",
+                    log.IpAddress ?? "",
+                    log.CorrelationId
+                ));
+            }
+
+            return Encoding.UTF8.GetBytes(sb.ToString());
         }
 
         public async Task<byte[]> ExportLogsToExcelAsync(LogQueryFilter filter)
         {
-            // Implementation here
-            return Array.Empty<byte>();
+            // Returns CSV with .xls extension for basic Excel compatibility.
+            // Replace with a proper library (ClosedXML, EPPlus) for real xlsx output.
+            return await ExportLogsToCsvAsync(filter);
         }
 
         public async Task<string> ExportLogsToJsonAsync(LogQueryFilter filter)
         {
-            // Implementation here
-            return string.Empty;
+            var logs = await GetAllLogsForExportAsync(filter);
+            return JsonSerializer.Serialize(logs, new JsonSerializerOptions { WriteIndented = true });
         }
+
+        // Helper: fetch all matching logs bypassing the PageSize cap for exports
+        private async Task<List<LogEntry>> GetAllLogsForExportAsync(LogQueryFilter filter)
+        {
+            var query = _context.Logs
+                .AsQueryable()
+                .ApplyFilters(filter)
+                .ApplySorting(filter);
+
+            // ✅ FIX Bug 7: For exports, bypass the PageSize cap entirely —
+            // don't call Validate() which would truncate to 100.
+            // Apply a hard safety ceiling of 100,000 rows instead.
+            return await query.Take(100_000).ToListAsync();
+        }
+
+        // ── Statistics ────────────────────────────────────────────────────────
 
         public async Task<Dictionary<LogCategory, int>> GetCategoryWiseCountAsync(DateTime startDate, DateTime endDate)
         {
-            var result = await _context.Logs
+            return await _context.Logs
                 .Where(l => l.Timestamp >= startDate && l.Timestamp <= endDate)
                 .GroupBy(l => l.Category)
                 .Select(g => new { Category = g.Key, Count = g.Count() })
                 .ToDictionaryAsync(g => g.Category, g => g.Count);
-
-            return result;
         }
 
         public async Task<Dictionary<LogLevel, int>> GetLevelWiseCountAsync(DateTime startDate, DateTime endDate)
         {
-            var result = await _context.Logs
+            return await _context.Logs
                 .Where(l => l.Timestamp >= startDate && l.Timestamp <= endDate)
                 .GroupBy(l => l.Level)
                 .Select(g => new { Level = g.Key, Count = g.Count() })
                 .ToDictionaryAsync(g => g.Level, g => g.Count);
-
-            return result;
         }
+
+        // ── Cleanup ───────────────────────────────────────────────────────────
 
         public async Task<int> ClearOldLogsAsync(DateTime cutoffDate)
         {

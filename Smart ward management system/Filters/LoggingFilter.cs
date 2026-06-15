@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿// Filters/LoggingFilter.cs
+using Microsoft.AspNetCore.Mvc.Filters;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Services;
 using System.Diagnostics;
@@ -9,7 +10,6 @@ namespace Smart_ward_management_system.Filters
     public class LoggingFilter : IAsyncActionFilter
     {
         private readonly ILoggingService _loggingService;
-        private readonly Stopwatch _stopwatch = new();
 
         public LoggingFilter(ILoggingService loggingService)
         {
@@ -18,9 +18,11 @@ namespace Smart_ward_management_system.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            _stopwatch.Start();
+            // ✅ FIX Bug 9: Create a NEW Stopwatch per request, not a shared instance field.
+            // A field-level Stopwatch shared across concurrent requests gives wrong timings
+            // and is not thread-safe. Creating it locally here is always safe.
+            var stopwatch = Stopwatch.StartNew();
 
-            // Log request start
             var controller = context.Controller.GetType().Name;
             var action = context.ActionDescriptor.RouteValues["action"];
 
@@ -30,30 +32,56 @@ namespace Smart_ward_management_system.Filters
                 new { Parameters = context.ActionArguments }
             );
 
+            // ✅ FIX Bug 10: Capture whether an exception was thrown by checking
+            // resultContext.Exception rather than reading the response status code.
+            // The response status code is unreliable at this point in the pipeline
+            // because the response body may not have been written yet for async actions.
             var resultContext = await next();
 
-            _stopwatch.Stop();
+            stopwatch.Stop();
 
-            // Log request completion
-            var statusCode = resultContext.HttpContext.Response.StatusCode;
-            var level = statusCode >= 400 ? LogLevel.Error : LogLevel.Information;
-
-            if (level == LogLevel.Error)
+            if (resultContext.Exception != null && !resultContext.ExceptionHandled)
             {
+                // An unhandled exception occurred — log as error
                 await _loggingService.LogErrorAsync(
-                    $"Failed: {controller}.{action} - Status: {statusCode}",
-                    null,
+                    $"Failed: {controller}.{action} — unhandled exception",
+                    resultContext.Exception,
                     LogCategory.System,
-                    new { Duration = _stopwatch.ElapsedMilliseconds }
+                    new { DurationMs = stopwatch.ElapsedMilliseconds }
                 );
             }
             else
             {
-                await _loggingService.LogInfoAsync(
-                    $"Completed: {controller}.{action} - Status: {statusCode}",
-                    LogCategory.System,
-                    new { Duration = _stopwatch.ElapsedMilliseconds }
-                );
+                // Read status code only as supplemental info, not to decide log level
+                var statusCode = resultContext.HttpContext.Response.StatusCode;
+                var isClientError = statusCode >= 400 && statusCode < 500;
+                var isServerError = statusCode >= 500;
+
+                if (isServerError)
+                {
+                    await _loggingService.LogErrorAsync(
+                        $"Failed: {controller}.{action} — Status: {statusCode}",
+                        null,
+                        LogCategory.System,
+                        new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode }
+                    );
+                }
+                else if (isClientError)
+                {
+                    await _loggingService.LogWarningAsync(
+                        $"Client error: {controller}.{action} — Status: {statusCode}",
+                        LogCategory.System,
+                        new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode }
+                    );
+                }
+                else
+                {
+                    await _loggingService.LogInfoAsync(
+                        $"Completed: {controller}.{action} — Status: {statusCode}",
+                        LogCategory.System,
+                        new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode }
+                    );
+                }
             }
         }
     }
