@@ -22,40 +22,72 @@ namespace Smart_ward_management_system.Controllers
         private readonly ApplicationDbContext db;
         private readonly DocumentService _docService;
         private readonly ILoggingService _logger; // Add logging service
+        private readonly IConfiguration _configuration;
 
-        public SignUpController(ApplicationDbContext db, DocumentService _docService, ILoggingService logger)
+        public SignUpController(ApplicationDbContext db, DocumentService _docService, ILoggingService logger, IConfiguration _configuration)
         {
             this.db = db;
             this._docService = _docService;
             this._logger = logger;
+            this._configuration = _configuration;
         }
 
-        private async Task SendEmailAsync(string toEmail, string otp)
+        private string GenerateOTP()
+        {
+            // Generate a 6-digit OTP
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString();
+        }
+
+        private async Task SendEmailAsync(string toEmail, string otp, string fullName)
         {
             try
             {
-                await _logger.LogInfoAsync($"Sending OTP email to {toEmail}", LogCategory.CitizenServices);
-
-                var smtpClient = new SmtpClient("smtp.gmail.com")
+                // It's better to store email credentials in configuration
+                var smtpClient = new SmtpClient(_configuration["EmailSettings:SmtpServer"])
                 {
-                    Port = 587,
-                    Credentials = new NetworkCredential("dineshjoshi0025@gmail.com", "jhzcuiigttvriohy"),
-                    EnableSsl = true,
+                    Port = int.Parse(_configuration["EmailSettings:Port"]),
+                    Credentials = new NetworkCredential(
+                        _configuration["EmailSettings:Username"],
+                        _configuration["EmailSettings:Password"]),
+                    EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSSL"]),
                 };
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("noreply@smartwardmanagementsystem.com"),
-                    Subject = "Your One-Time Password (OTP) for Secure Login",
+                    From = new MailAddress(_configuration["EmailSettings:FromEmail"],
+                           _configuration["EmailSettings:FromName"]),
+                    Subject = "Verify Your Email - Smart Ward Management System",
                     Body = $@"
         <html>
+            <head>
+                <style>
+                    body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                    .header {{ background-color: #4CAF50; color: white; padding: 20px; text-align: center; }}
+                    .content {{ padding: 30px; background-color: #f9f9f9; }}
+                    .otp-code {{ font-size: 32px; font-weight: bold; color: #4CAF50; text-align: center; 
+                                 padding: 20px; letter-spacing: 5px; }}
+                    .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
+                </style>
+            </head>
             <body>
-                <p>Hello,</p>
-                <p>Your OTP code is: <strong>{otp}</strong></p>
-                <p>This code is valid for 10 minutes.</p>
-                <p>If you did not request this, please ignore this email.</p>
-                <br/>
-                <p>Thank you,<br/>Smart ward management system</p>
+                <div class='container'>
+                    <div class='header'>
+                        <h2>Email Verification</h2>
+                    </div>
+                    <div class='content'>
+                        <p>Hello <strong>{fullName}</strong>,</p>
+                        <p>Thank you for registering with Smart Ward Management System. Please use the following OTP code to verify your email address:</p>
+                        <div class='otp-code'>{otp}</div>
+                        <p>This code is valid for <strong>10 minutes</strong>.</p>
+                        <p>If you didn't request this verification, please ignore this email.</p>
+                        <p>For security reasons, never share this OTP with anyone.</p>
+                    </div>
+                    <div class='footer'>
+                        <p>© {DateTime.UtcNow.Year} Smart Ward Management System. All rights reserved.</p>
+                    </div>
+                </div>
             </body>
         </html>",
                     IsBodyHtml = true,
@@ -63,15 +95,14 @@ namespace Smart_ward_management_system.Controllers
 
                 mailMessage.To.Add(toEmail);
                 await smtpClient.SendMailAsync(mailMessage);
-
-                await _logger.LogInfoAsync($"OTP email sent successfully to {toEmail}", LogCategory.CitizenServices);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Failed to send OTP email to {toEmail}", ex, LogCategory.CitizenServices);
-                throw;
+                // Log the exception
+                throw new Exception($"Failed to send email: {ex.Message}");
             }
         }
+
 
         // GET: api/<SignUpController>
         [HttpGet]
@@ -148,7 +179,7 @@ namespace Smart_ward_management_system.Controllers
                     user.Province = request.Province;
                     user.Role = request.Role;
                     user.IsVerified = false;
-                    user.IsEmailConfirmed = true;
+                    user.IsEmailConfirmed = false;
                     user.VerificationStatus = VerificationStatusEnum.Pending;
                     user.VerifiedBy = Guid.Empty;
                     user.VerifiedAt = null;
@@ -194,9 +225,22 @@ namespace Smart_ward_management_system.Controllers
                             documentCount++;
                         }
                     }
+                    string otpCode = GenerateOTP();
+                                    user.OtpCode = otpCode;
+                                   user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10);
+                                   user.OtpAttempts = 0;
+                                 user.LastOtpRequestTime = DateTime.UtcNow;
 
                     await db.SaveChangesAsync();
                     await transaction.CommitAsync();
+
+                    try
+               {                    await SendEmailAsync(user.Email, otpCode, user.FullNameEnglish);
+               }
+               catch (Exception ex)
+                {
+                   Console.WriteLine($"Failed to send email: {ex.Message}");
+                }
 
                     await _logger.LogInfoAsync($"Registration completed successfully for user: {user.UserId}. Documents uploaded: {documentCount}",
                         LogCategory.UserManagement,

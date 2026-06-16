@@ -1,0 +1,31 @@
+[33m25ecc7a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdinesh[m[33m, [m[1;31morigin/dinesh[m[33m)[m HEAD@{0}: reset: moving to 25ecc7a
+[33m5758a8f[m HEAD@{1}: commit: Removed bin from tracking
+[33m11aca13[m HEAD@{2}: commit: new push
+[33m1704c00[m HEAD@{3}: commit: push
+[33me735b88[m HEAD@{4}: rebase (abort): returning to refs/heads/dinesh
+[33me735b88[m HEAD@{5}: rebase (abort): returning to refs/heads/dinesh
+[33me735b88[m HEAD@{6}: reset: moving to e735b88
+[33me735b88[m HEAD@{7}: reset: moving to e735b88
+[33m78cf5ba[m HEAD@{8}: commit: Removed bin/obj and sensitive files
+[33m08542f6[m HEAD@{9}: reset: moving to HEAD~1
+[33mb70459d[m HEAD@{10}: reset: moving to HEAD~1
+[33m1897097[m HEAD@{11}: reset: moving to HEAD~1
+[33m0e421c8[m HEAD@{12}: commit: update
+[33m1897097[m HEAD@{13}: commit: recent update
+[33mb70459d[m HEAD@{14}: reset: moving to HEAD~1
+[33mde765cf[m HEAD@{15}: reset: moving to HEAD~1
+[33m610cb6e[m HEAD@{16}: commit: modified gitignore
+[33mde765cf[m HEAD@{17}: commit (merge): some update in escalation
+[33mb70459d[m HEAD@{18}: commit: modified sth
+[33m08542f6[m HEAD@{19}: reset: moving to HEAD~1
+[33m915c3a1[m HEAD@{20}: commit: modified
+[33m08542f6[m HEAD@{21}: commit: modified gitignores
+[33m740117d[m HEAD@{22}: commit: modified gitignore
+[33mde66dba[m HEAD@{23}: commit: removed sensitive datas
+[33m1d6e0cc[m HEAD@{24}: commit: second commit
+[33me735b88[m HEAD@{25}: commit: added appsettings.json in git igonore
+[33m114891a[m HEAD@{26}: commit: recent push
+[33m25ecc7a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdinesh[m[33m, [m[1;31morigin/dinesh[m[33m)[m HEAD@{27}: commit: Waste_Management_And_Scheduling
+[33mbf6a199[m[33m ([m[1;32mAnil[m[33m)[m HEAD@{28}: checkout: moving from Anil to dinesh
+[33mbf6a199[m[33m ([m[1;32mAnil[m[33m)[m HEAD@{29}: checkout: moving from main to Anil
+[33m17ab70b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{30}: clone: from https://github.com/Anil-Chandra-Giri/Smart-ward-management-system-Backend.git

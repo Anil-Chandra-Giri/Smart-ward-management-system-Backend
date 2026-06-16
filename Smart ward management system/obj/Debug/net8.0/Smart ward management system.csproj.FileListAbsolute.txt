@@ -1,154 +1,3 @@
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.Development.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.runtime.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.endpoints.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.exe
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.deps.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.runtimeconfig.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.pdb
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Azure.Core.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Azure.Identity.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Humanizer.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Identity.Client.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.OpenApi.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Mono.TextTemplating.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Newtonsoft.Json.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.CodeDom.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Composition.AttributedModel.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Composition.Convention.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Composition.Hosting.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Composition.Runtime.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Composition.TypedParts.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Drawing.Common.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Memory.Data.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Runtime.Caching.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Permissions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Windows.Extensions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.csproj.AssemblyReference.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rpswa.dswa.cache.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.GeneratedMSBuildEditorConfig.editorconfig
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfoInputs.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.AssemblyInfo.cs
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.csproj.CoreCompileInputs.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cs
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.MvcApplicationPartsAssemblyInfo.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.sourcelink.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjimswa.dswa.cache.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\scopedcss\bundle\Smart ward management system.styles.css
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.json.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.development.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\swae.build.ex.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart wa.3B6DA49C.Up2Date
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\refint\Smart ward management system.dll
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.pdb
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\Smart ward management system.genruntimeconfig.cache
-G:\Programmings\SWMS\Smart-ward-management-system-Backend\Smart ward management system\obj\Debug\net8.0\ref\Smart ward management system.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\appsettings.json
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.staticwebassets.runtime.json
@@ -164,8 +13,10 @@ C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward mana
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Smart ward management system.pdb
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Emgu.CV.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Humanizer.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\MailKit.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
@@ -196,6 +47,7 @@ C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward mana
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\MimeKit.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
@@ -214,6 +66,7 @@ C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward mana
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Memory.Data.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Runtime.Caching.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Security.Permissions.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\System.Text.Encodings.Web.dll
@@ -312,6 +165,7 @@ C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward mana
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\Users\anilg\Source\Repos\Smart-ward-management-system-Backend\Smart ward management system\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll

@@ -13,7 +13,7 @@ namespace OCR.Services
 
             var text = page.GetText();
 
-            // Clean OCR noise
+
             text = Regex.Replace(text, @"[A-Za-z]{1}\s[A-Za-z]{1}", "");
             text = Regex.Replace(text, @"\s+", " ").Trim();
 
@@ -21,3 +21,7 @@ namespace OCR.Services
         }
     }
 }
+
+
+
+

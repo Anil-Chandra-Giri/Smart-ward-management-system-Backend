@@ -91,9 +91,14 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // GET api/<AppointmentController>/appointment/{id}
-        [HttpGet("appointment/{id}")]
-        public async Task<IActionResult> GetAppointmentById(Guid id)
+        //// GET api/<AppointmentController>/appointment/{id}
+        //[HttpGet("appointment/{id}")]
+        //public async Task<IActionResult> GetAppointmentById(Guid id)
+
+        // GET api/<AppointmentController>/5
+        [Route("MyAppointments")]
+        [HttpGet]
+        public async Task<IActionResult> GetMyAppointments(Guid id)
         {
             var correlationId = Guid.NewGuid().ToString();
 
@@ -113,6 +118,9 @@ namespace Smart_ward_management_system.Controllers
                         new { CorrelationId = correlationId, AppointmentId = id });
                     return NotFound(new { message = "Appointment not found" });
                 }
+            var myAppointments =  await _context.Appointments.Where(s=>s.UserId == id).ToListAsync();
+            return Ok(myAppointments);
+        
 
                 await _logger.LogInfoAsync($"Retrieved appointment {id} with status: {appointment.Status}",
                     LogCategory.Appointments,
@@ -166,6 +174,8 @@ namespace Smart_ward_management_system.Controllers
         }
 
         // POST api/<AppointmentController>/book
+
+        // POST api/<AppointmentController>
         [HttpPost("book")]
         public async Task<IActionResult> BookAppointment([FromBody] AppointmentDto appointment)
         {

@@ -38,5 +38,14 @@ namespace Smart_ward_management_system.Model.Services.Complaints
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string Status { get; set; } = "Pending";
 
+        // Add these properties to your existing Complaint class
+        public Guid? AssignedOfficerId { get; set; }
+        public DateTime? AssignedDate { get; set; }
+        public DateTime? LastReminderDate { get; set; }
+        public bool IsEscalated { get; set; } = false;
+        public DateTime? EscalatedDate { get; set; }
+        public Guid? EscalatedToOfficerId { get; set; }
+        public int ReminderCount { get; set; } = 0;
+
     }
 }

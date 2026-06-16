@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Smart ward management system")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca404522cfda61b257610e491acc19e27441835d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c952383eb0eb2de30b82af2288a043bb28cddf9e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Smart ward management system")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Smart ward management system")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -13,6 +13,8 @@ namespace Smart_ward_management_system.Model.Identity
         public bool IsEmailConfirmed { get; set; } = false;
         public string? OtpCode { get; set; }
         public DateTime? OtpExpiryTime { get; set; }
+        public int OtpAttempts { get; set; } = 0;
+        public DateTime? LastOtpRequestTime { get; set; }
 
         public string FullNameNepali { get; set; } = string.Empty;
         public string FullNameEnglish { get; set; } = string.Empty;
@@ -34,7 +36,8 @@ namespace Smart_ward_management_system.Model.Identity
         public string Province { get; set; } = string.Empty;
         public string? EmployeeId { get; set; }     
         public string? Department { get; set; }     
-        public string? Designation { get; set; }    
+        public string? Designation { get; set; }
+        public string ProfilePicturePath { get; set; } = string.Empty;
         public bool IsVerified { get; set; } = false;
         public VerificationStatusEnum VerificationStatus { get; set; } = VerificationStatusEnum.Pending;
         public Guid? VerifiedBy { get; set; }        

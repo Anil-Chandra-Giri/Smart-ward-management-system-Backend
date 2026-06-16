@@ -474,6 +474,7 @@ namespace Smart_ward_management_system.Controllers
                     $"status changed from {oldStatus} to {model.Status}",
                     model.Status
                 );
+            complaintRequest.Status = model.Status;
 
                 // Add to status history if StatusHistory table exists
                 if (db.StatusHistories != null)

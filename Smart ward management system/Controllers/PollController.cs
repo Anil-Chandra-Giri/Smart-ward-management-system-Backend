@@ -83,6 +83,25 @@ namespace Smart_ward_management_system.Controllers
                         })
                     })
                     .ToListAsync();
+            //var polls = await _context.Polls
+            //    .Include(p => p.Options)
+            //    .Where(p => p.IsActive &&
+            //                p.StartDate <= now &&
+            //                (p.EndDate == null || p.EndDate >= now))
+            //    .Select(p => new
+            //    {
+            //        p.Id,
+            //        p.Title,
+            //        p.Description,
+            //        Options = p.Options!.Select(o => new
+            //        {
+            //            o.Id,
+            //            o.OptionText
+            //        }),
+            //        p.StartDate,
+            //        p.EndDate
+            //    })
+            //    .ToListAsync();
 
                 await _logger.LogInfoAsync($"Retrieved {polls.Count} active polls",
                     LogCategory.Polls,
