@@ -10,6 +10,7 @@ using Smart_ward_management_system.Data;
 using Smart_ward_management_system.Filters;
 using Smart_ward_management_system.Model.WasteManagement_And_Scheduling;
 using Smart_ward_management_system.Services;
+using Smart_ward_management_system.Services.Staff;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -24,6 +25,7 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddScoped<ILoggingService, LoggingService>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IStaffService, StaffService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
