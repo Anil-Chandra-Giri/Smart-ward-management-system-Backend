@@ -89,7 +89,7 @@ namespace Smart_ward_management_system.Data
             {
                 UserId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                 Username = "admin",
-                Role = "Staff",
+                Role = "admin",
                 PasswordHash = "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", // ideally hashed
                 AccountStatus = "Active",
                 IsEmailConfirmed = true,

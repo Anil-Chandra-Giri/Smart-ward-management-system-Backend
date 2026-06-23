@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Common;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs;
+using Smart_ward_management_system.Filters;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Model.Common;
 using Smart_ward_management_system.Model.Services.Complaints;
-using Smart_ward_management_system.Services; // Add this
+using Smart_ward_management_system.Services;
 
 namespace Smart_ward_management_system.Controllers
 {
@@ -17,7 +18,7 @@ namespace Smart_ward_management_system.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly DocumentService _docService;
-        private readonly ILoggingService _logger; // Add logging service
+        private readonly ILoggingService _logger;
 
         public ComplaintController(ApplicationDbContext context, DocumentService docService, ILoggingService logger)
         {
@@ -26,7 +27,10 @@ namespace Smart_ward_management_system.Controllers
             _logger = logger;
         }
 
+        // ── Writes — logging unchanged ──────────────────────────────────────
+
         [HttpPost("RegisterComplaint")]
+        [RequireVerifiedCitizen]
         public async Task<ActionResult> RegisterComplaint([FromForm] ComplaintDTO dto)
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -122,10 +126,8 @@ namespace Smart_ward_management_system.Controllers
                     await db.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    // Log the complaint registration
                     await _logger.LogComplaintAsync(complaint.ComplaintId, "filed", "Pending");
 
-                    // Log citizen action
                     await _logger.LogCitizenActionAsync(
                         dto.CitizenUserId.ToString(),
                         $"Filed complaint: {dto.Category} - Priority: {dto.Priority}",
@@ -180,25 +182,18 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
+        // ── Reads — Info-level "Fetching/Retrieved" noise removed ──────────
+        // Errors and not-found cases still log; a clean read needs no audit entry.
+
         [HttpGet("Complaints")]
         public async Task<ActionResult<IEnumerable<Complaint>>> GetComplaints(Guid citizernUserId)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching complaints for citizen: {citizernUserId}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, CitizenUserId = citizernUserId });
-
                 var complaints = await db.Complaints
                     .Where(s => s.CitizenUserId == citizernUserId)
                     .OrderByDescending(s => s.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {complaints.Count} complaints for citizen {citizernUserId}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, CitizenUserId = citizernUserId, Count = complaints.Count });
 
                 return Ok(complaints);
             }
@@ -207,7 +202,7 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching complaints for citizen {citizernUserId}",
                     ex,
                     LogCategory.Grievance,
-                    new { CorrelationId = correlationId, CitizenUserId = citizernUserId });
+                    new { CitizenUserId = citizernUserId });
                 return StatusCode(500, new { message = "An error occurred while fetching complaints." });
             }
         }
@@ -216,30 +211,17 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllComplaints()
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching all complaints",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId });
-
                 var complaints = await db.Complaints
                     .OrderByDescending(s => s.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {complaints.Count} total complaints",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, Count = complaints.Count });
 
                 return Ok(complaints);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Error fetching all complaints",
-                    ex,
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId });
+                await _logger.LogErrorAsync($"Error fetching all complaints", ex, LogCategory.Grievance);
                 return StatusCode(500, new { message = "An error occurred while fetching complaints." });
             }
         }
@@ -247,14 +229,8 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Complaint>> GetComplaintById(Guid id)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching complaint by ID: {id}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, ComplaintId = id });
-
                 var complaint = await db.Complaints
                     .FirstOrDefaultAsync(c => c.ComplaintId == id);
 
@@ -262,13 +238,9 @@ namespace Smart_ward_management_system.Controllers
                 {
                     await _logger.LogWarningAsync($"Complaint not found with ID: {id}",
                         LogCategory.Grievance,
-                        new { CorrelationId = correlationId, ComplaintId = id });
+                        new { ComplaintId = id });
                     return NotFound(new { message = "Complaint not found." });
                 }
-
-                await _logger.LogInfoAsync($"Retrieved complaint {id} with status: {complaint.Status}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, ComplaintId = id, Status = complaint.Status });
 
                 return Ok(complaint);
             }
@@ -277,7 +249,7 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching complaint by ID: {id}",
                     ex,
                     LogCategory.Grievance,
-                    new { CorrelationId = correlationId, ComplaintId = id });
+                    new { ComplaintId = id });
                 return StatusCode(500, new { message = "An error occurred while fetching the complaint." });
             }
         }
@@ -285,22 +257,12 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("GetByStatus")]
         public async Task<IActionResult> GetByStatus([FromQuery] string status)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching complaints by status: {status}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, Status = status });
-
                 var complaints = await db.Complaints
                     .Where(c => c.Status == status)
                     .OrderByDescending(c => c.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {complaints.Count} complaints with status: {status}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, Status = status, Count = complaints.Count });
 
                 return Ok(complaints);
             }
@@ -309,7 +271,7 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching complaints by status: {status}",
                     ex,
                     LogCategory.Grievance,
-                    new { CorrelationId = correlationId, Status = status });
+                    new { Status = status });
                 return StatusCode(500, new { message = "An error occurred while fetching complaints." });
             }
         }
@@ -317,22 +279,12 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("GetByWard")]
         public async Task<IActionResult> GetByWard([FromQuery] string wardNumber)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching complaints for ward: {wardNumber}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, WardNumber = wardNumber });
-
                 var complaints = await db.Complaints
                     .Where(c => c.WardNumber == wardNumber)
                     .OrderByDescending(c => c.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {complaints.Count} complaints for ward: {wardNumber}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, WardNumber = wardNumber, Count = complaints.Count });
 
                 return Ok(complaints);
             }
@@ -341,7 +293,7 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching complaints for ward: {wardNumber}",
                     ex,
                     LogCategory.Grievance,
-                    new { CorrelationId = correlationId, WardNumber = wardNumber });
+                    new { WardNumber = wardNumber });
                 return StatusCode(500, new { message = "An error occurred while fetching complaints." });
             }
         }
@@ -349,22 +301,12 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("GetByPriority")]
         public async Task<IActionResult> GetByPriority([FromQuery] string priority)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching complaints by priority: {priority}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, Priority = priority });
-
                 var complaints = await db.Complaints
                     .Where(c => c.Priority == priority)
                     .OrderByDescending(c => c.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {complaints.Count} complaints with priority: {priority}",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId, Priority = priority, Count = complaints.Count });
 
                 return Ok(complaints);
             }
@@ -373,7 +315,7 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching complaints by priority: {priority}",
                     ex,
                     LogCategory.Grievance,
-                    new { CorrelationId = correlationId, Priority = priority });
+                    new { Priority = priority });
                 return StatusCode(500, new { message = "An error occurred while fetching complaints." });
             }
         }
@@ -381,14 +323,8 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("GetStatistics")]
         public async Task<IActionResult> GetStatistics()
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching complaint statistics",
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId });
-
                 var totalComplaints = await db.Complaints.CountAsync();
                 var pendingComplaints = await db.Complaints.CountAsync(c => c.Status == "Pending");
                 var inProgressComplaints = await db.Complaints.CountAsync(c => c.Status == "InProgress");
@@ -419,27 +355,16 @@ namespace Smart_ward_management_system.Controllers
                         : 0
                 };
 
-                await _logger.LogInfoAsync($"Complaint statistics retrieved",
-                    LogCategory.Grievance,
-                    new
-                    {
-                        CorrelationId = correlationId,
-                        Total = totalComplaints,
-                        Pending = pendingComplaints,
-                        Resolved = resolvedComplaints
-                    });
-
                 return Ok(statistics);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Error fetching complaint statistics",
-                    ex,
-                    LogCategory.Grievance,
-                    new { CorrelationId = correlationId });
+                await _logger.LogErrorAsync($"Error fetching complaint statistics", ex, LogCategory.Grievance);
                 return StatusCode(500, new { message = "An error occurred while fetching statistics." });
             }
         }
+
+        // ── Writes — logging unchanged ──────────────────────────────────────
 
         [HttpPut("update-status")]
         public async Task<IActionResult> UpdateStatus([FromBody] ComplaintStatusDto model)
@@ -468,15 +393,12 @@ namespace Smart_ward_management_system.Controllers
 
                 await db.SaveChangesAsync();
 
-                // Log the status change
                 await _logger.LogComplaintAsync(
                     complaintRequest.ComplaintId,
                     $"status changed from {oldStatus} to {model.Status}",
                     model.Status
                 );
-            complaintRequest.Status = model.Status;
 
-                // Add to status history if StatusHistory table exists
                 if (db.StatusHistories != null)
                 {
                     var statusHistory = new StatusHistory
@@ -540,7 +462,6 @@ namespace Smart_ward_management_system.Controllers
                     return NotFound(new { message = "Complaint not found." });
                 }
 
-                // Delete associated documents first
                 var documents = db.Documents.Where(d => d.ReferenceId == id && d.ReferenceType == "Complaint");
                 db.Documents.RemoveRange(documents);
 
@@ -569,7 +490,6 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // Helper method to get current user ID
         private Guid? GetCurrentUserId()
         {
             var userIdClaim = User.FindFirst("UserId")?.Value;

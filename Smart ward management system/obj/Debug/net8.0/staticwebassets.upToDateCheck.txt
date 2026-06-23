@@ -133,3 +133,9 @@ wwwroot\uploads\ProfilePictures\1d35b943-b9e4-4cae-9c12-69d44a93e1cd_live-photo-
 wwwroot\uploads\ProfilePictures\496694d0-dab3-47c3-9baf-e4ff52e6a760_live-photo-1773845251075.jpg
 wwwroot\uploads\ProfilePictures\7b9b9bae-5e61-4b25-baa5-0f331fb6c010_live-photo-1773895461882.jpg
 wwwroot\uploads\ProfilePictures\e397efc6-f614-462c-9d05-9f99675769af_live-photo-1773845744158.jpg
+wwwroot\uploads\IdentityDocs\81d645fb-5428-48f3-a2d6-a7b10d033cbf_WhatsApp Image 2026-06-14 at 10.01.42 PM.jpeg
+wwwroot\uploads\IdentityDocs\b1242de8-ed87-474d-8140-04f5ce7b56db_WhatsApp Image 2026-06-14 at 10.02.06 PM.jpeg
+wwwroot\uploads\IdentityDocs\e89160ec-50d4-436d-9ae8-c717d43d2773_WhatsApp Image 2026-06-14 at 10.05.51 PM.jpeg
+wwwroot\uploads\d56f7f52-5047-4863-85f5-c36110ecf1a6.jpeg
+wwwroot\uploads\ComplaintImages\6647ef4a-828e-4365-9da0-215dc2ea1f46_1H-Tokyo-Lobby-View.jpg
+wwwroot\notices\29037eaa-0034-4871-baf6-de9db3f7dc77.jpeg

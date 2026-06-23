@@ -18,71 +18,55 @@ namespace Smart_ward_management_system.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            // ✅ FIX Bug 9: Create a NEW Stopwatch per request, not a shared instance field.
-            // A field-level Stopwatch shared across concurrent requests gives wrong timings
-            // and is not thread-safe. Creating it locally here is always safe.
             var stopwatch = Stopwatch.StartNew();
-
             var controller = context.Controller.GetType().Name;
             var action = context.ActionDescriptor.RouteValues["action"];
+            var httpMethod = context.HttpContext.Request.Method;
 
-            await _loggingService.LogInfoAsync(
-                $"Started: {controller}.{action}",
-                LogCategory.System,
-                new { Parameters = context.ActionArguments }
-            );
+            // NOTE: no "Started:" log here anymore — it doubled the row count
+            // for zero audit value. We only log once, after we know the outcome.
 
-            // ✅ FIX Bug 10: Capture whether an exception was thrown by checking
-            // resultContext.Exception rather than reading the response status code.
-            // The response status code is unreliable at this point in the pipeline
-            // because the response body may not have been written yet for async actions.
             var resultContext = await next();
-
             stopwatch.Stop();
 
             if (resultContext.Exception != null && !resultContext.ExceptionHandled)
             {
-                // An unhandled exception occurred — log as error
                 await _loggingService.LogErrorAsync(
-                    $"Failed: {controller}.{action} — unhandled exception",
+                    $"{controller}.{action} threw an unhandled exception",
                     resultContext.Exception,
                     LogCategory.System,
-                    new { DurationMs = stopwatch.ElapsedMilliseconds }
+                    new { DurationMs = stopwatch.ElapsedMilliseconds, HttpMethod = httpMethod }
+                );
+                return;
+            }
+
+            var statusCode = resultContext.HttpContext.Response.StatusCode;
+
+            if (statusCode >= 500)
+            {
+                await _loggingService.LogErrorAsync(
+                    $"{controller}.{action} failed with status {statusCode}",
+                    null,
+                    LogCategory.System,
+                    new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode, HttpMethod = httpMethod }
                 );
             }
-            else
+            else if (statusCode >= 400)
             {
-                // Read status code only as supplemental info, not to decide log level
-                var statusCode = resultContext.HttpContext.Response.StatusCode;
-                var isClientError = statusCode >= 400 && statusCode < 500;
-                var isServerError = statusCode >= 500;
-
-                if (isServerError)
-                {
-                    await _loggingService.LogErrorAsync(
-                        $"Failed: {controller}.{action} — Status: {statusCode}",
-                        null,
-                        LogCategory.System,
-                        new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode }
-                    );
-                }
-                else if (isClientError)
-                {
-                    await _loggingService.LogWarningAsync(
-                        $"Client error: {controller}.{action} — Status: {statusCode}",
-                        LogCategory.System,
-                        new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode }
-                    );
-                }
-                else
-                {
-                    await _loggingService.LogInfoAsync(
-                        $"Completed: {controller}.{action} — Status: {statusCode}",
-                        LogCategory.System,
-                        new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode }
-                    );
-                }
+                await _loggingService.LogWarningAsync(
+                    $"{controller}.{action} rejected the request with status {statusCode}",
+                    LogCategory.System,
+                    new { DurationMs = stopwatch.ElapsedMilliseconds, StatusCode = statusCode, HttpMethod = httpMethod }
+                );
             }
+
+            // Successful requests are intentionally NOT logged here anymore.
+            // - Reads (GET) never need an audit entry.
+            // - Mutating actions (POST/PUT/PATCH/DELETE) should log their own
+            //   clear, specific message at the point where the actual entity
+            //   and actor are known — see StaffService for the pattern.
+            //   A generic "Completed: ControllerX.MethodY — Status: 200" told
+            //   you nothing about *what* happened, only that something did.
         }
     }
 }

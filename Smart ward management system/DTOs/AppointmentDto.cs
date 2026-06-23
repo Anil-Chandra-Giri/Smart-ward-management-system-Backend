@@ -3,6 +3,7 @@
     public class AppointmentDto
     {
         public string CitizenName { get; set; }
+        public Guid UserId { get; set; }
         public string ContactNumber { get; set; }
         public string ServiceType { get; set; }
         public int WardNumber { get; set; }

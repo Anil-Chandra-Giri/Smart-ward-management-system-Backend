@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Common;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs.Volunteer;
+using Smart_ward_management_system.Filters;
 using Smart_ward_management_system.Model.Volunteer;
 
 namespace Smart_ward_management_system.Controllers
@@ -124,6 +125,7 @@ namespace Smart_ward_management_system.Controllers
 
         // POST: api/DisasterEvents
         [HttpPost]
+        [RequireVerifiedCitizen]
         public async Task<ActionResult<DisasterEvent>> CreateDisasterEvent(CreateDisasterEventDto createDto)
         {
             var disasterEvent = new DisasterEvent

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Smart_ward_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class one : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -243,7 +243,11 @@ namespace Smart_ward_management_system.Migrations
                     AppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PollId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ApplicationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GrievanceId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    GrievanceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TargetEntityType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TargetEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    BeforeState = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AfterState = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -961,22 +965,22 @@ namespace Smart_ward_management_system.Migrations
                 columns: new[] { "Id", "AssignedRouteDate", "Email", "IsAvailable", "LicenseNumber", "Name", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("e2aacdfa-0da5-4e92-af8c-4020a7c51a1b"), null, "jane@example.com", true, "DL-002", "Jane Smith", "0987654321" },
-                    { new Guid("eabc6a17-8902-4a20-a6bf-df58db29951d"), null, "john@example.com", true, "DL-001", "John Doe", "1234567890" }
+                    { new Guid("32c79bd8-2187-40e8-8ab4-3b4374989d11"), null, "jane@example.com", true, "DL-002", "Jane Smith", "0987654321" },
+                    { new Guid("541f194d-aa3f-4fe0-8968-0fa9ce481896"), null, "john@example.com", true, "DL-001", "John Doe", "1234567890" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "AccountStatus", "CitizenshipIssuedDate", "CitizenshipIssuedDistrict", "CitizenshipNumber", "CreatedAt", "DateOfBirth", "Department", "Designation", "District", "Email", "EmployeeId", "FailedLoginAttempts", "FullNameEnglish", "FullNameNepali", "Gender", "IsEmailConfirmed", "IsVerified", "LastLoginAt", "LastLoginIp", "LastOtpRequestTime", "LockoutEnd", "Municipality", "NationalIdNumber", "OtpAttempts", "OtpCode", "OtpExpiryTime", "PasswordHash", "PermanentAddress", "PhoneNumber", "ProfilePicturePath", "Province", "Role", "TemporaryAddress", "UpdatedAt", "Username", "VerificationStatus", "VerifiedAt", "VerifiedBy", "WardNumber" },
-                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), "Active", new DateTime(2010, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kathmandu", "123456789", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Kathmandu", "admin@ward.gov.np", null, 0, "System Admin", "प्रशासक", "Male", true, true, null, null, null, null, "Kathmandu Metropolitan", null, 0, null, null, "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", "Kathmandu", "9800000000", "", "Bagmati", "Staff", "Kathmandu", new DateTime(2026, 6, 15, 2, 49, 9, 863, DateTimeKind.Utc).AddTicks(6276), "admin", 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("11111111-1111-1111-1111-111111111111"), "1" });
+                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), "Active", new DateTime(2010, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kathmandu", "123456789", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, "Kathmandu", "admin@ward.gov.np", null, 0, "System Admin", "प्रशासक", "Male", true, true, null, null, null, null, "Kathmandu Metropolitan", null, 0, null, null, "AQAAAAIAAYagAAAAEAB9zLigadl2431aHLhlcKzzUiGBjUWRmnwFIDF3CT94M3BkfYp/3J7pS66wz7oj2w==", "Kathmandu", "9800000000", "", "Bagmati", "Staff", "Kathmandu", new DateTime(2026, 6, 20, 1, 47, 33, 354, DateTimeKind.Utc).AddTicks(8118), "admin", 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("11111111-1111-1111-1111-111111111111"), "1" });
 
             migrationBuilder.InsertData(
                 table: "WasteVehicles",
                 columns: new[] { "Id", "Capacity", "CurrentFuelLevel", "IsActive", "LastMaintenanceDate", "LastUpdatedLocation", "Latitude", "Longitude", "NextMaintenanceDate", "Status", "VehicleName", "VehicleNumber", "VehicleType" },
                 values: new object[,]
                 {
-                    { new Guid("262df62c-4b30-4dcd-8ef5-68fff54649d7"), 3.0, 0.0, true, null, new DateTime(2026, 6, 15, 8, 34, 9, 867, DateTimeKind.Local).AddTicks(1999), 0.0, 0.0, null, 1, "Truck 2", "VH-002", "Dumper" },
-                    { new Guid("ee1024c8-a974-40a7-8cf0-13ff5f87ccf4"), 5.0, 0.0, true, null, new DateTime(2026, 6, 15, 8, 34, 9, 867, DateTimeKind.Local).AddTicks(1988), 0.0, 0.0, null, 1, "Truck 1", "VH-001", "Compactor" }
+                    { new Guid("0b792bf6-4e1c-4f10-9892-1c7b4a022a90"), 3.0, 0.0, true, null, new DateTime(2026, 6, 20, 7, 32, 33, 366, DateTimeKind.Local).AddTicks(1232), 0.0, 0.0, null, 1, "Truck 2", "VH-002", "Dumper" },
+                    { new Guid("a5ca01f6-4f75-4dcd-b598-e9500ab8e4db"), 5.0, 0.0, true, null, new DateTime(2026, 6, 20, 7, 32, 33, 366, DateTimeKind.Local).AddTicks(1209), 0.0, 0.0, null, 1, "Truck 1", "VH-001", "Compactor" }
                 });
 
             migrationBuilder.CreateIndex(

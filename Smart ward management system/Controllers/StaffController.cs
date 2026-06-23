@@ -7,7 +7,7 @@ namespace Smart_ward_management_system.Controllers
 {
     [ApiController]
     [Route("api/staff")]
-    // TODO: re-add [Authorize(Roles = "Admin")] once auth/JWT flow is wired up
+    [Authorize(Roles = "admin")]
     public class StaffController : ControllerBase
     {
         private readonly IStaffService _staffService;

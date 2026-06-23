@@ -23,18 +23,14 @@ namespace Smart_ward_management_system.Controllers
             _logger = logger;
         }
 
-        // GET: api/<NoticeController>
+        // ── Reads — Info-level "Fetching/Retrieved" noise removed ──────────
+        // Errors and not-found cases still log; a clean read needs no audit entry.
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NoticeResponseDto>>> GetAllNotices()
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching all active notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
-
                 var now = DateTime.UtcNow;
 
                 var notices = await _context.Notices
@@ -55,18 +51,11 @@ namespace Smart_ward_management_system.Controllers
                     .OrderByDescending(n => n.PublishDate)
                     .ToListAsync();
 
-                await _logger.LogInfoAsync($"Retrieved {notices.Count} active notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, Count = notices.Count });
-
                 return Ok(notices);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Error fetching all notices",
-                    ex,
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
+                await _logger.LogErrorAsync($"Error fetching all notices", ex, LogCategory.Notifications);
                 return StatusCode(500, new { message = "An error occurred while fetching notices." });
             }
         }
@@ -74,31 +63,18 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("urgent")]
         public async Task<IActionResult> GetUrgentNotices()
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching urgent notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
-
                 var notices = await _context.Notices
                     .Where(n => n.IsUrgent && n.IsActive)
                     .OrderByDescending(n => n.PublishDate)
                     .ToListAsync();
 
-                await _logger.LogInfoAsync($"Retrieved {notices.Count} urgent notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, Count = notices.Count });
-
                 return Ok(notices);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Error fetching urgent notices",
-                    ex,
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
+                await _logger.LogErrorAsync($"Error fetching urgent notices", ex, LogCategory.Notifications);
                 return StatusCode(500, new { message = "An error occurred while fetching urgent notices." });
             }
         }
@@ -106,14 +82,8 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("category/{categoryId}")]
         public async Task<IActionResult> GetNoticesByCategory(Guid categoryId)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching notices by category: {categoryId}",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, CategoryId = categoryId });
-
                 var now = DateTime.UtcNow;
                 var notices = await _context.Notices
                     .Include(n => n.Category)
@@ -122,10 +92,6 @@ namespace Smart_ward_management_system.Controllers
                     .OrderByDescending(n => n.PublishDate)
                     .ToListAsync();
 
-                await _logger.LogInfoAsync($"Retrieved {notices.Count} notices for category {categoryId}",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, CategoryId = categoryId, Count = notices.Count });
-
                 return Ok(notices);
             }
             catch (Exception ex)
@@ -133,7 +99,7 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching notices by category: {categoryId}",
                     ex,
                     LogCategory.Notifications,
-                    new { CorrelationId = correlationId, CategoryId = categoryId });
+                    new { CategoryId = categoryId });
                 return StatusCode(500, new { message = "An error occurred while fetching notices by category." });
             }
         }
@@ -141,14 +107,8 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("active")]
         public async Task<IActionResult> GetActiveNotices()
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching all active notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
-
                 var now = DateTime.UtcNow;
                 var notices = await _context.Notices
                     .Include(n => n.Category)
@@ -156,18 +116,11 @@ namespace Smart_ward_management_system.Controllers
                     .OrderByDescending(n => n.PublishDate)
                     .ToListAsync();
 
-                await _logger.LogInfoAsync($"Retrieved {notices.Count} active notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, Count = notices.Count });
-
                 return Ok(notices);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Error fetching active notices",
-                    ex,
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
+                await _logger.LogErrorAsync($"Error fetching active notices", ex, LogCategory.Notifications);
                 return StatusCode(500, new { message = "An error occurred while fetching active notices." });
             }
         }
@@ -175,14 +128,8 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetNoticeById(Guid id)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching notice by ID: {id}",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, NoticeId = id });
-
                 var notice = await _context.Notices
                     .Include(n => n.Category)
                     .FirstOrDefaultAsync(n => n.Id == id);
@@ -191,13 +138,9 @@ namespace Smart_ward_management_system.Controllers
                 {
                     await _logger.LogWarningAsync($"Notice not found with ID: {id}",
                         LogCategory.Notifications,
-                        new { CorrelationId = correlationId, NoticeId = id });
+                        new { NoticeId = id });
                     return NotFound(new { message = "Notice not found" });
                 }
-
-                await _logger.LogInfoAsync($"Retrieved notice {id}: {notice.Title}",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, NoticeId = id, Title = notice.Title });
 
                 return Ok(notice);
             }
@@ -206,12 +149,13 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching notice by ID: {id}",
                     ex,
                     LogCategory.Notifications,
-                    new { CorrelationId = correlationId, NoticeId = id });
+                    new { NoticeId = id });
                 return StatusCode(500, new { message = "An error occurred while fetching the notice." });
             }
         }
 
-        // POST api/<NoticeController>
+        // ── Writes — logging unchanged ──────────────────────────────────────
+
         [HttpPost]
         public async Task<IActionResult> CreateNotice([FromForm] CreateNoticeDTO dto)
         {
@@ -282,7 +226,6 @@ namespace Smart_ward_management_system.Controllers
                 _context.Notices.Add(notice);
                 await _context.SaveChangesAsync();
 
-                // Log the notice creation
                 await _logger.LogNoticeActionAsync(notice.Id, "created");
 
                 await _logger.LogInfoAsync($"Notice created successfully with ID: {notice.Id}",
@@ -318,7 +261,6 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // PUT api/<NoticeController>/update/{id}
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateNotice(Guid id, [FromForm] UpdateNoticeDTO dto)
         {
@@ -342,7 +284,6 @@ namespace Smart_ward_management_system.Controllers
                 var oldTitle = notice.Title;
                 var oldIsUrgent = notice.IsUrgent;
 
-                // Update fields
                 if (!string.IsNullOrEmpty(dto.Title))
                     notice.Title = dto.Title;
 
@@ -366,10 +307,8 @@ namespace Smart_ward_management_system.Controllers
                 if (dto.IsUrgent.HasValue)
                     notice.IsUrgent = dto.IsUrgent.Value;
 
-                // Handle file update
                 if (dto.File != null)
                 {
-                    // Delete old file if exists
                     if (!string.IsNullOrEmpty(notice.FileUrl))
                     {
                         var oldFilePath = Path.Combine(_env.WebRootPath, notice.FileUrl.TrimStart('/'));
@@ -414,11 +353,10 @@ namespace Smart_ward_management_system.Controllers
                     new { CorrelationId = correlationId, NoticeId = id });
                 return StatusCode(500, new { message = "An error occurred while updating the notice." });
             }
-        
-            return Ok(new { Message = "Notice posted successfully" });
+            // NOTE: removed an unreachable `return Ok(...)` that sat here after
+            // the try/catch above — every code path already returns inside it.
         }
 
-        // PUT api/<NoticeController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateNotice(Guid id, [FromForm] CreateNoticeDTO dto)
         {
@@ -429,7 +367,6 @@ namespace Smart_ward_management_system.Controllers
                 if (notice == null)
                     return NotFound(new { Error = "Notice not found" });
 
-                // Update notice properties
                 notice.Title = dto.Title;
                 notice.Description = dto.Description;
                 notice.CategoryId = dto.CategoryId;
@@ -437,10 +374,8 @@ namespace Smart_ward_management_system.Controllers
                 notice.ExpiryDate = dto.ExpiryDate;
                 notice.IsUrgent = dto.IsUrgent;
 
-                // Handle file upload if new file is provided
                 if (dto.File != null && dto.File.Length > 0)
                 {
-                    // Delete old file if exists
                     if (!string.IsNullOrEmpty(notice.FileUrl))
                     {
                         var oldFilePath = Path.Combine(_env.WebRootPath, notice.FileUrl.TrimStart('/'));
@@ -448,7 +383,6 @@ namespace Smart_ward_management_system.Controllers
                             System.IO.File.Delete(oldFilePath);
                     }
 
-                    // Save new file
                     var folder = Path.Combine(_env.WebRootPath, "notices");
                     if (!Directory.Exists(folder))
                         Directory.CreateDirectory(folder);
@@ -474,7 +408,6 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // DELETE api/<NoticeController>/delete/{id}
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteNotice(Guid id)
         {
@@ -496,7 +429,6 @@ namespace Smart_ward_management_system.Controllers
                     return NotFound(new { message = "Notice not found" });
                 }
 
-                // Soft delete - mark as inactive
                 notice.IsActive = false;
                 await _context.SaveChangesAsync();
 
@@ -521,7 +453,6 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // DELETE api/<NoticeController>/permanent/{id}
         [HttpDelete("permanent/{id}")]
         public async Task<IActionResult> PermanentDeleteNotice(Guid id)
         {
@@ -543,7 +474,6 @@ namespace Smart_ward_management_system.Controllers
                     return NotFound(new { message = "Notice not found" });
                 }
 
-                // Delete associated file if exists
                 if (!string.IsNullOrEmpty(notice.FileUrl))
                 {
                     var filePath = Path.Combine(_env.WebRootPath, notice.FileUrl.TrimStart('/'));
@@ -580,52 +510,33 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // GET: api/<NoticeController>/expired
+        // ── Reads — noise removed ───────────────────────────────────────────
+
         [HttpGet("expired")]
         public async Task<IActionResult> GetExpiredNotices()
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching expired notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
-
                 var now = DateTime.UtcNow;
                 var expiredNotices = await _context.Notices
                     .Where(n => n.ExpiryDate != null && n.ExpiryDate <= now)
                     .OrderByDescending(n => n.ExpiryDate)
                     .ToListAsync();
 
-                await _logger.LogInfoAsync($"Retrieved {expiredNotices.Count} expired notices",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, Count = expiredNotices.Count });
-
                 return Ok(expiredNotices);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Error fetching expired notices",
-                    ex,
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId });
+                await _logger.LogErrorAsync($"Error fetching expired notices", ex, LogCategory.Notifications);
                 return StatusCode(500, new { message = "An error occurred while fetching expired notices." });
             }
         }
 
-        // GET: api/<NoticeController>/search
         [HttpGet("search")]
         public async Task<IActionResult> SearchNotices([FromQuery] string keyword)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Searching notices with keyword: {keyword}",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, Keyword = keyword });
-
                 if (string.IsNullOrEmpty(keyword))
                 {
                     return BadRequest(new { message = "Keyword is required" });
@@ -640,10 +551,6 @@ namespace Smart_ward_management_system.Controllers
                     .OrderByDescending(n => n.PublishDate)
                     .ToListAsync();
 
-                await _logger.LogInfoAsync($"Found {notices.Count} notices matching keyword: {keyword}",
-                    LogCategory.Notifications,
-                    new { CorrelationId = correlationId, Keyword = keyword, Count = notices.Count });
-
                 return Ok(notices);
             }
             catch (Exception ex)
@@ -651,10 +558,11 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error searching notices with keyword: {keyword}",
                     ex,
                     LogCategory.Notifications,
-                    new { CorrelationId = correlationId, Keyword = keyword });
+                    new { Keyword = keyword });
                 return StatusCode(500, new { message = "An error occurred while searching notices." });
             }
-            return Ok(new { Message = "Notice deleted" });
+            // NOTE: removed an unreachable `return Ok(new { Message = "Notice deleted" })`
+            // that sat here — every code path above already returns.
         }
     }
 }

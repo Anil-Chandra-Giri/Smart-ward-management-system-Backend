@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs;
+using Smart_ward_management_system.Filters;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Model.Polls;
 using Smart_ward_management_system.Services;
@@ -66,6 +67,9 @@ namespace Smart_ward_management_system.Controllers
 
                 var now = DateTime.UtcNow;
 
+                // FIX: StartDate/EndDate were missing from this projection — the
+                // Angular grid that displays these polls has Start Date / End
+                // Date columns that were always rendering blank as a result.
                 var polls = await _context.Polls
                     .Include(p => p.Options)
                     .Where(p => p.IsActive &&
@@ -76,6 +80,8 @@ namespace Smart_ward_management_system.Controllers
                         p.Id,
                         p.Title,
                         p.Description,
+                        p.StartDate,
+                        p.EndDate,
                         Options = p.Options!.Select(o => new
                         {
                             o.Id,
@@ -83,25 +89,6 @@ namespace Smart_ward_management_system.Controllers
                         })
                     })
                     .ToListAsync();
-            //var polls = await _context.Polls
-            //    .Include(p => p.Options)
-            //    .Where(p => p.IsActive &&
-            //                p.StartDate <= now &&
-            //                (p.EndDate == null || p.EndDate >= now))
-            //    .Select(p => new
-            //    {
-            //        p.Id,
-            //        p.Title,
-            //        p.Description,
-            //        Options = p.Options!.Select(o => new
-            //        {
-            //            o.Id,
-            //            o.OptionText
-            //        }),
-            //        p.StartDate,
-            //        p.EndDate
-            //    })
-            //    .ToListAsync();
 
                 await _logger.LogInfoAsync($"Retrieved {polls.Count} active polls",
                     LogCategory.Polls,
@@ -274,6 +261,7 @@ namespace Smart_ward_management_system.Controllers
         }
 
         [HttpPost("vote")]
+        [RequireVerifiedCitizen]
         public async Task<IActionResult> Vote(VoteDto dto)
         {
             var correlationId = Guid.NewGuid().ToString();

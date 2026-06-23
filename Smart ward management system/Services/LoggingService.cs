@@ -28,11 +28,6 @@ namespace Smart_ward_management_system.Services
                 logEntry.IpAddress = httpContext.Connection.RemoteIpAddress?.ToString();
                 logEntry.RequestPath = httpContext.Request.Path;
 
-                // ✅ FIX Bug 1: Use the correct claim type names that match what your
-                // JWT token generator writes. If you use ClaimTypes.* constants when
-                // issuing tokens, use those same constants here. If you use custom
-                // short names ("UserId", "UserName" etc.) make sure your token builder
-                // also uses those exact strings. The defaults below match custom claims.
                 var userIdClaim = httpContext.User.FindFirst("UserId")?.Value
                                ?? httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (Guid.TryParse(userIdClaim, out Guid userId))
@@ -52,8 +47,6 @@ namespace Smart_ward_management_system.Services
                 if (!string.IsNullOrEmpty(wardNumberClaim))
                     logEntry.WardNumber = wardNumberClaim;
 
-                // ✅ FIX Bug 5: Build a single dictionary upfront instead of
-                // deserialize → mutate → re-serialize on every log write.
                 var emailClaim = httpContext.User.FindFirst("Email")?.Value
                               ?? httpContext.User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
 
@@ -70,7 +63,6 @@ namespace Smart_ward_management_system.Services
                         }
                         catch (JsonException)
                         {
-                            // AdditionalData was not valid JSON — start fresh rather than throw
                             additionalData = new Dictionary<string, object>();
                         }
                     }
@@ -146,6 +138,30 @@ namespace Smart_ward_management_system.Services
                 Message = message,
                 Timestamp = DateTime.UtcNow,
                 ExceptionDetails = ex?.ToString(),
+                AdditionalData = additionalData != null ? JsonSerializer.Serialize(additionalData) : null
+            });
+        }
+
+        // ── Restore-capable audit logging ───────────────────────────────────
+        public async Task LogChangeAsync<T>(
+            string message,
+            LogCategory category,
+            string targetEntityType,
+            Guid targetEntityId,
+            T? before,
+            T? after,
+            object? additionalData = null)
+        {
+            await LogAsync(new LogEntry
+            {
+                Level = LogLevel.Information,
+                Category = category,
+                Message = message,
+                Timestamp = DateTime.UtcNow,
+                TargetEntityType = targetEntityType,
+                TargetEntityId = targetEntityId,
+                BeforeState = before != null ? JsonSerializer.Serialize(before) : null,
+                AfterState = after != null ? JsonSerializer.Serialize(after) : null,
                 AdditionalData = additionalData != null ? JsonSerializer.Serialize(additionalData) : null
             });
         }
@@ -313,9 +329,6 @@ namespace Smart_ward_management_system.Services
 
         // ── Query ─────────────────────────────────────────────────────────────
 
-        // ✅ FIX Bug 2: Use the ApplyFilters/ApplySorting/ApplyPagination extension
-        // methods from LogQueryFilter.cs instead of duplicating filter logic here.
-        // This also correctly honours filter.SortBy which was previously ignored.
         public async Task<(IEnumerable<LogEntry> logs, int totalCount)> GetLogsAsync(LogQueryFilter filter)
         {
             filter.Validate();
@@ -339,21 +352,16 @@ namespace Smart_ward_management_system.Services
             return await _context.Logs.FindAsync(id);
         }
 
-        // ✅ FIX Bug 4: Avoid loading full entity lists into memory just to count.
-        // Use database-side aggregation with CountAsync. Also fix UTC date comparison
-        // by using a proper UTC range instead of .Date which can misbehave.
         public async Task<LogDashboardViewModel> GetDashboardStatsAsync()
         {
             var now = DateTime.UtcNow;
             var last24h = now.AddHours(-24);
-            var todayStart = now.Date;                    // midnight UTC today
-            var todayEnd = todayStart.AddDays(1);         // midnight UTC tomorrow
+            var todayStart = now.Date;
+            var todayEnd = todayStart.AddDays(1);
 
-            // Count today's logs database-side
             var totalLogsToday = await _context.Logs
                 .CountAsync(l => l.Timestamp >= todayStart && l.Timestamp < todayEnd);
 
-            // Aggregate counts for last 24 h database-side (no ToList)
             var levelCounts = await _context.Logs
                 .Where(l => l.Timestamp >= last24h)
                 .GroupBy(l => l.Level)
@@ -366,7 +374,6 @@ namespace Smart_ward_management_system.Services
                 .Select(g => new { Category = g.Key, Count = g.Count() })
                 .ToListAsync();
 
-            // Recent errors/citizen actions still need the actual rows — keep small Take()
             var recentErrors = await _context.Logs
                 .Where(l => l.Timestamp >= last24h && l.Level == LogLevel.Error)
                 .OrderByDescending(l => l.Timestamp)
@@ -394,7 +401,6 @@ namespace Smart_ward_management_system.Services
                 WarningCount24h = levelCounts.FirstOrDefault(x => x.Level == LogLevel.Warning)?.Count ?? 0,
                 InfoCount24h = levelCounts.FirstOrDefault(x => x.Level == LogLevel.Information)?.Count ?? 0,
                 CitizenServiceRequests = categoryCounts.FirstOrDefault(x => x.Category == LogCategory.CitizenServices)?.Count ?? 0,
-                // For grievance counts we still need a filtered query — keep it lean
                 GrievancesFiled = await _context.Logs.CountAsync(l => l.Timestamp >= last24h && l.Category == LogCategory.Grievance && l.Message.Contains("filed")),
                 GrievancesResolved = await _context.Logs.CountAsync(l => l.Timestamp >= last24h && l.Category == LogCategory.Grievance && l.Message.Contains("resolved")),
                 LogsByCategory = categoryCounts.ToDictionary(g => g.Category, g => g.Count),
@@ -417,7 +423,14 @@ namespace Smart_ward_management_system.Services
                     query = query.Where(l => l.ServiceRequestId == entityId);
                     break;
                 default:
-                    return new List<LogEntry>();
+                    // Fall back to the generic TargetEntityType/TargetEntityId pair
+                    // used by LogChangeAsync — this is what Staff and any future
+                    // restore-enabled entity will hit.
+                    query = query.Where(l =>
+                        l.TargetEntityType != null &&
+                        l.TargetEntityType.ToLower() == entityType.ToLower() &&
+                        l.TargetEntityId == entityId);
+                    break;
             }
 
             return await query
@@ -428,10 +441,6 @@ namespace Smart_ward_management_system.Services
 
         // ── Export ────────────────────────────────────────────────────────────
 
-        // ✅ FIX Bug 3: Implement the export methods properly.
-        // Note: filter.Validate() caps PageSize at 100 — for exports we intentionally
-        // bypass that cap. We call GetLogsAsync which calls Validate(), so we set
-        // ExportAll = true and handle pagination ourselves here.
         public async Task<byte[]> ExportLogsToCsvAsync(LogQueryFilter filter)
         {
             var logs = await GetAllLogsForExportAsync(filter);
@@ -441,7 +450,6 @@ namespace Smart_ward_management_system.Services
 
             foreach (var log in logs)
             {
-                // Escape fields that may contain commas or quotes
                 sb.AppendLine(string.Join(",",
                     log.Id,
                     log.Timestamp.ToString("o"),
@@ -461,8 +469,6 @@ namespace Smart_ward_management_system.Services
 
         public async Task<byte[]> ExportLogsToExcelAsync(LogQueryFilter filter)
         {
-            // Returns CSV with .xls extension for basic Excel compatibility.
-            // Replace with a proper library (ClosedXML, EPPlus) for real xlsx output.
             return await ExportLogsToCsvAsync(filter);
         }
 
@@ -472,7 +478,6 @@ namespace Smart_ward_management_system.Services
             return JsonSerializer.Serialize(logs, new JsonSerializerOptions { WriteIndented = true });
         }
 
-        // Helper: fetch all matching logs bypassing the PageSize cap for exports
         private async Task<List<LogEntry>> GetAllLogsForExportAsync(LogQueryFilter filter)
         {
             var query = _context.Logs
@@ -480,9 +485,6 @@ namespace Smart_ward_management_system.Services
                 .ApplyFilters(filter)
                 .ApplySorting(filter);
 
-            // ✅ FIX Bug 7: For exports, bypass the PageSize cap entirely —
-            // don't call Validate() which would truncate to 100.
-            // Apply a hard safety ceiling of 100,000 rows instead.
             return await query.Take(100_000).ToListAsync();
         }
 

@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Smart_ward_management_system.Common;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs;
+using Smart_ward_management_system.Filters;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Model.Appointment;
 using Smart_ward_management_system.Services;
@@ -26,7 +27,7 @@ namespace Smart_ward_management_system.Controllers
             _logger = logger;
         }
 
-        // GET: api/<AppointmentController>/queue/{wardNumber}
+        // GET: api/Appointment/queue/{wardNumber}
         [HttpGet("queue/{wardNumber}")]
         public async Task<IActionResult> GetQueueByWard(int wardNumber)
         {
@@ -59,8 +60,8 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        [Route("GetAllAppointments")]
-        [HttpGet]
+        // GET: api/Appointment/GetAllAppointments
+        [HttpGet("GetAllAppointments")]
         public async Task<IActionResult> GetAllAppointments()
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -91,14 +92,53 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        //// GET api/<AppointmentController>/appointment/{id}
-        //[HttpGet("appointment/{id}")]
-        //public async Task<IActionResult> GetAppointmentById(Guid id)
+        // GET: api/Appointment/MyAppointments?userId={userId}
+        // OR: api/Appointment/MyAppointments/{userId}
+        [HttpGet("MyAppointments")]
+        public async Task<IActionResult> GetMyAppointments([FromQuery] Guid userId)
+        {
+            var correlationId = Guid.NewGuid().ToString();
 
-        // GET api/<AppointmentController>/5
-        [Route("MyAppointments")]
-        [HttpGet]
-        public async Task<IActionResult> GetMyAppointments(Guid id)
+            try
+            {
+                // Validate userId
+                if (userId == Guid.Empty)
+                {
+                    await _logger.LogWarningAsync($"Invalid or missing UserId",
+                        LogCategory.Appointments,
+                        new { CorrelationId = correlationId });
+                    return BadRequest(new { message = "Valid UserId is required." });
+                }
+
+                await _logger.LogInfoAsync($"Fetching appointments for user: {userId}",
+                    LogCategory.Appointments,
+                    new { CorrelationId = correlationId, UserId = userId });
+
+                // ✅ FIXED: Only return appointments for this specific user
+                var myAppointments = await _context.Appointments
+                    .Where(a => a.UserId == userId)
+                    .OrderByDescending(a => a.CreatedAt)
+                    .ToListAsync();
+
+                await _logger.LogInfoAsync($"Retrieved {myAppointments.Count} appointments for user {userId}",
+                    LogCategory.Appointments,
+                    new { CorrelationId = correlationId, UserId = userId, Count = myAppointments.Count });
+
+                return Ok(myAppointments);
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error fetching appointments for user: {userId}",
+                    ex,
+                    LogCategory.Appointments,
+                    new { CorrelationId = correlationId, UserId = userId });
+                return StatusCode(500, new { message = "An error occurred while fetching appointments." });
+            }
+        }
+
+        // GET: api/Appointment/appointment/{id}
+        [HttpGet("appointment/{id}")]
+        public async Task<IActionResult> GetAppointmentById(Guid id)
         {
             var correlationId = Guid.NewGuid().ToString();
 
@@ -118,9 +158,6 @@ namespace Smart_ward_management_system.Controllers
                         new { CorrelationId = correlationId, AppointmentId = id });
                     return NotFound(new { message = "Appointment not found" });
                 }
-            var myAppointments =  await _context.Appointments.Where(s=>s.UserId == id).ToListAsync();
-            return Ok(myAppointments);
-        
 
                 await _logger.LogInfoAsync($"Retrieved appointment {id} with status: {appointment.Status}",
                     LogCategory.Appointments,
@@ -138,7 +175,7 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // GET api/<AppointmentController>/token/{tokenNumber}
+        // GET: api/Appointment/token/{tokenNumber}
         [HttpGet("token/{tokenNumber}")]
         public async Task<IActionResult> GetTokenStatus(string tokenNumber)
         {
@@ -173,10 +210,9 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // POST api/<AppointmentController>/book
-
-        // POST api/<AppointmentController>
+        // POST: api/Appointment/book
         [HttpPost("book")]
+        [RequireVerifiedCitizen]
         public async Task<IActionResult> BookAppointment([FromBody] AppointmentDto appointment)
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -191,6 +227,15 @@ namespace Smart_ward_management_system.Controllers
                     return BadRequest("Invalid appointment data.");
                 }
 
+                // ✅ Validate that UserId is provided
+                if (appointment.UserId == Guid.Empty)
+                {
+                    await _logger.LogWarningAsync($"Invalid UserId provided in appointment request",
+                        LogCategory.Appointments,
+                        new { CorrelationId = correlationId });
+                    return BadRequest(new { message = "Valid UserId is required." });
+                }
+
                 await _logger.LogInfoAsync($"Booking appointment for citizen: {appointment.CitizenName}, Ward: {appointment.WardNumber}, Service: {appointment.ServiceType}",
                     LogCategory.Appointments,
                     new
@@ -199,12 +244,15 @@ namespace Smart_ward_management_system.Controllers
                         CitizenName = appointment.CitizenName,
                         WardNumber = appointment.WardNumber,
                         ServiceType = appointment.ServiceType,
-                        ContactNumber = appointment.ContactNumber
+                        ContactNumber = appointment.ContactNumber,
+                        UserId = appointment.UserId
                     });
 
+                // ✅ Create appointment with UserId from request body
                 var newAppointment = new Appointment
                 {
                     AppointmentId = Guid.NewGuid(),
+                    UserId = appointment.UserId,
                     CitizenName = appointment.CitizenName,
                     ContactNumber = appointment.ContactNumber,
                     ServiceType = appointment.ServiceType,
@@ -217,9 +265,14 @@ namespace Smart_ward_management_system.Controllers
                 _context.Appointments.Add(newAppointment);
                 await _context.SaveChangesAsync();
 
-                await _logger.LogInfoAsync($"Appointment created with ID: {newAppointment.AppointmentId}",
+                await _logger.LogInfoAsync($"Appointment created with ID: {newAppointment.AppointmentId}, UserId: {newAppointment.UserId}",
                     LogCategory.Appointments,
-                    new { CorrelationId = correlationId, AppointmentId = newAppointment.AppointmentId });
+                    new
+                    {
+                        CorrelationId = correlationId,
+                        AppointmentId = newAppointment.AppointmentId,
+                        UserId = newAppointment.UserId
+                    });
 
                 // Create token
                 var token = new Token
@@ -256,10 +309,10 @@ namespace Smart_ward_management_system.Controllers
                 _context.Queues.Add(queue);
                 await _context.SaveChangesAsync();
 
-                // Log the appointment booking - using string for queue ID since it's Guid
+                // Log the appointment booking
                 await _logger.LogAppointmentAsync(newAppointment.AppointmentId, appointment.CitizenName, "booked");
 
-                // Log queue action - using queue.QueueId as string
+                // Log queue action
                 await _logger.LogInfoAsync($"Queue entry created - Queue ID: {queue.QueueId}, Token: {tokenNumber}, Status: In Queue",
                     LogCategory.Appointments,
                     new { QueueId = queue.QueueId, TokenNumber = tokenNumber });
@@ -278,7 +331,8 @@ namespace Smart_ward_management_system.Controllers
                         CorrelationId = correlationId,
                         AppointmentId = newAppointment.AppointmentId,
                         TokenNumber = tokenNumber,
-                        QueueId = queue.QueueId
+                        QueueId = queue.QueueId,
+                        UserId = newAppointment.UserId
                     });
 
                 // Send real-time notification via SignalR
@@ -293,6 +347,7 @@ namespace Smart_ward_management_system.Controllers
                 return Ok(new
                 {
                     newAppointment.AppointmentId,
+                    newAppointment.UserId,
                     TokenNumber = tokenNumber,
                     QueuePosition = queue.QueueId,
                     Message = "Appointment booked successfully!"
@@ -308,13 +363,14 @@ namespace Smart_ward_management_system.Controllers
                         CorrelationId = correlationId,
                         CitizenName = appointment?.CitizenName,
                         WardNumber = appointment?.WardNumber,
+                        UserId = appointment?.UserId,
                         ErrorMessage = ex.Message
                     });
                 return StatusCode(500, new { message = "An error occurred while booking the appointment." });
             }
         }
 
-        // PUT api/<AppointmentController>/queue/update/{tokenNumber}
+        // PUT: api/Appointment/queue/update/{tokenNumber}
         [HttpPut("queue/update/{tokenNumber}")]
         public async Task<IActionResult> UpdateQueueStatus(string tokenNumber, [FromBody] string status)
         {
@@ -343,7 +399,7 @@ namespace Smart_ward_management_system.Controllers
 
                 await _context.SaveChangesAsync();
 
-                // Log the queue status change using LogInfoAsync instead
+                // Log the queue status change
                 await _logger.LogInfoAsync($"Queue status changed - Queue ID: {queue.QueueId}, Token: {tokenNumber}, Status: {oldStatus} -> {status}",
                     LogCategory.Appointments,
                     new { QueueId = queue.QueueId, TokenNumber = tokenNumber, OldStatus = oldStatus, NewStatus = status });
@@ -401,7 +457,7 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // GET: api/<AppointmentController>/GetQueueStatistics
+        // GET: api/Appointment/queue/statistics/{wardNumber}
         [HttpGet("queue/statistics/{wardNumber}")]
         public async Task<IActionResult> GetQueueStatistics(int wardNumber)
         {
@@ -455,7 +511,7 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // GET: api/<AppointmentController>/GetAppointmentsByWard
+        // GET: api/Appointment/appointments/ward/{wardNumber}
         [HttpGet("appointments/ward/{wardNumber}")]
         public async Task<IActionResult> GetAppointmentsByWard(int wardNumber)
         {
@@ -488,7 +544,7 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // DELETE api/<AppointmentController>/cancel/{appointmentId}
+        // DELETE: api/Appointment/cancel/{appointmentId}
         [HttpDelete("cancel/{appointmentId}")]
         public async Task<IActionResult> CancelAppointment(Guid appointmentId)
         {

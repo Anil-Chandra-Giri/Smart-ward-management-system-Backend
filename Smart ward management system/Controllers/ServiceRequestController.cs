@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs;
+using Smart_ward_management_system.Filters;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Model.Enumerators;
 using Smart_ward_management_system.Model.Services;
 using Smart_ward_management_system.Model.Services.Complaints;
 using Smart_ward_management_system.Model.Services.ProbableServices;
-using Smart_ward_management_system.Services; // Add this
+using Smart_ward_management_system.Services;
 
 namespace Smart_ward_management_system.Controllers
 {
@@ -17,7 +18,7 @@ namespace Smart_ward_management_system.Controllers
     public class ServiceRequestController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILoggingService _logger; // Add logging service
+        private readonly ILoggingService _logger;
 
         public ServiceRequestController(ApplicationDbContext context, ILoggingService logger)
         {
@@ -25,24 +26,18 @@ namespace Smart_ward_management_system.Controllers
             _logger = logger;
         }
 
-        // GET: api/<ServiceRequestController>/GetAllRequestedServicesOfUser
+        // ── Reads — Info-level "Fetching/Retrieved" noise removed ──────────
+        // Errors and not-found cases still log; a clean read needs no audit entry.
+
         [Route("GetAllRequestedServicesOfUser")]
         [HttpGet]
         public async Task<IActionResult> GetAllServices([FromQuery] Guid userId)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching all service requests for user: {userId}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, UserId = userId });
-
                 if (userId == null)
                 {
-                    await _logger.LogWarningAsync($"GetAllServices called with null userId",
-                        LogCategory.ServiceRequests,
-                        new { CorrelationId = correlationId });
+                    await _logger.LogWarningAsync($"GetAllServices called with null userId", LogCategory.ServiceRequests);
                     return NotFound("UserId is required");
                 }
 
@@ -51,10 +46,6 @@ namespace Smart_ward_management_system.Controllers
                     .OrderByDescending(s => s.CreatedAt)
                     .ToListAsync();
 
-                await _logger.LogInfoAsync($"Retrieved {services.Count} service requests for user: {userId}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, UserId = userId, Count = services.Count });
-
                 return Ok(services);
             }
             catch (Exception ex)
@@ -62,7 +53,7 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching service requests for user: {userId}",
                     ex,
                     LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, UserId = userId });
+                    new { UserId = userId });
                 return StatusCode(500, new { message = "An error occurred while fetching service requests." });
             }
         }
@@ -71,46 +62,26 @@ namespace Smart_ward_management_system.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRequestedServices()
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching all service requests",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId });
-
                 var services = await _context.ServiceRequests
                     .OrderByDescending(s => s.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {services.Count} total service requests",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, Count = services.Count });
 
                 return Ok(services);
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Error fetching all service requests",
-                    ex,
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId });
+                await _logger.LogErrorAsync($"Error fetching all service requests", ex, LogCategory.ServiceRequests);
                 return StatusCode(500, new { message = "An error occurred while fetching service requests." });
             }
         }
 
-        // GET api/<ServiceRequestController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetServiceRequestById(Guid id)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching service request by ID: {id}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, ServiceRequestId = id });
-
                 var serviceRequest = await _context.ServiceRequests
                     .FirstOrDefaultAsync(s => s.ServiceRequestId == id);
 
@@ -118,13 +89,9 @@ namespace Smart_ward_management_system.Controllers
                 {
                     await _logger.LogWarningAsync($"Service request not found with ID: {id}",
                         LogCategory.ServiceRequests,
-                        new { CorrelationId = correlationId, ServiceRequestId = id });
+                        new { ServiceRequestId = id });
                     return NotFound(new { message = "Service request not found" });
                 }
-
-                await _logger.LogInfoAsync($"Retrieved service request {id} of type: {serviceRequest.ServiceType}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, ServiceRequestId = id, ServiceType = serviceRequest.ServiceType });
 
                 return Ok(serviceRequest);
             }
@@ -133,13 +100,15 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching service request by ID: {id}",
                     ex,
                     LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, ServiceRequestId = id });
+                    new { ServiceRequestId = id });
                 return StatusCode(500, new { message = "An error occurred while fetching the service request." });
             }
         }
 
-        // POST api/<ServiceRequestController>
+        // ── Writes — logging unchanged ──────────────────────────────────────
+
         [HttpPost]
+        [RequireVerifiedCitizen]
         public async Task<IActionResult> CreateRequest([FromBody] ServiceRequestDTO dto)
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -173,7 +142,6 @@ namespace Smart_ward_management_system.Controllers
 
                 Guid currentUserId = dto.UserId;
 
-                // 2. Initialize the specific class based on Enum
                 ServiceRequest request = type switch
                 {
                     ServiceEnum.BirthCertificate => new BirthCertificateRequest
@@ -237,7 +205,6 @@ namespace Smart_ward_management_system.Controllers
                     _ => new ServiceRequest()
                 };
 
-                // 3. Map Base Properties (Common to all)
                 request.ServiceRequestId = Guid.NewGuid();
                 request.UserId = currentUserId;
                 request.ServiceType = type;
@@ -254,11 +221,9 @@ namespace Smart_ward_management_system.Controllers
                 request.CreatedAt = DateTime.Now;
                 request.UpdatedAt = DateTime.Now;
 
-                // 4. Save
                 _context.ServiceRequests.Add(request);
                 await _context.SaveChangesAsync();
 
-                // Log the successful creation
                 await _logger.LogServiceRequestAsync(
                     request.ServiceRequestId,
                     type.ToString(),
@@ -266,14 +231,12 @@ namespace Smart_ward_management_system.Controllers
                     "Pending"
                 );
 
-                // Log citizen action
                 await _logger.LogCitizenActionAsync(
                     currentUserId.ToString(),
                     $"Filed service request: {type} (Ref: {request.ApplicationNumber})",
                     "Service Request"
                 );
 
-                // Log certificate request if applicable
                 if (type == ServiceEnum.BirthCertificate)
                 {
                     await _logger.LogCertificateRequestAsync(
@@ -326,7 +289,6 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // PUT api/<ServiceRequestController>/update-status
         [HttpPut("update-status")]
         public async Task<IActionResult> UpdateStatus([FromBody] UpdateServiceStatusDTO model)
         {
@@ -353,7 +315,6 @@ namespace Smart_ward_management_system.Controllers
                 serviceRequest.Status = model.Status;
                 serviceRequest.UpdatedAt = DateTime.Now;
 
-                // Add to status history if you have a StatusHistory table
                 var statusHistory = new StatusHistory
                 {
                     StatusHistoryId = Guid.NewGuid(),
@@ -362,13 +323,12 @@ namespace Smart_ward_management_system.Controllers
                     OldStatus = oldStatus.ToString(),
                     NewStatus = model.Status.ToString(),
                     ChangedAt = DateTime.Now,
-                    ChangedBy = GetCurrentUserId() // Implement this method
+                    ChangedBy = GetCurrentUserId()
                 };
                 _context.StatusHistories.Add(statusHistory);
 
                 await _context.SaveChangesAsync();
 
-                // Log the status change
                 await _logger.LogServiceRequestAsync(
                     serviceRequest.ServiceRequestId,
                     serviceRequest.ServiceType.ToString(),
@@ -403,26 +363,17 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // GET: api/<ServiceRequestController>/GetByStatus
+        // ── Reads — noise removed ───────────────────────────────────────────
+
         [HttpGet("GetByStatus")]
         public async Task<IActionResult> GetByStatus([FromQuery] ApprovalStatusEnum status)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching service requests by status: {status}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, Status = status });
-
                 var services = await _context.ServiceRequests
                     .Where(s => s.Status == status)
                     .OrderByDescending(s => s.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {services.Count} service requests with status: {status}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, Status = status, Count = services.Count });
 
                 return Ok(services);
             }
@@ -431,31 +382,20 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching service requests by status: {status}",
                     ex,
                     LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, Status = status });
+                    new { Status = status });
                 return StatusCode(500, new { message = "An error occurred while fetching service requests." });
             }
         }
 
-        // GET: api/<ServiceRequestController>/GetByWard
         [HttpGet("GetByWard")]
         public async Task<IActionResult> GetByWard([FromQuery] string wardNumber)
         {
-            var correlationId = Guid.NewGuid().ToString();
-
             try
             {
-                await _logger.LogInfoAsync($"Fetching service requests for ward: {wardNumber}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, WardNumber = wardNumber });
-
                 var services = await _context.ServiceRequests
                     .Where(s => s.RequestedWard == wardNumber)
                     .OrderByDescending(s => s.CreatedAt)
                     .ToListAsync();
-
-                await _logger.LogInfoAsync($"Retrieved {services.Count} service requests for ward: {wardNumber}",
-                    LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, WardNumber = wardNumber, Count = services.Count });
 
                 return Ok(services);
             }
@@ -464,12 +404,13 @@ namespace Smart_ward_management_system.Controllers
                 await _logger.LogErrorAsync($"Error fetching service requests for ward: {wardNumber}",
                     ex,
                     LogCategory.ServiceRequests,
-                    new { CorrelationId = correlationId, WardNumber = wardNumber });
+                    new { WardNumber = wardNumber });
                 return StatusCode(500, new { message = "An error occurred while fetching service requests." });
             }
         }
 
-        // PUT api/<ServiceRequestController>/5
+        // ── Writes — logging unchanged (these two had none to begin with) ──
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRequest(Guid id, [FromBody] ServiceRequestDTO dto)
         {
@@ -485,7 +426,6 @@ namespace Smart_ward_management_system.Controllers
                     return NotFound("Service request not found");
                 }
 
-                // Update base properties
                 existingRequest.Purpose = dto.Purpose;
                 existingRequest.Description = dto.Description;
                 existingRequest.RequestedWard = dto.RequestedWard;
@@ -494,7 +434,6 @@ namespace Smart_ward_management_system.Controllers
                 existingRequest.Remarks = dto.Remarks;
                 existingRequest.UpdatedAt = DateTime.Now;
 
-                // Update service-specific properties based on type
                 switch (existingRequest.ServiceType)
                 {
                     case ServiceEnum.BirthCertificate:
@@ -587,7 +526,6 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // DELETE api/<ServiceRequestController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteService(Guid id)
         {
@@ -627,7 +565,6 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
-        // Helper method to generate application number
         private string GenerateApplicationNumber(ServiceEnum serviceType)
         {
             var prefix = serviceType switch
@@ -645,7 +582,6 @@ namespace Smart_ward_management_system.Controllers
             return $"{prefix}-{DateTime.Now:yyyyMMdd}-{Guid.NewGuid().ToString().Substring(0, 6).ToUpper()}";
         }
 
-        // Helper method to get current user ID
         private Guid? GetCurrentUserId()
         {
             var userIdClaim = User.FindFirst("UserId")?.Value;
@@ -655,6 +591,7 @@ namespace Smart_ward_management_system.Controllers
             }
             return null;
         }
+
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteRequest(Guid id)
         {

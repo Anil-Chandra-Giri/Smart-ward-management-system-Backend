@@ -2,18 +2,22 @@
 using Microsoft.EntityFrameworkCore;
 using Smart_ward_management_system.Data;
 using Smart_ward_management_system.DTOs.Staff;
+using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Model.Identity;
+using Smart_ward_management_system.Services;
 
 namespace Smart_ward_management_system.Services.Staff
 {
     public class StaffService : IStaffService
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILoggingService _logger;
         private readonly PasswordHasher<User> _passwordHasher = new();
 
-        public StaffService(ApplicationDbContext context)
+        public StaffService(ApplicationDbContext context, ILoggingService logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<List<StaffListDto>> GetAllAsync(string? role, string? wardNumber, string? search)
@@ -105,6 +109,15 @@ namespace Smart_ward_management_system.Services.Staff
                 TemporaryPassword = temporaryPassword
             };
 
+            await _logger.LogChangeAsync(
+                $"Created staff account '{user.Username}' ({user.Role}, Ward {user.WardNumber})",
+                LogCategory.UserManagement,
+                "Staff",
+                user.UserId,
+                before: (StaffSnapshotDto?)null,
+                after: ToSnapshot(user)
+            );
+
             return (MapToListDto(user), credentials);
         }
 
@@ -119,6 +132,9 @@ namespace Smart_ward_management_system.Services.Staff
             var emailTaken = await _context.Users.AnyAsync(u => u.Email == dto.Email && u.UserId != userId);
             if (emailTaken)
                 throw new InvalidOperationException("Email is already registered to another account.");
+
+            var before = ToSnapshot(user);
+            var statusChanged = user.AccountStatus != dto.AccountStatus;
 
             user.FullNameEnglish = dto.FullNameEnglish;
             user.FullNameNepali = dto.FullNameNepali;
@@ -136,6 +152,18 @@ namespace Smart_ward_management_system.Services.Staff
             user.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
+
+            await _logger.LogChangeAsync(
+                statusChanged
+                    ? $"Updated staff account '{user.Username}' and changed status to {user.AccountStatus}"
+                    : $"Updated staff account '{user.Username}'",
+                LogCategory.UserManagement,
+                "Staff",
+                user.UserId,
+                before: before,
+                after: ToSnapshot(user)
+            );
+
             return true;
         }
 
@@ -144,8 +172,20 @@ namespace Smart_ward_management_system.Services.Staff
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId && u.Role != "Citizen");
             if (user is null) return false;
 
+            var before = ToSnapshot(user);
+
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+
+            await _logger.LogChangeAsync(
+                $"Deleted staff account '{user.Username}' ({user.Role}, Ward {user.WardNumber})",
+                LogCategory.UserManagement,
+                "Staff",
+                userId,
+                before: before,
+                after: (StaffSnapshotDto?)null
+            );
+
             return true;
         }
 
@@ -160,6 +200,12 @@ namespace Smart_ward_management_system.Services.Staff
 
             await _context.SaveChangesAsync();
 
+            await _logger.LogInfoAsync(
+                $"Reset password for staff account '{user.Username}'",
+                LogCategory.UserManagement,
+                new { TargetUserId = user.UserId, TargetUsername = user.Username }
+            );
+
             return new StaffCredentialsDto
             {
                 Username = user.Username,
@@ -172,12 +218,44 @@ namespace Smart_ward_management_system.Services.Staff
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId && u.Role != "Citizen");
             if (user is null) return false;
 
+            var before = ToSnapshot(user);
+            var previousStatus = user.AccountStatus;
+
             user.AccountStatus = accountStatus;
             user.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
+
+            await _logger.LogChangeAsync(
+                $"Changed staff account '{user.Username}' status from {previousStatus} to {accountStatus}",
+                LogCategory.UserManagement,
+                "Staff",
+                user.UserId,
+                before: before,
+                after: ToSnapshot(user)
+            );
+
             return true;
         }
+
+        private static StaffSnapshotDto ToSnapshot(User u) => new()
+        {
+            UserId = u.UserId,
+            Username = u.Username,
+            Email = u.Email,
+            FullNameEnglish = u.FullNameEnglish,
+            FullNameNepali = u.FullNameNepali,
+            PhoneNumber = u.PhoneNumber,
+            Role = u.Role,
+            EmployeeId = u.EmployeeId,
+            Department = u.Department,
+            Designation = u.Designation,
+            WardNumber = u.WardNumber,
+            Municipality = u.Municipality,
+            District = u.District,
+            Province = u.Province,
+            AccountStatus = u.AccountStatus
+        };
 
         private static StaffListDto MapToListDto(User u) => new()
         {

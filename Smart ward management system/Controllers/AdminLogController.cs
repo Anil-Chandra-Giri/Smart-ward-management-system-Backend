@@ -6,22 +6,25 @@ using Smart_ward_management_system.Data;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Models;
 using Smart_ward_management_system.Services;
+using Smart_ward_management_system.Services.Restore;
 using LogLevel = Smart_ward_management_system.Model.LogLevel;
 
 namespace Smart_ward_management_system.Controllers
 {
     [Route("api/admin/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin,WardOfficer")]
+    [Authorize(Roles = "admin,WardOfficer")]
     public class AdminLogController : ControllerBase
     {
         private readonly ILoggingService _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IEntityRestoreDispatcher _restoreDispatcher;
 
-        public AdminLogController(ILoggingService logger, ApplicationDbContext context)
+        public AdminLogController(ILoggingService logger, ApplicationDbContext context, IEntityRestoreDispatcher restoreDispatcher)
         {
             _logger = logger;
             _context = context;
+            _restoreDispatcher = restoreDispatcher;
         }
 
         // GET: api/admin/AdminLog/logs
@@ -93,7 +96,13 @@ namespace Smart_ward_management_system.Controllers
                         l.RequestPath,
                         l.CorrelationId,
                         HasException = !string.IsNullOrEmpty(l.ExceptionDetails),
-                        l.AdditionalData
+                        l.AdditionalData,
+                        // Whether this entry has a snapshot a restore can act on
+                        IsRestorable = !string.IsNullOrEmpty(l.TargetEntityType)
+                                       && l.TargetEntityId != null
+                                       && !string.IsNullOrEmpty(l.BeforeState),
+                        l.TargetEntityType,
+                        l.TargetEntityId
                     }),
                     pagination = new
                     {
@@ -149,6 +158,17 @@ namespace Smart_ward_management_system.Controllers
                         AdditionalData = !string.IsNullOrEmpty(log.AdditionalData)
                             ? System.Text.Json.JsonSerializer.Deserialize<object>(log.AdditionalData)
                             : null,
+                        IsRestorable = !string.IsNullOrEmpty(log.TargetEntityType)
+                                       && log.TargetEntityId != null
+                                       && !string.IsNullOrEmpty(log.BeforeState),
+                        log.TargetEntityType,
+                        log.TargetEntityId,
+                        BeforeState = !string.IsNullOrEmpty(log.BeforeState)
+                            ? System.Text.Json.JsonSerializer.Deserialize<object>(log.BeforeState)
+                            : null,
+                        AfterState = !string.IsNullOrEmpty(log.AfterState)
+                            ? System.Text.Json.JsonSerializer.Deserialize<object>(log.AfterState)
+                            : null,
                         relatedLogs = relatedLogs.Where(r => r.Id != log.Id).Select(r => new
                         {
                             r.Id,
@@ -166,6 +186,36 @@ namespace Smart_ward_management_system.Controllers
             {
                 await _logger.LogErrorAsync($"Error fetching log detail for id {id}", ex, LogCategory.System);
                 return StatusCode(500, new { success = false, message = "Error fetching log details" });
+            }
+        }
+
+        // POST: api/admin/AdminLog/logs/{id}/restore
+        [HttpPost("logs/{id}/restore")]
+        public async Task<IActionResult> RestoreFromLog(int id)
+        {
+            try
+            {
+                var result = await _restoreDispatcher.RestoreFromLogAsync(id);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = result.Recreated
+                        ? "Record restored. It had been deleted, so a new temporary password was generated since the original isn't recoverable."
+                        : "Record restored to its previous state.",
+                    recreated = result.Recreated,
+                    newUsername = result.NewUsername,
+                    newTemporaryPassword = result.NewTemporaryPassword
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error restoring from log {id}", ex, LogCategory.System);
+                return StatusCode(500, new { success = false, message = "Error restoring record" });
             }
         }
 
@@ -402,7 +452,10 @@ namespace Smart_ward_management_system.Controllers
                         Level = l.Level.ToString(),
                         l.Message,
                         l.UserName,
-                        l.AdditionalData
+                        l.AdditionalData,
+                        IsRestorable = !string.IsNullOrEmpty(l.TargetEntityType)
+                                       && l.TargetEntityId != null
+                                       && !string.IsNullOrEmpty(l.BeforeState)
                     })
                 };
 
@@ -484,7 +537,7 @@ namespace Smart_ward_management_system.Controllers
 
         // DELETE: api/admin/AdminLog/clear-old
         [HttpDelete("clear-old")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ClearOldLogs([FromQuery] int daysToKeep = 30)
         {
             try

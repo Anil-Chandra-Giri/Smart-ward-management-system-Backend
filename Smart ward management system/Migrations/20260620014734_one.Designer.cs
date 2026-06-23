@@ -12,8 +12,8 @@ using Smart_ward_management_system.Data;
 namespace Smart_ward_management_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260615024910_first")]
-    partial class first
+    [Migration("20260620014734_one")]
+    partial class one
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -548,7 +548,7 @@ namespace Smart_ward_management_system.Migrations
                             Province = "Bagmati",
                             Role = "Staff",
                             TemporaryAddress = "Kathmandu",
-                            UpdatedAt = new DateTime(2026, 6, 15, 2, 49, 9, 863, DateTimeKind.Utc).AddTicks(6276),
+                            UpdatedAt = new DateTime(2026, 6, 20, 1, 47, 33, 354, DateTimeKind.Utc).AddTicks(8118),
                             Username = "admin",
                             VerificationStatus = 2,
                             VerifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -568,11 +568,17 @@ namespace Smart_ward_management_system.Migrations
                     b.Property<string>("AdditionalData")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AfterState")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ApplicationId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("AppointmentId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BeforeState")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
@@ -622,6 +628,12 @@ namespace Smart_ward_management_system.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Source")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("TargetEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TargetEntityType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
@@ -1651,7 +1663,7 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("eabc6a17-8902-4a20-a6bf-df58db29951d"),
+                            Id = new Guid("541f194d-aa3f-4fe0-8968-0fa9ce481896"),
                             Email = "john@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-001",
@@ -1660,7 +1672,7 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e2aacdfa-0da5-4e92-af8c-4020a7c51a1b"),
+                            Id = new Guid("32c79bd8-2187-40e8-8ab4-3b4374989d11"),
                             Email = "jane@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-002",
@@ -1828,11 +1840,11 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ee1024c8-a974-40a7-8cf0-13ff5f87ccf4"),
+                            Id = new Guid("a5ca01f6-4f75-4dcd-b598-e9500ab8e4db"),
                             Capacity = 5.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 6, 15, 8, 34, 9, 867, DateTimeKind.Local).AddTicks(1988),
+                            LastUpdatedLocation = new DateTime(2026, 6, 20, 7, 32, 33, 366, DateTimeKind.Local).AddTicks(1209),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
@@ -1842,11 +1854,11 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("262df62c-4b30-4dcd-8ef5-68fff54649d7"),
+                            Id = new Guid("0b792bf6-4e1c-4f10-9892-1c7b4a022a90"),
                             Capacity = 3.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 6, 15, 8, 34, 9, 867, DateTimeKind.Local).AddTicks(1999),
+                            LastUpdatedLocation = new DateTime(2026, 6, 20, 7, 32, 33, 366, DateTimeKind.Local).AddTicks(1232),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
