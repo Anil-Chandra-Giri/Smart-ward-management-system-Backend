@@ -5,6 +5,8 @@ using Smart_ward_management_system.DTOs.Staff;
 using Smart_ward_management_system.Model;
 using Smart_ward_management_system.Model.Identity;
 using Smart_ward_management_system.Services;
+using System.Net;
+using System.Net.Mail;
 
 namespace Smart_ward_management_system.Services.Staff
 {
@@ -12,12 +14,14 @@ namespace Smart_ward_management_system.Services.Staff
     {
         private readonly ApplicationDbContext _context;
         private readonly ILoggingService _logger;
+        private readonly IConfiguration _configuration;
         private readonly PasswordHasher<User> _passwordHasher = new();
 
-        public StaffService(ApplicationDbContext context, ILoggingService logger)
+        public StaffService(ApplicationDbContext context, ILoggingService logger, IConfiguration _configuration)
         {
             _context = context;
             _logger = logger;
+            this._configuration = _configuration;
         }
 
         public async Task<List<StaffListDto>> GetAllAsync(string? role, string? wardNumber, string? search)
@@ -118,7 +122,134 @@ namespace Smart_ward_management_system.Services.Staff
                 after: ToSnapshot(user)
             );
 
+            await SendEmailAsync(user.Email, credentials.Username, credentials.TemporaryPassword, user.FullNameEnglish);
             return (MapToListDto(user), credentials);
+        }
+
+        private async Task SendEmailAsync(string toEmail, string username, string tempPassword, string fullName)
+        {
+            try
+            {
+                var smtpClient = new SmtpClient(_configuration["EmailSettings:SmtpServer"])
+                {
+                    Port = int.Parse(_configuration["EmailSettings:Port"]),
+                    Credentials = new NetworkCredential(
+                        _configuration["EmailSettings:Username"],
+                        _configuration["EmailSettings:Password"]),
+                    EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSSL"]),
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(
+                        _configuration["EmailSettings:FromEmail"],
+                        _configuration["EmailSettings:FromName"]),
+                    Subject = "Your Smart Ward Management System Account Credentials",
+                    Body = $@"
+<html>
+<head>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }}
+        .header {{
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }}
+        .content {{
+            padding: 30px;
+        }}
+        .credentials {{
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }}
+        .credentials p {{
+            margin: 10px 0;
+            font-size: 16px;
+        }}
+        .label {{
+            font-weight: bold;
+            color: #4CAF50;
+        }}
+        .note {{
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+        }}
+        .footer {{
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+            background-color: #f9f9f9;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h2>Welcome to Smart Ward Management System</h2>
+        </div>
+
+        <div class='content'>
+            <p>Hello <strong>{fullName}</strong>,</p>
+
+            <p>Your account has been created successfully. Please use the following credentials to log in:</p>
+
+            <div class='credentials'>
+                <p><span class='label'>Username:</span> {username}</p>
+                <p><span class='label'>Temporary Password:</span> {tempPassword}</p>
+            </div>
+
+            <div class='note'>
+                <strong>Important:</strong>
+                <ul>
+                    <li>Please log in using the above credentials.</li>
+                    <li>Change your password immediately after your first login.</li>
+                    <li>Do not share your login credentials with anyone.</li>
+                </ul>
+            </div>
+
+            <p>If you did not expect this account to be created, please contact the system administrator.</p>
+
+            <p>Thank you,<br>
+            <strong>Smart Ward Management System Team</strong></p>
+        </div>
+
+        <div class='footer'>
+            <p>&copy; {DateTime.UtcNow.Year} Smart Ward Management System. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>",
+                    IsBodyHtml = true
+                };
+
+                mailMessage.To.Add(toEmail);
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
         }
 
         public async Task<bool> UpdateAsync(Guid userId, UpdateStaffDto dto)
