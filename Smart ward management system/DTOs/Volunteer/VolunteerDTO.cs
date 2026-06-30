@@ -177,4 +177,30 @@
         public string Status { get; set; }
         public string Notes { get; set; }
     }
+
+    public class SelfRegisterVolunteerDto
+    {
+        // Volunteer fields
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string? Address { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string? Skills { get; set; }
+        public string? Availability { get; set; }
+        public string? EmergencyContact { get; set; }
+        public string? EmergencyPhone { get; set; }
+
+        // Assignment fields
+        public Guid DisasterEventId { get; set; }
+        public string? Notes { get; set; }
+    }
+
+    public class SelfRegisterResponseDto
+    {
+        public Guid VolunteerId { get; set; }
+        public Guid AssignmentId { get; set; }
+        public string Message { get; set; }
+    }
 }
