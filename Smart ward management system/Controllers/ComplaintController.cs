@@ -499,5 +499,67 @@ namespace Smart_ward_management_system.Controllers
             }
             return null;
         }
+
+
+        // ── Reads — Unresolved/Overdue complaints alert ─────────────────────
+        [HttpGet("GetOverdueComplaints")]
+        public async Task<IActionResult> GetOverdueComplaints([FromQuery] int days = 7)
+        {
+            try
+            {
+                var thresholdDate = DateTime.UtcNow.AddDays(-days);
+
+                var overdueComplaints = await db.Complaints
+                    .Where(c => c.Status != "Resolved"
+                             && c.Status != "Rejected"
+                             && c.CreatedAt <= thresholdDate)
+                    .OrderBy(c => c.CreatedAt) // oldest/most overdue first
+                    .ToListAsync();
+
+                var result = overdueComplaints.Select(c => new
+                {
+                    c.ComplaintId,
+                    c.CitizenUserId,
+                    c.Category,
+                    c.Priority,
+                    c.Status,
+                    c.WardNumber,
+                    c.Municipality,
+                    c.CreatedAt,
+                    DaysPending = (int)(DateTime.UtcNow - c.CreatedAt).TotalDays
+                }).ToList();
+
+                var summary = new
+                {
+                    ThresholdDays = days,
+                    TotalOverdue = result.Count,
+                    ByPriority = result.GroupBy(c => c.Priority)
+                                        .Select(g => new { Priority = g.Key, Count = g.Count() })
+                                        .ToList(),
+                    ByWard = result.GroupBy(c => c.WardNumber)
+                                   .Select(g => new { Ward = g.Key, Count = g.Count() })
+                                   .ToList(),
+                    Complaints = result
+                };
+
+                if (result.Any())
+                {
+                    await _logger.LogWarningAsync(
+                        $"Overdue complaints alert: {result.Count} complaint(s) unresolved for >= {days} days",
+                        LogCategory.Grievance,
+                        new { ThresholdDays = days, TotalOverdue = result.Count });
+                }
+
+                return Ok(summary);
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error fetching overdue complaints (threshold: {days} days)",
+                    ex,
+                    LogCategory.Grievance,
+                    new { ThresholdDays = days });
+                return StatusCode(500, new { message = "An error occurred while fetching overdue complaints." });
+            }
+        }
     }
 }
