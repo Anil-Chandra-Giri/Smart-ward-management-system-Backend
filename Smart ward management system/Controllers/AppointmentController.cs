@@ -93,7 +93,6 @@ namespace Smart_ward_management_system.Controllers
         }
 
         // GET: api/Appointment/MyAppointments?userId={userId}
-        // OR: api/Appointment/MyAppointments/{userId}
         [HttpGet("MyAppointments")]
         public async Task<IActionResult> GetMyAppointments([FromQuery] Guid userId)
         {
@@ -101,7 +100,6 @@ namespace Smart_ward_management_system.Controllers
 
             try
             {
-                // Validate userId
                 if (userId == Guid.Empty)
                 {
                     await _logger.LogWarningAsync($"Invalid or missing UserId",
@@ -114,7 +112,6 @@ namespace Smart_ward_management_system.Controllers
                     LogCategory.Appointments,
                     new { CorrelationId = correlationId, UserId = userId });
 
-                // ✅ FIXED: Only return appointments for this specific user
                 var myAppointments = await _context.Appointments
                     .Where(a => a.UserId == userId)
                     .OrderByDescending(a => a.CreatedAt)
@@ -227,7 +224,6 @@ namespace Smart_ward_management_system.Controllers
                     return BadRequest("Invalid appointment data.");
                 }
 
-                // ✅ Validate that UserId is provided
                 if (appointment.UserId == Guid.Empty)
                 {
                     await _logger.LogWarningAsync($"Invalid UserId provided in appointment request",
@@ -248,7 +244,6 @@ namespace Smart_ward_management_system.Controllers
                         UserId = appointment.UserId
                     });
 
-                // ✅ Create appointment with UserId from request body
                 var newAppointment = new Appointment
                 {
                     AppointmentId = Guid.NewGuid(),
@@ -309,15 +304,12 @@ namespace Smart_ward_management_system.Controllers
                 _context.Queues.Add(queue);
                 await _context.SaveChangesAsync();
 
-                // Log the appointment booking
                 await _logger.LogAppointmentAsync(newAppointment.AppointmentId, appointment.CitizenName, "booked");
 
-                // Log queue action
                 await _logger.LogInfoAsync($"Queue entry created - Queue ID: {queue.QueueId}, Token: {tokenNumber}, Status: In Queue",
                     LogCategory.Appointments,
                     new { QueueId = queue.QueueId, TokenNumber = tokenNumber });
 
-                // Log citizen action
                 await _logger.LogCitizenActionAsync(
                     appointment.ContactNumber,
                     $"Booked appointment for {appointment.ServiceType} - Token: {tokenNumber}",
@@ -335,7 +327,6 @@ namespace Smart_ward_management_system.Controllers
                         UserId = newAppointment.UserId
                     });
 
-                // Send real-time notification via SignalR
                 await _hubContext.Clients.All.SendAsync("ReceiveNewToken", new
                 {
                     TokenNumber = tokenNumber,
@@ -370,6 +361,199 @@ namespace Smart_ward_management_system.Controllers
             }
         }
 
+        // ============ UPDATE APPOINTMENT ENDPOINT ============
+        // PUT: api/Appointment/update/{appointmentId}
+        [HttpPut("update/{appointmentId}")]
+        public async Task<IActionResult> UpdateAppointment(Guid appointmentId, [FromBody] UpdateAppointmentDto updatedAppointment)
+        {
+            var correlationId = Guid.NewGuid().ToString();
+
+            try
+            {
+                await _logger.LogInfoAsync($"Updating appointment: {appointmentId}",
+                    LogCategory.Appointments,
+                    new { CorrelationId = correlationId, AppointmentId = appointmentId });
+
+                var appointment = await _context.Appointments
+                    .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
+
+                if (appointment == null)
+                {
+                    await _logger.LogWarningAsync($"Appointment not found for update: {appointmentId}",
+                        LogCategory.Appointments,
+                        new { CorrelationId = correlationId, AppointmentId = appointmentId });
+                    return NotFound(new { message = "Appointment not found" });
+                }
+
+                // Check if appointment can be updated
+                if (appointment.Status == "Completed" || appointment.Status == "Cancelled")
+                {
+                    await _logger.LogWarningAsync($"Attempted to update {appointment.Status} appointment: {appointmentId}",
+                        LogCategory.Appointments,
+                        new { CorrelationId = correlationId, AppointmentId = appointmentId, Status = appointment.Status });
+                    return BadRequest(new { message = $"Cannot update {appointment.Status} appointment" });
+                }
+
+                // Update fields
+                if (!string.IsNullOrEmpty(updatedAppointment.CitizenName))
+                    appointment.CitizenName = updatedAppointment.CitizenName;
+
+                if (!string.IsNullOrEmpty(updatedAppointment.ContactNumber))
+                    appointment.ContactNumber = updatedAppointment.ContactNumber;
+
+                if (!string.IsNullOrEmpty(updatedAppointment.ServiceType))
+                    appointment.ServiceType = updatedAppointment.ServiceType;
+
+                if (updatedAppointment.WardNumber > 0)
+                    appointment.WardNumber = updatedAppointment.WardNumber;
+
+                if (updatedAppointment.AppointmentTime != DateTime.MinValue)
+                    appointment.AppointmentTime = updatedAppointment.AppointmentTime;
+
+                // Only update status if provided and valid
+                if (!string.IsNullOrEmpty(updatedAppointment.Status))
+                {
+                    var validStatuses = new[] { "Pending", "Completed", "Cancelled" };
+                    if (validStatuses.Contains(updatedAppointment.Status))
+                    {
+                        // If status is being changed to Cancelled, also update the queue
+                        if (updatedAppointment.Status == "Cancelled" && appointment.Status != "Cancelled")
+                        {
+                            var queue = await _context.Queues
+                                .FirstOrDefaultAsync(q => q.TokenNumber == appointment.TokenNumber);
+                            if (queue != null)
+                            {
+                                queue.Status = "Cancelled";
+                                queue.UpdatedAt = DateTime.Now;
+                            }
+
+                            await _hubContext.Clients.All.SendAsync("ReceiveTokenUpdate", appointment.TokenNumber, "Cancelled");
+                        }
+                        else if (updatedAppointment.Status == "Completed" && appointment.Status != "Completed")
+                        {
+                            var queue = await _context.Queues
+                                .FirstOrDefaultAsync(q => q.TokenNumber == appointment.TokenNumber);
+                            if (queue != null)
+                            {
+                                queue.Status = "Completed";
+                                queue.UpdatedAt = DateTime.Now;
+                            }
+                        }
+
+                        appointment.Status = updatedAppointment.Status;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+                await _logger.LogInfoAsync($"Appointment updated: {appointmentId}",
+                    LogCategory.Appointments,
+                    new
+                    {
+                        CorrelationId = correlationId,
+                        AppointmentId = appointmentId,
+                        NewStatus = appointment.Status
+                    });
+
+                return Ok(new
+                {
+                    appointment,
+                    message = "Appointment updated successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error updating appointment: {appointmentId}",
+                    ex,
+                    LogCategory.Appointments,
+                    new { CorrelationId = correlationId, AppointmentId = appointmentId });
+                return StatusCode(500, new { message = "An error occurred while updating the appointment." });
+            }
+        }
+
+        // ============ UPDATE APPOINTMENT STATUS ONLY ============
+        // PUT: api/Appointment/update-status/{appointmentId}
+        [HttpPut("update-status/{appointmentId}")]
+        public async Task<IActionResult> UpdateAppointmentStatus(Guid appointmentId, [FromBody] UpdateStatusDto statusUpdate)
+        {
+            var correlationId = Guid.NewGuid().ToString();
+
+            try
+            {
+                await _logger.LogInfoAsync($"Updating appointment status: {appointmentId}",
+                    LogCategory.Appointments,
+                    new { CorrelationId = correlationId, AppointmentId = appointmentId });
+
+                var appointment = await _context.Appointments
+                    .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
+
+                if (appointment == null)
+                {
+                    await _logger.LogWarningAsync($"Appointment not found for status update: {appointmentId}",
+                        LogCategory.Appointments,
+                        new { CorrelationId = correlationId, AppointmentId = appointmentId });
+                    return NotFound(new { message = "Appointment not found" });
+                }
+
+                // Check if appointment can be updated
+                if (appointment.Status == "Completed" || appointment.Status == "Cancelled")
+                {
+                    return BadRequest(new { message = $"Cannot update {appointment.Status} appointment" });
+                }
+
+                // Validate status
+                var validStatuses = new[] { "Pending", "Completed", "Cancelled" };
+                if (!string.IsNullOrEmpty(statusUpdate.Status) && validStatuses.Contains(statusUpdate.Status))
+                {
+                    var oldStatus = appointment.Status;
+                    appointment.Status = statusUpdate.Status;
+
+                    // Update queue if needed
+                    if (statusUpdate.Status == "Cancelled" || statusUpdate.Status == "Completed")
+                    {
+                        var queue = await _context.Queues
+                            .FirstOrDefaultAsync(q => q.TokenNumber == appointment.TokenNumber);
+                        if (queue != null)
+                        {
+                            queue.Status = statusUpdate.Status;
+                            queue.UpdatedAt = DateTime.Now;
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    await _logger.LogInfoAsync($"Appointment status updated: {appointmentId}, {oldStatus} -> {statusUpdate.Status}",
+                        LogCategory.Appointments,
+                        new
+                        {
+                            CorrelationId = correlationId,
+                            AppointmentId = appointmentId,
+                            OldStatus = oldStatus,
+                            NewStatus = statusUpdate.Status
+                        });
+
+                    // Send real-time notification
+                    await _hubContext.Clients.All.SendAsync("ReceiveTokenUpdate", appointment.TokenNumber, statusUpdate.Status);
+
+                    return Ok(new
+                    {
+                        appointment,
+                        message = $"Appointment status updated to {statusUpdate.Status}"
+                    });
+                }
+
+                return BadRequest(new { message = "Invalid status value. Valid values: Pending, Completed, Cancelled" });
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogErrorAsync($"Error updating appointment status: {appointmentId}",
+                    ex,
+                    LogCategory.Appointments,
+                    new { CorrelationId = correlationId, AppointmentId = appointmentId });
+                return StatusCode(500, new { message = "An error occurred while updating the appointment status." });
+            }
+        }
+
         // PUT: api/Appointment/queue/update/{tokenNumber}
         [HttpPut("queue/update/{tokenNumber}")]
         public async Task<IActionResult> UpdateQueueStatus(string tokenNumber, [FromBody] string status)
@@ -399,7 +583,6 @@ namespace Smart_ward_management_system.Controllers
 
                 await _context.SaveChangesAsync();
 
-                // Log the queue status change
                 await _logger.LogInfoAsync($"Queue status changed - Queue ID: {queue.QueueId}, Token: {tokenNumber}, Status: {oldStatus} -> {status}",
                     LogCategory.Appointments,
                     new { QueueId = queue.QueueId, TokenNumber = tokenNumber, OldStatus = oldStatus, NewStatus = status });
@@ -436,7 +619,6 @@ namespace Smart_ward_management_system.Controllers
                         QueueId = queue.QueueId
                     });
 
-                // Send real-time notification via SignalR
                 await _hubContext.Clients.All.SendAsync("ReceiveTokenUpdate", tokenNumber, status);
 
                 return Ok(new
@@ -567,6 +749,12 @@ namespace Smart_ward_management_system.Controllers
                     return NotFound(new { message = "Appointment not found" });
                 }
 
+                // Check if already cancelled or completed
+                if (appointment.Status == "Completed" || appointment.Status == "Cancelled")
+                {
+                    return BadRequest(new { message = $"Cannot cancel {appointment.Status} appointment" });
+                }
+
                 var oldStatus = appointment.Status;
                 appointment.Status = "Cancelled";
 
@@ -599,7 +787,12 @@ namespace Smart_ward_management_system.Controllers
 
                 await _hubContext.Clients.All.SendAsync("ReceiveTokenUpdate", appointment.TokenNumber, "Cancelled");
 
-                return Ok(new { message = "Appointment cancelled successfully", appointmentId = appointmentId });
+                return Ok(new
+                {
+                    message = "Appointment cancelled successfully",
+                    appointmentId = appointmentId,
+                    tokenNumber = appointment.TokenNumber
+                });
             }
             catch (Exception ex)
             {

@@ -549,7 +549,7 @@ namespace Smart_ward_management_system.Migrations
                             Province = "Bagmati",
                             Role = "admin",
                             TemporaryAddress = "Kathmandu",
-                            UpdatedAt = new DateTime(2026, 6, 22, 2, 27, 6, 508, DateTimeKind.Utc).AddTicks(9217),
+                            UpdatedAt = new DateTime(2026, 6, 29, 13, 52, 26, 458, DateTimeKind.Utc).AddTicks(7198),
                             Username = "admin",
                             VerificationStatus = 2,
                             VerifiedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1664,7 +1664,7 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("89b0d19e-2bcf-40e9-84c3-3ec24b5ddd5e"),
+                            Id = new Guid("f4ba15be-0001-40a3-8e3c-7f3f0a39c313"),
                             Email = "john@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-001",
@@ -1673,7 +1673,7 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0ef08186-9c3c-4d13-9707-14eb1220b96b"),
+                            Id = new Guid("cf45f65e-cd66-4dcd-888f-13e874827791"),
                             Email = "jane@example.com",
                             IsAvailable = true,
                             LicenseNumber = "DL-002",
@@ -1841,11 +1841,11 @@ namespace Smart_ward_management_system.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a70ba268-5f70-45ab-8b3f-92b625ad99aa"),
+                            Id = new Guid("bd05a323-debe-4d56-bbd4-7debde945d4e"),
                             Capacity = 5.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 6, 22, 8, 12, 6, 512, DateTimeKind.Local).AddTicks(6488),
+                            LastUpdatedLocation = new DateTime(2026, 6, 29, 19, 37, 26, 462, DateTimeKind.Local).AddTicks(5532),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
@@ -1855,11 +1855,11 @@ namespace Smart_ward_management_system.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c881c0cc-cfa7-46ea-9e63-5a2d8a608f41"),
+                            Id = new Guid("aff51b2e-4edd-48e6-aba1-ab0f7692eb13"),
                             Capacity = 3.0,
                             CurrentFuelLevel = 0.0,
                             IsActive = true,
-                            LastUpdatedLocation = new DateTime(2026, 6, 22, 8, 12, 6, 512, DateTimeKind.Local).AddTicks(6499),
+                            LastUpdatedLocation = new DateTime(2026, 6, 29, 19, 37, 26, 462, DateTimeKind.Local).AddTicks(5542),
                             Latitude = 0.0,
                             Longitude = 0.0,
                             Status = 1,
