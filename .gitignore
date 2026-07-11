@@ -72,5 +72,7 @@ dotTrace/
 # =========================
 Smart ward management system/FileContentIndex/*.vsidx
 .vs/**.vsidx
+appsettings.json
+appsettings.Development.json
 **/appsettings.json
 **/appsettings.Development.json
